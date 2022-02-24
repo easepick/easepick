@@ -1,0 +1,68 @@
+:host {
+  --locked-color: #9e9e9e;
+}
+
+.container.lock-plugin {
+  .calendars {
+    .calendar {
+      &:first-child {
+        > .header {
+          &.no-previous-month {
+            .previous-button {
+              visibility: hidden;
+            }
+          }
+        }
+      }
+      &:last-child {
+        > .header {
+          &.no-next-month {
+            .next-button {
+              visibility: hidden;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .calendar {
+    > .days-grid {
+      > .day {
+        &.not-available {
+          pointer-events: none;
+          background-color: var(--lightgray-color);
+          color: var(--locked-color);
+          font-style: italic;
+        }
+
+        &.locked {
+          color: var(--locked-color);
+          background-color: transparent;
+          border: 1px solid #f9f9f9;
+          pointer-events: none;
+
+          &:not(.start):not(.end) {
+            background-image: repeating-linear-gradient(
+              135deg,
+              transparent,
+              #ffab91 2px,
+              transparent 2px,
+              transparent 4px
+            );
+            font-style: italic;
+          }
+        }
+      }
+    }
+  }
+
+  .preset-plugin-container {
+    > button {
+      &:disabled {
+        pointer-events: none;
+        color: var(--locked-color);
+      }
+    }
+  }
+}

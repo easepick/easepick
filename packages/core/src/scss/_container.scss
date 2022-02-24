@@ -1,0 +1,68 @@
+* {
+  box-sizing: border-box;
+}
+.container {
+  display: inline-block;
+  border-radius: 4px;
+  overflow: hidden;
+  transform: scale(0);
+  transform-origin: top left;
+  transition: transform 0.3s ease-out;
+  height: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8em;
+  cursor: default;
+  color: var(--black-color);
+
+  &.show {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    height: auto;
+  }
+
+  > main {
+    background-color: var(--white-color);
+  }
+
+  > header,
+  > footer {
+    padding: 10px;
+    background-color: var(--lightgray-color);
+  }
+
+  > footer {
+    .footer-buttons {
+      display: flex;
+      justify-content: flex-end;
+
+      > button {
+        border: 1px solid transparent;
+        background-color: transparent;
+        margin-left: 5px;
+        border-radius: var(--border-radius);
+        padding: 5px 10px;
+        cursor: pointer;
+
+        &.apply-button {
+          color: var(--primary-color);
+          border-color: var(--primary-color);
+
+          &:hover {
+            color: var(--white-color);
+            background-color: var(--primary-color);
+          }
+        }
+
+        &.cancel-button {
+          color: var(--secondary-color);
+          border-color: var(--secondary-color);
+
+          &:hover {
+            color: var(--white-color);
+            background-color: var(--secondary-color);
+          }
+        }
+      }
+    }
+  }
+}

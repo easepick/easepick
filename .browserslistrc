@@ -1,0 +1,5 @@
+defaults
+last 2 major versions
+not dead
+not ie >= 0
+> 1%

@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "emitDeclarationOnly": true,
+    "composite": true,
+    "paths": {
+      "@easepick/*": [
+        "./packages/*/src/index.ts"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "__tests__"
+  ],
+  "references": [
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/datetime"
+    },
+    {
+      "path": "packages/base-plugin"
+    },
+    {
+      "path": "packages/lock-plugin"
+    },
+    {
+      "path": "packages/preset-plugin"
+    },
+    {
+      "path": "packages/range-plugin"
+    },
+    {
+      "path": "packages/time-plugin"
+    },
+    {
+      "path": "packages/kbd-plugin"
+    },
+  ]
+}

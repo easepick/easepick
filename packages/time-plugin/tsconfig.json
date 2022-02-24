@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": ".",
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../datetime"
+    },
+    {
+      "path": "../base-plugin"
+    },
+    {
+      "path": "../range-plugin"
+    }
+  ]
+}

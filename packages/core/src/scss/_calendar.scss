@@ -1,0 +1,190 @@
+@for $i from 1 through 12 {
+  .grid-#{$i} {
+    grid-template-columns: repeat($i, 1fr);
+  }
+}
+
+.calendars {
+  display: grid;
+
+  &:not(.grid-1) {
+    .calendar {
+      > .header {
+        .month-name {
+          order: 2;
+          text-align: center;
+        }
+
+        .previous-button {
+          order: 1;
+          visibility: hidden;
+        }
+
+        .next-button {
+          order: 3;
+          visibility: hidden;
+        }
+      }
+
+      &:first-child {
+        > .header {
+          .previous-button {
+            visibility: visible;
+          }
+        }
+      }
+
+      &:last-child {
+        > .header {
+          .next-button {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+}
+
+.calendar {
+  padding: 10px;
+
+  > .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+
+    .month-name {
+      flex: 1;
+      font-weight: 500;
+      font-size: 15px;
+
+      > span {
+        font-weight: bold;
+      }
+    }
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      background-color: transparent;
+      padding: 4px 7px;
+      border-radius: 2px;
+      margin-left: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--lightgray-color);
+
+        > svg,
+        > img {
+          color: var(--primary-color);
+          fill: var(--primary-color);
+        }
+      }
+
+      > svg,
+      > img {
+        pointer-events: none;
+        color: var(--secondary-color);
+        fill: var(--secondary-color);
+        transform: scale(0.7);
+      }
+    }
+  }
+
+  > .days-grid,
+  > .daynames-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 2px;
+
+    > .day,
+    > .dayname {
+      cursor: default;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 13px;
+    }
+  }
+
+  > .daynames-row > .dayname {
+    padding: 5px 0;
+    color: var(--gray-color);
+    font-size: 12px;
+  }
+
+  > .days-grid > .day {
+    padding: 10px 0;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    width: var(--day-width);
+    min-width: var(--day-width);
+    max-width: var(--day-width);
+    height: var(--day-height);
+    min-height: var(--day-height);
+    max-height: var(--day-height);
+
+    &:hover {
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    &.today {
+      color: var(--red-color);
+    }
+
+    &.selected {
+      background-color: var(--primary-color);
+      color: var(--white-color);
+    }
+  }
+
+  > .footer {
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    transform: scaleY(0) !important;
+    transform-origin: bottom center !important;
+
+    &.show {
+      position: fixed !important;
+      bottom: 0 !important;
+      top: auto !important;
+      left: 0 !important;
+      right: 0 !important;
+      transform: scaleY(1) !important;
+    }
+  }
+  .calendars {
+    grid-template-columns: repeat(1, 1fr);
+
+    .calendar {
+      box-sizing: border-box;
+      width: 100%;
+
+      &:nth-child(n + 2) {
+        display: none;
+      }
+
+      > .days-grid > .day {
+        width: auto;
+        height: auto;
+        min-width: unset;
+        max-width: unset;
+        min-height: unset;
+        max-height: unset;
+      }
+
+      > .header:not(.no-next-month) .next-button {
+        visibility: visible;
+      }
+    }
+  }
+}

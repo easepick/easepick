@@ -1,0 +1,65 @@
+.container.preset-plugin main {
+  display: grid;
+
+  &.preset-left,
+  &.preset-top {
+    > .calendars {
+      order: 2;
+    }
+
+    > .preset-plugin-container {
+      order: 1;
+    }
+  }
+
+  &.preset-left,
+  &.preset-right {
+    grid-template-columns: auto auto;
+
+    .preset-plugin-container {
+      width: 130px;
+      grid-row: span 2;
+    }
+  }
+
+  &.preset-bottom {
+    > .preset-plugin-container {
+      order: 4;
+    }
+  }
+
+  &.preset-top,
+  &.preset-bottom {
+    grid-template-columns: auto;
+  }
+
+  > .time-plugin-container {
+    order: 3;
+  }
+}
+.container > main:not([class*="preset-"]) {
+  flex-direction: column;
+}
+
+.time-plugin-container {
+  background-color: var(--lightgray-color);
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+
+  input[type="time"] {
+    font-size: 18px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    color: var(--black-color);
+    background-color: var(--white-color);
+  }
+
+  select {
+    border-radius: 4px;
+    border: 1px solid transparent;
+    color: var(--black-color);
+    background-color: var(--white-color);
+    margin: 0 3px;
+  }
+}

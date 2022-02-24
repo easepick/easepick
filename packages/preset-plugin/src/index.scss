@@ -1,0 +1,53 @@
+.container.preset-plugin > main {
+  display: flex;
+
+  &.preset-left {
+    flex-direction: row-reverse;
+  }
+
+  &.preset-right {
+    flex-direction: row;
+  }
+
+  &.preset-left,
+  &.preset-right {
+    .preset-plugin-container {
+      width: 130px;
+      flex-direction: column;
+    }
+  }
+
+  &.preset-top {
+    flex-direction: column-reverse;
+  }
+
+  &.preset-bottom {
+    flex-direction: column;
+  }
+
+  &.preset-top,
+  &.preset-bottom {
+    .preset-plugin-container {
+      flex-direction: row;
+    }
+  }
+}
+
+.preset-plugin-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f1f1f1;
+  padding: 10px;
+
+  > button {
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 5px;
+
+    &:hover {
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      cursor: pointer;
+    }
+  }
+}
