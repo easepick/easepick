@@ -1,5 +1,3 @@
-@import url("easepick.css");
-
 .container {
   position: relative !important;
   top: 0px !important;
@@ -10,4 +8,10 @@
 }
 .calendar {
   flex: 1 !important;
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+  }
 }
