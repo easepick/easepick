@@ -297,7 +297,7 @@ const utils = {
           : b
       });
     if (version) {
-      localStorage.setItem('version', JSON.stringify({ d: (new Date()).getDate(), v: version }));
+      localStorage.setItem('version', JSON.stringify({ d: (new Date()).getDate(), v: version.replace(/^v/, '') }));
 
       return version;
     }
@@ -365,7 +365,7 @@ const utils = {
 
 utils.favicon();
 
-utils.tags().then(ver => utils.add_script(ver[0].name.replace(/^v/, '')));
+utils.tags().then(ver => utils.add_script(typeof ver === 'string' ? ver : ver[0].name));
 
 jtd.onReady(() => {
   //utils.toggable_dark_mode();
