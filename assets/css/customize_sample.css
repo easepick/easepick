@@ -1,0 +1,27 @@
+:host {
+  /* change color of selected items */
+  --primary-color: #f44336;
+  --inrange-color: #ffcdd2;
+  /* invert colors */
+  --white-color: #333;
+  --black-color: #fafafa;
+  /* change size of day elements */
+  --day-width: 35px;
+  --day-height: 30px;
+}
+/* increase start and end */
+.container.range-plugin .calendar>.days-grid>.day.start,
+.container.range-plugin .calendar>.days-grid>.day.end {
+  font-weight: bold;
+  transform: scale(1.2);
+  z-index: 1;
+}
+/* adjust the start / end position arrow */
+.container.range-plugin .calendar>.days-grid>.day.start:after,
+.container.range-plugin .calendar>.days-grid>.day.end:after {
+  top: 7px;
+}
+/* change text color in-range elements */
+.container.range-plugin .calendar>.days-grid>.day.in-range {
+  color: #333;
+}

@@ -1,0 +1,10 @@
+.calendar {
+  width: 330px;
+}
+.calendar>.days-grid>.day .day-price {
+  font-size: 80%;
+  color: #2196f3;
+}
+.calendar>.days-grid>.day.selected .day-price {
+  color: #fff;
+}

@@ -1,0 +1,142 @@
+#bg {
+  z-index: -20;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.profile-color-modes-toggle {
+  position: relative;
+  outline: none;
+}
+
+.profile-color-modes-toggle-track {
+  width: 42px;
+  height: 24px;
+  border-radius: 24px;
+  border: 3px solid var(--color-profile-color-modes-toggle-track-border);
+  background-color: var(--color-profile-color-modes-toggle-track-bg);
+}
+
+.profile-color-modes-toggle-thumb {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--color-profile-color-modes-toggle-thumb-bg);
+  transition: transform 0.3s cubic-bezier(0.4, 0.03, 0, 1);
+  cursor: pointer;
+}
+
+[data-color-mode="dark"] .profile-color-modes-toggle-thumb {
+  transform: translateX(18px);
+}
+
+.demo-wrapper {
+  position: relative;
+}
+
+div#index-demo-selection {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.collapse {
+  .collapse__title {
+    margin-bottom: 15px;
+  }
+
+  .collapse__content {
+    padding: 0 15px;
+    overflow: hidden;
+    transition: height 0.3s ease-out;
+    height: 0;
+
+    &[data-collapsed="true"] {
+      padding: 15px;
+      overflow: visible;
+    }
+  }
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.aux-nav {
+  width: 100%;
+  padding-right: 0;
+
+  .aux-nav-list {
+    align-items: center;
+    justify-content: flex-end;
+
+    .flex-nav-item {
+      padding: 10px 0 10px 10px;
+
+      &:first-child {
+        padding-left: 10px;
+      }
+
+      &:last-child {
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+video {
+  width: 100%;
+  height: auto;
+
+  &.demo-video {
+    padding: 15px;
+    background-color: #f5f6fa;
+    border-radius: 4px;
+  }
+}
+
+kbd {
+  background-color: #eee;
+  border-radius: 3px;
+  border: 1px solid #b4b4b4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 2px 0 0 rgba(255, 255, 255, 0.7) inset;
+  color: #333;
+  display: inline-block;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+code.language-plaintext {
+  word-break: break-all;
+
+  @include mq(md) {
+    word-break: normal;
+  }
+}

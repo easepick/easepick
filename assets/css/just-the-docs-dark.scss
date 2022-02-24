@@ -1,0 +1,23 @@
+---
+---
+{% include css/just-the-docs.scss.liquid color_scheme="dark" %}
+
+#bg {
+  background-color: #27262b;
+  background-image: url(../images/bg-dark.webp);
+}
+
+:root {
+  --color-profile-color-modes-toggle-moon: #ffdf5d;
+  --color-profile-color-modes-toggle-track-bg: #333;
+  --color-profile-color-modes-toggle-thumb-bg: #2f363d;
+  --color-profile-color-modes-toggle-track-border: #607d8b;
+}
+
+.main-content-wrap {
+  background-color: #27262b;
+}
+
+.site-footer {
+  color: #fafafa;
+}

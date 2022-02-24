@@ -1,0 +1,13 @@
+@import url("easepick.css");
+
+.container {
+  position: relative !important;
+  top: 0px !important;
+  left: 0px !important;
+  box-shadow: 0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%) !important;
+  height: auto !important;
+  transform: scaleY(1) !important;
+}
+.calendar {
+  flex: 1 !important;
+}

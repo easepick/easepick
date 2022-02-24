@@ -1,0 +1,180 @@
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  {% unless site.plugins contains "jekyll-seo-tag" %}
+    <title>{{ page.title }} - {{ site.title }}</title>
+
+    {% if page.description %}
+      <meta name="Description" content="{{ page.description }}">
+    {% endif %}
+  {% endunless %}
+
+  <meta property="og:image" content="{{ '/assets/images/og_image.png' }}" />
+
+  <link rel="shortcut icon" href="{{ 'favicon.ico' | relative_url }}" type="image/x-icon">
+
+  <style>
+    body {
+      margin: 0;
+    }
+    body.is-preloading {
+      overflow: hidden;
+      height: 100vh;
+    }
+    body.is-preloading * {
+      visibility: hidden;
+    }
+    body.is-preloading #preloader,
+    body.is-preloading #preloader * {
+      visibility: visible;
+    }
+    #preloader {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      z-index: 999;
+    }
+    #preloader .sk-cube-grid {
+      width: 40px;
+      height: 40px;
+      margin: 100px auto;
+    }
+    #preloader .sk-cube-grid .sk-cube {
+      width: 33%;
+      height: 33%;
+      background-color: #333;
+      float: left;
+      -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+      animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    }
+    [data-color-mode="dark"] #preloader {
+      background-color: #27262b;
+    }
+    [data-color-mode="dark"] #preloader .sk-cube-grid .sk-cube {
+      background-color: #fff;
+    }
+    #preloader .sk-cube-grid .sk-cube1 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    #preloader .sk-cube-grid .sk-cube2 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+    #preloader .sk-cube-grid .sk-cube3 {
+      -webkit-animation-delay: 0.4s;
+      animation-delay: 0.4s;
+    }
+    #preloader .sk-cube-grid .sk-cube4 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+    }
+    #preloader .sk-cube-grid .sk-cube5 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+    #preloader .sk-cube-grid .sk-cube6 {
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+    #preloader .sk-cube-grid .sk-cube7 {
+      -webkit-animation-delay: 0s;
+      animation-delay: 0s;
+    }
+    #preloader .sk-cube-grid .sk-cube8 {
+      -webkit-animation-delay: 0.1s;
+      animation-delay: 0.1s;
+    }
+    #preloader .sk-cube-grid .sk-cube9 {
+      -webkit-animation-delay: 0.2s;
+      animation-delay: 0.2s;
+    }
+
+    @-webkit-keyframes sk-cubeGridScaleDelay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+      }
+
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+      }
+    }
+
+    @keyframes sk-cubeGridScaleDelay {
+      0%, 70%, 100% {
+        -webkit-transform: scale3D(1, 1, 1);
+        transform: scale3D(1, 1, 1);
+      }
+
+      35% {
+        -webkit-transform: scale3D(0, 0, 1);
+        transform: scale3D(0, 0, 1);
+      }
+    }
+  </style>
+
+  <script>
+    function add_stylessheet() {
+      var _link = document.createElement('link');
+      _link.rel = 'stylesheet';
+      _link.onload = function() {
+        document.body.className = '';
+        document.getElementById('preloader').style.display = 'none';
+      };
+
+      if (localStorage.getItem('theme') === 'dark') {
+        _link.href = "{{ '/assets/css/just-the-docs-dark.css' }}";
+        document.documentElement.dataset.colorMode = 'dark';
+      }
+      else {
+        _link.href = "{{ '/assets/css/just-the-docs-default.css' }}";
+      }
+       
+      document.head.appendChild(_link);
+    }
+
+    function add_script(url, onload) {
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.src = url;
+      s.defer = true;
+      s.onload = onload || function(){};
+      document.head.appendChild(s);
+    }
+
+    add_stylessheet();
+
+    add_script("{{ '/assets/js/just-the-docs.js' | relative_url }}")
+  </script>
+
+  {% if site.ga_tracking != nil %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.ga_tracking }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '{{ site.ga_tracking }}'{% unless site.ga_tracking_anonymize_ip == nil %}, { 'anonymize_ip': true }{% endunless %});
+    </script>
+
+  {% endif %}
+
+  {% if site.search_enabled != false %}
+    <script type="text/javascript" src="{{ '/assets/js/vendor/lunr.min.js' | relative_url }}"></script>
+  {% endif %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% seo %}
+
+  {% include head_custom.html %}
+
+</head>

@@ -1,0 +1,3 @@
+.container.lock-plugin .calendar>.days-grid>.day.locked:not(.start):not(.end) {
+  background-image: repeating-linear-gradient(135deg, transparent, #ff9800 2px, transparent 0, transparent 4px);
+}
