@@ -16,7 +16,7 @@
 title: easepick
 description: Date range picker - lightweight, no dependencies
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "http://127.0.0.1:4000" #"https://easepick.com" # "http://127.0.0.1:4000" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://easepick.com" # "http://127.0.0.1:4000" # the base hostname & protocol for your site, e.g. http://example.com
 permalink: pretty
 exclude: [
   "node_modules/", 
