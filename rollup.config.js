@@ -4,12 +4,15 @@ import define from 'rollup-plugin-define';
 import resolve from '@rollup/plugin-node-resolve';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
-import { terser } from "rollup-plugin-terser";
+import { terser } from 'rollup-plugin-terser';
 
+const path = require('path');
 const pkg = require('./package.json');
 const ENV_PROD = process.env.BUILD === 'production';
 
 const output = (name) => {
+  const pkg = require(path.join(__dirname, `packages/${name}/package.json`));
+
   return [
     {
       file: `packages/${name}/dist/index.umd.js`,
@@ -17,12 +20,15 @@ const output = (name) => {
       name: 'easepick',
       sourcemap: false,
       extend: true,
-      banner: `/* 
-  Copyright 2021 Rinat G.
-  Project URL : https://easepick.jsx4.com/
-  Licensed under the Apache License, Version 2.0 (the "License") http://www.apache.org/licenses/LICENSE-2.0
-*/
-      `,
+      banner: `/**
+* @license
+* Package: ${pkg.name}
+* Version: ${pkg.version}
+* https://easepick.com/
+* Copyright ${(new Date()).getFullYear()} Rinat G.
+* 
+* Licensed under the terms of GNU General Public License Version 2 or later. (http://www.gnu.org/licenses/gpl.html)
+*/`,
       globals(id) {
         if (/^@easepick\//.test(id)) {
           return 'easepick';
