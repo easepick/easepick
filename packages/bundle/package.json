@@ -1,11 +1,19 @@
 {
   "name": "@easepick/bundle",
   "description": "easepick bundle.",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "dependencies": {},
+  "devDependencies": {
+    "@easepick/core": "^1.0.0-beta.0",
+    "@easepick/datetime": "^1.0.0-beta.0",
+    "@easepick/kbd-plugin": "^1.0.0-beta.0",
+    "@easepick/lock-plugin": "^1.0.0-beta.0",
+    "@easepick/preset-plugin": "^1.0.0-beta.0",
+    "@easepick/range-plugin": "^1.0.0-beta.0",
+    "@easepick/time-plugin": "^1.0.0-beta.0"
+  },
   "author": {
     "name": "Rinat G.",
     "email": "easepick@jsx4.com"

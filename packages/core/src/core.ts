@@ -57,6 +57,7 @@ export class Core {
     this.ui.wrapper = document.createElement('span');
     this.ui.wrapper.style.display = 'none';
     this.ui.wrapper.style.position = 'absolute';
+    this.ui.wrapper.style.pointerEvents = 'none';
     this.ui.wrapper.className = 'easepick-wrapper';
     this.ui.wrapper.attachShadow({ mode: 'open' });
     this.ui.shadowRoot = this.ui.wrapper.shadowRoot;
