@@ -1,6 +1,6 @@
 ---
 layout: default
-nav: Packages
+nav: "Packages"
 title: "Packages"
 description: ""
 nav_order: 2

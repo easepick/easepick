@@ -39,3 +39,27 @@ blockquote {
   border-left: 3px solid #64b5f6;
   padding: 1em;
 }
+
+.browser-icon {
+  background-image: url(/assets/images/browsers.png);
+  width: 37px;
+  height: 37px;
+  background-size: 215px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+.browser-icon.chrome-icon {
+  background-position: -3px -3px;
+}
+.browser-icon.edge-icon {
+  background-position: -44px -3px;
+}
+.browser-icon.firefox-icon {
+  background-position: -90px -3px;
+}
+.browser-icon.opera-icon {
+  background-position: -132px -3px;
+}
+.browser-icon.safari-icon {
+  background-position: -175px -3px;
+}

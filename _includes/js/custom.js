@@ -360,12 +360,38 @@ const utils = {
         jtd.setTheme('dark');
       }
     });
-  }
+  },
+  replace_version_number(version) {
+    const tree = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (; tree.nextNode();) {
+      const node = tree.currentNode;
+      
+      if (node.nodeType === Node.TEXT_NODE && /\[version\.number\]/.test(node.nodeValue)) {
+        node.nodeValue = node.nodeValue.replace(/\[version\.number\]/, version);
+      }
+    }
+
+    const images = document.querySelectorAll('[src*="[version.number]"]');
+    [...images].forEach(img => {
+      img.src = img.src.replace(/\[version\.number\]/, version.replace(/-/, '--'));
+    });
+  },
 }
 
 utils.favicon();
 
-utils.tags().then(ver => utils.add_script(typeof ver === 'string' ? ver : ver[0].name));
+utils.tags().then(ver => {
+  const version = typeof ver === 'string' ? ver : ver[0].name;
+  utils.add_script(version);
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      utils.replace_version_number(version);
+    });
+  } else {
+    utils.replace_version_number(version);
+  }
+});
 
 jtd.onReady(() => {
   //utils.toggable_dark_mode();

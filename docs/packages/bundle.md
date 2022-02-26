@@ -1,8 +1,8 @@
 ---
 layout: default
-nav: Bundle
-title: "Bundle"
-parent: Packages
+nav: "bundle"
+title: "@easepick/bundle"
+parent: "Packages"
 description: ""
 nav_order: 1
 permalink: /packages/bundle
@@ -10,6 +10,8 @@ permalink: /packages/bundle
 
 # @easepick/bundle
 {: .no_toc }
+
+![](https://img.shields.io/badge/npm-[version.number]-blue)
 
 Bundle of easepick.  
 Includes all packages.
@@ -21,7 +23,7 @@ Includes all packages.
   <head>
     <meta charset="utf-8">
     <title>easepick</title>
-    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.0/dist/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.umd.min.js"></script>
   </head>
   <body>
     <input id="datepicker"/>
@@ -29,7 +31,7 @@ Includes all packages.
       const picker = new easepick.create({
         element: document.getElementById('datepicker'),
         css: [
-          'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.0/dist/index.css',
+          'https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.css',
         ],
       });
     </script>
@@ -40,24 +42,35 @@ Includes all packages.
 ## Installation
 
 #### NPM
+
 ```bash
 npm install @easepick/bundle
 ```
 
 #### CDN
+
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.umd.min.js"></script>
 ```
 
-## Initialization
+## Usage
+
+If you’re using a bundler, e.g. [webpack](https://webpack.js.org/), you’ll need to import easepick.
+
+```ts
+import { easepick } from '@easepick/bundle';
+```
+
+Now you can create `easepick` instance.
+
 ```js
-  const picker = new easepick.create({
-    element: document.getElementById('datepicker'),
-    css: [
-      'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.0/dist/index.css',
-    ],
-  });
+const picker = new easepick.create({
+  element: document.getElementById('datepicker'),
+  css: [
+    'https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.css',
+  ],
+});
 ```
 
 ## Options
-See documentation in other [packages](/packages).
+See options in [@easepick/core](/packages/core) and other [packages](/packages).
