@@ -28,6 +28,7 @@ export class Core {
     readonly: true,
     autoApply: true,
     header: false,
+    inline: false,
     locale: {
       nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>',
       previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>',
@@ -64,6 +65,15 @@ export class Core {
 
     this.ui.container = document.createElement('div');
     this.ui.container.className = 'container';
+
+    if (this.options.zIndex) {
+      this.ui.container.style.zIndex = String(this.options.zIndex);
+    }
+
+    if (this.options.inline) {
+      this.ui.container.classList.add('inline');
+    }
+
     this.ui.shadowRoot.appendChild(this.ui.container);
     (this.options.element as HTMLElement).after(this.ui.wrapper);
 
@@ -205,13 +215,14 @@ export class Core {
   public show(event): void {
     if (this.isShown()) return;
 
-    const { top, left } = this.adjustPosition(event.target as HTMLElement);
+    const target = event && 'target' in event ? event.target : this.options.element;
+    const { top, left } = this.adjustPosition(target);
     this.ui.container.style.position = 'absolute';
     this.ui.container.style.top = `${top}px`;
     this.ui.container.style.left = `${left}px`;
     this.ui.container.classList.add('show');
 
-    this.trigger('show', { target: event.target });
+    this.trigger('show', { target: target });
   }
 
   /**

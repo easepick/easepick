@@ -37,5 +37,7 @@ export interface IPickerConfig {
   locale?: IPickerLocales;
   plugins?: any[];
   documentClick?: boolean | (() => void);
+  zIndex?: number;
+  inline?: boolean;
   setup?(picker: Core): void;
 }
