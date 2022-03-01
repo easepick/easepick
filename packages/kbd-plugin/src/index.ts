@@ -31,10 +31,12 @@ export class KbdPlugin extends BasePlugin implements IPlugin {
    * The function execute on initialize the picker
    */
   public onAttach(): void {
+    const element = this.picker.options.element as HTMLElement;
+    const elementBounds = element.getBoundingClientRect();
     this.docElement = document.createElement('span');
     this.docElement.style.position = 'absolute';
-    this.docElement.style.top = '0px';
-    this.docElement.style.right = '0px';
+    this.docElement.style.top = `${element.offsetTop}px`;
+    this.docElement.style.left = `${(element.offsetLeft + elementBounds.width) - 25}px`; // 25px width of icon
     this.docElement.attachShadow({ mode: 'open' });
 
     if (this.options.html) {

@@ -1,11 +1,11 @@
 {
   "name": "@easepick/range-plugin",
   "description": "Plugin for easepick.",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "devDependencies": {
+  "dependencies": {
     "@easepick/base-plugin": "^1.0.0-beta.0"
   },
   "author": {

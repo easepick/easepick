@@ -204,7 +204,8 @@ export class Core {
    * @returns Boolean
    */
   public isShown(): boolean {
-    return this.ui.container.classList.contains('show');
+    return this.ui.container.classList.contains('inline')
+      || this.ui.container.classList.contains('show');
   }
 
   /**
