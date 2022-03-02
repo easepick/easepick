@@ -117,4 +117,4 @@ export default [
       ENV_PROD && terser(),
     ],
   },
-];
+]
