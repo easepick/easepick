@@ -26,10 +26,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Run script file
-      run: |
-         chmod +x ./scripts/env.sh
-         ./scripts/env.sh
-      shell: bash
     - run: npm install
+    - run: npm install @easepick/bundle
     - run: npm test
