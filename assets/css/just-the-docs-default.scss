@@ -63,3 +63,13 @@ blockquote {
 .browser-icon.safari-icon {
   background-position: -175px -3px;
 }
+.image-link a {
+  background-image: none;
+}
+blockquote.inform {
+  background-color: #fff9c4;
+  border-left: 3px solid #4caf50;
+}
+.nowrap {
+  white-space: nowrap;
+}

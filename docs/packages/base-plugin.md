@@ -11,7 +11,11 @@ permalink: /packages/base-plugin
 # @easepick/base-plugin
 {: .no_toc }
 
-![](https://img.shields.io/badge/npm-[version.number]-blue)
+[![npm version](https://badge.fury.io/js/@easepick%2Fbase-plugin.svg)](https://www.npmjs.com/package/@easepick/base-plugin)
+{: .image-link }
+
+> You don't need to install this package if you are using [@easepick/bundle](/packages/bundle).
+{: .inform }
 
 in progress
 {: .fs-6 .fw-300 }

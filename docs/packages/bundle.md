@@ -11,7 +11,8 @@ permalink: /packages/bundle
 # @easepick/bundle
 {: .no_toc }
 
-![](https://img.shields.io/badge/npm-[version.number]-blue)
+[![npm version](https://badge.fury.io/js/@easepick%2Fbundle.svg)](https://www.npmjs.com/package/@easepick/bundle)
+{: .image-link }
 
 Bundle of easepick.  
 Includes all packages.
@@ -73,4 +74,4 @@ const picker = new easepick.create({
 ```
 
 ## Options
-See options in [@easepick/core](/packages/core) and other [packages](/packages).
+See options in [@easepick/core](/packages/core#options) and other [packages](/packages).

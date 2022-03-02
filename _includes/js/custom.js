@@ -29,10 +29,8 @@ const demo_cfg = {
       element: '#index-demo',
       documentClick: false,
       format: 'D MMM YYYY',
+      inline: true,
       plugins: ['RangePlugin'],
-      css: [
-        '/assets/css/demo_index.css',
-      ],
       setup(picker) {
         picker.ui.wrapper.style.position = 'relative';
       }
