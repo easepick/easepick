@@ -21,8 +21,8 @@ There are two ways to create a plugin:
 Clone a sample plugin and install dependencies.
 
 ```bash
-git clone -b sample-plugin https://github.com/easepick/easepick.git myawesome-plugin
-cd myawesome-plugin
+git clone https://github.com/easepick/sample-plugin.git
+cd sample-plugin
 npm install
 ```
 

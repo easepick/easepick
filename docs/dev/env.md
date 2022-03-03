@@ -17,7 +17,7 @@ The main package’s GitHub repository hosts [all other easepick sub-packages](h
 
 In order to start developing `easepick` you will require:
 
-* Node.js 14.0.0+
+* Node.js ^14.0.0
 * npm 7+
 * Git
 
