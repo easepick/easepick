@@ -25,4 +25,4 @@ Make sure to tag your questions with ["easepick"](https://stackoverflow.com/ques
 ## Commercial support
 
 `easepick` also comes with commercial licensing benefits, such as direct support from the core easepick development team.  
-Contact us for further information.
+[Contact me](https://github.com/wakirin) for further information.

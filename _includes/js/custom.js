@@ -17,8 +17,6 @@ let bookedDates = [
 const demo_cfg = {
   base() {
     return {
-      grid: 2,
-      calendars: 2,
       setup(picker) {
         picker.ui.wrapper.style.zIndex = 1;
       },
@@ -112,13 +110,12 @@ const demo_cfg = {
   eglang() {
     return {
       element: '#eg-lang',
-      lang: 'ru-RU',
+      lang: 'sv-SE',
       plugins: ['RangePlugin'],
       RangePlugin: {
         locale: {
-          one: 'день',
-          few: 'дня',
-          many: 'дней',
+          one: 'dag',
+          other: 'dagar',
         },
       },
     }
