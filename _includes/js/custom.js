@@ -24,6 +24,8 @@ const demo_cfg = {
   },
   index() {
     return {
+      grid: 2,
+      calendars: 2,
       element: '#index-demo',
       documentClick: false,
       format: 'D MMM YYYY',
