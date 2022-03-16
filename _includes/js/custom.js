@@ -284,7 +284,7 @@ const utils = {
       .then(json => utils.latest_tag(json));
   },
   latest_tag(json) {
-    const version = json//.filter(x => !x.name.includes('beta'))
+    const version = json.filter(x => !x.name.includes('beta'))
       .map(x => x.name = /^v/.test(x.name) ? x.name : 'v' + x.name)
       .reduce((a, b) => {
         return 0 < a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
