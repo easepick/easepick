@@ -2,7 +2,7 @@
 layout: default
 nav: Overview
 title: "easepick - date picker. No dependencies."
-description: ""
+description: "easepick date range picker. Features: no dependencies, lightweight size, supports plugins."
 nav_order: 1
 permalink: /
 ---
@@ -16,6 +16,12 @@ Date picker - tiny size, no dependencies
 <div style="text-align: center; font-size: 25px; display: block; margin-bottom: 15px;">
   <div id="index-demo" class="demo-wrapper" data-cfg="index"></div>
 </div>
+
+## Features
+
+- No dependencies
+- Using [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+- Supports plugins
 
 ## Browser compatibility
 

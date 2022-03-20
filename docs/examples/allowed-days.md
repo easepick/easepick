@@ -24,7 +24,7 @@ permalink: /examples/allowed-days-instead-of-lock-days
   <head>
     <meta charset="utf-8">
     <title>easepick</title>
-    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.0-beta.5/dist/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.umd.min.js"></script>
   </head>
   <body>
     <input id="datepicker"/>
@@ -32,7 +32,7 @@ permalink: /examples/allowed-days-instead-of-lock-days
       const picker = new easepick.create({
         element: document.getElementById('datepicker'),
         css: [
-          'https://cdn.jsdelivr.net/npm/@easepick/bundle@1.0.0-beta.5/dist/index.css',
+          'https://cdn.jsdelivr.net/npm/@easepick/bundle@[version.number]/dist/index.css',
         ],
         plugins: ['LockPlugin'],
         LockPlugin: {
