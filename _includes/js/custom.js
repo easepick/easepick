@@ -363,8 +363,16 @@ const utils = {
     for (; tree.nextNode();) {
       const node = tree.currentNode;
       
-      if (node.nodeType === Node.TEXT_NODE && /\[version\.number\]/.test(node.nodeValue)) {
-        node.nodeValue = node.nodeValue.replace(/\[version\.number\]/, version);
+      const now = new Date();
+      const mapObj = {
+        '[version.number]': version,
+        '[js.date.yyyy]': now.getFullYear(),
+        '[js.date.mm]': `0${(now.getMonth() + 1)}`.slice(-2),
+        '[js.date.dd]': `0${(now.getDate())}`.slice(-2),
+      }
+
+      if (node.nodeType === Node.TEXT_NODE) {
+        node.nodeValue = node.nodeValue.replace(/\[(version\.number|js\.date\.(yyyy|mm|dd))\]/g, m => mapObj[m]);
       }
     }
 

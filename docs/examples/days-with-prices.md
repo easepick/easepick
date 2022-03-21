@@ -28,6 +28,16 @@ permalink: /examples/days-with-prices
   <body>
     <input id="datepicker"/>
     <script>
+      const dates = [
+        '[js.date.yyyy]-[js.date.mm]-03',
+        '[js.date.yyyy]-[js.date.mm]-07',
+        '[js.date.yyyy]-[js.date.mm]-08',
+        '[js.date.yyyy]-[js.date.mm]-11',
+        '[js.date.yyyy]-[js.date.mm]-15',
+        '[js.date.yyyy]-[js.date.mm]-16',
+        '[js.date.yyyy]-[js.date.mm]-17',
+        '[js.date.yyyy]-[js.date.mm]-21',
+      ]
       const picker = new easepick.create({
         element: document.getElementById('datepicker'),
         css: [
@@ -40,7 +50,7 @@ permalink: /examples/days-with-prices
             return Math.floor(Math.random() * (max - min + 1) + min)
           }
           const prices = {};
-          allowedDates.forEach(x => {
+          dates.forEach(x => {
             prices[x] = randomInt(50, 200);
           });
           
