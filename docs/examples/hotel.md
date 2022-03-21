@@ -28,6 +28,25 @@ permalink: /examples/basic-hotel-calendar
   <body>
     <input id="datepicker"/>
     <script>
+      const DateTime = easepick.DateTime;
+      const bookedDates = [
+          '[js.date.yyyy]-[js.date.mm]-02',
+          ['[js.date.yyyy]-[js.date.mm]-06', '[js.date.yyyy]-[js.date.mm]-11'],
+          '[js.date.yyyy]-[js.date.mm]-18',
+          '[js.date.yyyy]-[js.date.mm]-19',
+          '[js.date.yyyy]-[js.date.mm]-20',
+          '[js.date.yyyy]-[js.date.mm]-25',
+          '[js.date.yyyy]-[js.date.mm]-27',
+      ].map(d => {
+          if (d instanceof Array) {
+            const start = new DateTime(d[0], 'YYYY-MM-DD');
+            const end = new DateTime(d[1], 'YYYY-MM-DD');
+
+            return [start, end];
+          }
+
+          return new DateTime(d, 'YYYY-MM-DD');
+      });
       const picker = new easepick.create({
         element: document.getElementById('datepicker'),
         css: [
@@ -46,11 +65,9 @@ permalink: /examples/basic-hotel-calendar
         },
         LockPlugin: {
           minDate: new Date(),
+          minDays: 2,
           inseparable: true,
           filter(date, picked) {
-            // varible `bookedDates` is predefined array
-            // in this example this array contains dates 2, 6-11, 18, 19, 20, 25, 27 of current month
-            // eg.: ['2022-03-02', ['2022-03-06', '2022-03-11'], '2022-03-18', etc ...]
             if (picked.length === 1) {
               const incl = date.isBefore(picked[0]) ? '[)' : '(]';
               return !picked[0].isSame(date, 'day') && date.inArray(bookedDates, incl);
@@ -58,6 +75,7 @@ permalink: /examples/basic-hotel-calendar
 
             return date.inArray(bookedDates, '[)');
           },
+        }
       });
     </script>
   </body>

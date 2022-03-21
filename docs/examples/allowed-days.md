@@ -29,6 +29,14 @@ permalink: /examples/allowed-days-instead-of-lock-days
   <body>
     <input id="datepicker"/>
     <script>
+      const allowedDates = [
+          '[js.date.yyyy]-[js.date.mm]-01',
+          '[js.date.yyyy]-[js.date.mm]-03',
+          '[js.date.yyyy]-[js.date.mm]-07',
+          '[js.date.yyyy]-[js.date.mm]-11',
+          '[js.date.yyyy]-[js.date.mm]-17',
+          '[js.date.yyyy]-[js.date.mm]-21',
+      ]
       const picker = new easepick.create({
         element: document.getElementById('datepicker'),
         css: [
@@ -37,9 +45,6 @@ permalink: /examples/allowed-days-instead-of-lock-days
         plugins: ['LockPlugin'],
         LockPlugin: {
           filter(date, picked) {
-            // varible `allowedDates` is predefined array
-            // in this example this array contains dates 1, 3, 7, 11, 17, 21 of current month
-            // eg.: ['2022-03-01', '2022-03-03', '2022-03-07', etc ...]
             return !allowedDates.includes(date.format('YYYY-MM-DD'));
           },
         },
