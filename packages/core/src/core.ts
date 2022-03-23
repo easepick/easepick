@@ -85,6 +85,8 @@ export class Core {
 
     this.PluginManager.initialize();
 
+    this.parseValues();
+
     if (typeof this.options.setup === 'function') {
       this.options.setup(this);
     }
@@ -187,7 +189,7 @@ export class Core {
 
         this.hide();
 
-        this.trigger('select', { date });
+        this.trigger('select', { date: this.getDate() });
         return;
       }
 
@@ -247,14 +249,8 @@ export class Core {
   public setDate(date: Date | string | number): void {
     const d = new DateTime(date, this.options.format);
     this.options.date = d.clone();
-    const formatString = this.getDate().format(this.options.format, this.options.lang);
 
-    const el = this.options.element;
-    if (el instanceof HTMLInputElement) {
-      el.value = formatString;
-    } else if (el instanceof HTMLElement) {
-      el.innerText = formatString;
-    }
+    this.updateValues();
 
     if (this.calendars.length) {
       this.renderAll();
@@ -269,6 +265,35 @@ export class Core {
     return this.options.date instanceof DateTime
       ? this.options.date.clone()
       : null;
+  }
+
+  /**
+   * Parse `date` option or value of input element
+   */
+  public parseValues() {
+    if (this.options.date) {
+      this.setDate(this.options.date);
+    } else if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) {
+      this.setDate(this.options.element.value);
+    }
+
+    if (!(this.options.date instanceof Date)) {
+      this.options.date = null;
+    }
+  }
+
+  /**
+   * Update value of input element
+   */
+  public updateValues() {
+    const formatString = this.getDate().format(this.options.format, this.options.lang);
+
+    const el = this.options.element;
+    if (el instanceof HTMLInputElement) {
+      el.value = formatString;
+    } else if (el instanceof HTMLElement) {
+      el.innerText = formatString;
+    }
   }
 
   /**
@@ -348,10 +373,6 @@ export class Core {
   private handleOptions() {
     if (!(this.options.element instanceof HTMLElement)) {
       this.options.element = this.options.doc.querySelector(this.options.element) as HTMLElement;
-    }
-
-    if (this.options.date) {
-      this.setDate(this.options.date);
     }
 
     if (typeof this.options.documentClick === 'function') {

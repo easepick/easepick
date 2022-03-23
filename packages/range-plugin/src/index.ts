@@ -18,6 +18,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     onMouseEnter: this.onMouseEnter.bind(this),
     onMouseLeave: this.onMouseLeave.bind(this),
     onClick: this.onClick.bind(this),
+    parseValues: this.parseValues.bind(this),
+    updateValues: this.updateValues.bind(this),
   };
 
   public options: IRangeConfig = {
@@ -57,6 +59,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.binds['_setDateRange'] = this.picker.setDateRange;
     this.binds['_getStartDate'] = this.picker.getStartDate;
     this.binds['_getEndDate'] = this.picker.getEndDate;
+    this.binds['_parseValues'] = this.picker.parseValues;
+    this.binds['_updateValues'] = this.picker.updateValues;
 
     Object.defineProperties(this.picker, {
       setStartDate: {
@@ -78,6 +82,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       getEndDate: {
         configurable: true,
         value: this.binds.getEndDate,
+      },
+      parseValues: {
+        configurable: true,
+        value: this.binds.parseValues,
+      },
+      updateValues: {
+        configurable: true,
+        value: this.binds.updateValues,
       },
     });
 
@@ -116,6 +128,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.checkIntlPluralLocales();
   }
 
+
   /**
    * - Called automatically via BasePlugin.detach() -
    */
@@ -141,6 +154,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         configurable: true,
         value: this.binds['_getEndDate'],
       },
+      parseValues: {
+        configurable: true,
+        value: this.binds['_parseValues'],
+      },
+      updateValues: {
+        configurable: true,
+        value: this.binds['_updateValues'],
+      },
     });
 
     this.picker.off('view', this.binds.onView);
@@ -148,6 +169,101 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.picker.off('mouseenter', this.binds.onMouseEnter, true);
     this.picker.off('mouseleave', this.binds.onMouseLeave, true);
     this.picker.off('click', this.binds.onClick, true);
+  }
+
+  /**
+   * Parse `startDate`, `endDate` options or value of input elements
+   */
+  private parseValues() {
+    if (this.options.startDate || this.options.endDate) {
+      if (this.options.strict) {
+        if (this.options.startDate && this.options.endDate) {
+          this.setDateRange(this.options.startDate, this.options.endDate);
+        } else {
+          this.options.startDate = null;
+          this.options.endDate = null;
+        }
+      } else {
+        if (this.options.startDate) {
+          this.setStartDate(this.options.startDate)
+        }
+
+        if (this.options.endDate) {
+          this.setEndDate(this.options.endDate);
+        }
+      }
+      return;
+    }
+
+    if (this.options.elementEnd) {
+      if (this.options.strict) {
+        if (this.picker.options.element instanceof HTMLInputElement
+          && this.picker.options.element.value.length
+          && this.options.elementEnd instanceof HTMLInputElement
+          && this.options.elementEnd.value.length) {
+          this.setDateRange(this.picker.options.element.value, this.options.elementEnd.value);
+        }
+      } else {
+        if (this.picker.options.element instanceof HTMLInputElement
+          && this.picker.options.element.value.length) {
+          this.setStartDate(this.picker.options.element.value);
+        }
+
+        if (this.options.elementEnd instanceof HTMLInputElement
+          && this.options.elementEnd.value.length) {
+          this.setEndDate(this.options.elementEnd.value);
+        }
+      }
+    } else if (this.picker.options.element instanceof HTMLInputElement && this.picker.options.element.value.length) {
+      const [_start, _end] = this.picker.options.element.value.split(this.options.delimiter);
+
+      if (this.options.strict) {
+        if (_start && _end) {
+          this.setDateRange(_start, _end);
+        }
+      } else {
+        if (_start) this.setStartDate(_start);
+        if (_end) this.setEndDate(_end);
+      }
+    }
+  }
+
+  /**
+   * Update value of input element
+   */
+  private updateValues() {
+    const el = this.picker.options.element;
+    const elEnd = this.options.elementEnd;
+    const start = this.picker.getStartDate();
+    const end = this.picker.getEndDate();
+    const startString = start
+      ? start.format(this.picker.options.format, this.picker.options.lang)
+      : '...';
+    const endString = end
+      ? end.format(this.picker.options.format, this.picker.options.lang)
+      : '...';
+
+    if (elEnd) {
+      if (el instanceof HTMLInputElement) {
+        el.value = startString;
+      } else if (el instanceof HTMLElement) {
+        el.innerText = startString;
+      }
+
+      if (elEnd instanceof HTMLInputElement) {
+        elEnd.value = endString;
+      } else if (elEnd instanceof HTMLElement) {
+        elEnd.innerText = endString;
+      }
+    } else {
+      const formatString = `${startString}${this.options.delimiter}${endString}`;
+
+      if (el instanceof HTMLInputElement) {
+        el.value = formatString;
+      } else if (el instanceof HTMLElement) {
+        el.innerText = formatString;
+      }
+    }
   }
 
   /**
@@ -231,7 +347,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     const d = new DateTime(date, this.picker.options.format);
     this.options.startDate = d ? d.clone() : null;
 
-    this.assignDates();
+    this.updateValues();
 
     this.picker.renderAll();
   }
@@ -245,7 +361,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     const d = new DateTime(date, this.picker.options.format);
     this.options.endDate = d ? d.clone() : null;
 
-    this.assignDates();
+    this.updateValues();
 
     this.picker.renderAll();
   }
@@ -263,47 +379,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.options.startDate = startDate ? startDate.clone() : null;
     this.options.endDate = endDate ? endDate.clone() : null;
 
-    this.assignDates();
+    this.updateValues();
 
     this.picker.renderAll();
-  }
-
-  /**
-   * Displays startDate and endDate in input.value
-   */
-  private assignDates() {
-    const el = this.picker.options.element;
-    const elEnd = this.options.elementEnd;
-    const start = this.picker.getStartDate();
-    const end = this.picker.getEndDate();
-    const startString = start
-      ? start.format(this.picker.options.format, this.picker.options.lang)
-      : '...';
-    const endString = end
-      ? end.format(this.picker.options.format, this.picker.options.lang)
-      : '...';
-
-    if (elEnd) {
-      if (el instanceof HTMLInputElement) {
-        el.value = startString;
-      } else if (el instanceof HTMLElement) {
-        el.innerText = startString;
-      }
-
-      if (elEnd instanceof HTMLInputElement) {
-        elEnd.value = endString;
-      } else if (elEnd instanceof HTMLElement) {
-        elEnd.innerText = endString;
-      }
-    } else {
-      const formatString = `${startString}${this.options.delimiter}${endString}`;
-
-      if (el instanceof HTMLInputElement) {
-        el.value = formatString;
-      } else if (el instanceof HTMLElement) {
-        el.innerText = formatString;
-      }
-    }
   }
 
   /**
@@ -311,7 +389,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @returns DateTime
    */
   private getStartDate(): DateTime {
-    return this.options.startDate ? this.options.startDate.clone() : null;
+    return this.options.startDate instanceof Date ? this.options.startDate.clone() : null;
   }
 
   /**
@@ -319,7 +397,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @returns 
    */
   private getEndDate(): DateTime {
-    return this.options.endDate ? this.options.endDate.clone() : null;
+    return this.options.endDate instanceof Date ? this.options.endDate.clone() : null;
   }
 
   /**

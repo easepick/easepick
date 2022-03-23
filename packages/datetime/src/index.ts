@@ -29,6 +29,10 @@ export class DateTime extends Date {
           shortMonth: null,
           longMonth: null,
           day: null,
+          hour: 0,
+          minute: 0,
+          second: 0,
+          ampm: null,
           value: '',
         };
 
@@ -65,7 +69,25 @@ export class DateTime extends Date {
 
           const day = Number(d[datePattern.day]) || 1;
 
-          return new Date(year, month, day, 0, 0, 0, 0);
+          const h = Number(d[datePattern.hour]);
+          let hours = !Number.isNaN(h) ? h : 0;
+
+          const m = Number(d[datePattern.minute]);
+          const minutes = !Number.isNaN(m) ? m : 0;
+
+          const s = Number(d[datePattern.second]);
+          const seconds = !Number.isNaN(s) ? s : 0;
+
+          const ampm = d[datePattern.ampm];
+          if (ampm && ampm === 'PM') {
+            hours += 12;
+
+            if (hours === 24) {
+              hours = 0;
+            }
+          }
+
+          return new Date(year, month, day, hours, minutes, seconds, 0);
         }
       }
     }
@@ -77,7 +99,7 @@ export class DateTime extends Date {
   // replace to regexp lookbehind when Safari support
   // https://caniuse.com/#feat=js-regexp-lookbehind
   // /(?<!\\)(Y{2,4}|M{1,4}|D{1,2}|H{1,2}|m{1,2}|s{1,2}])/g
-  private static regex = /(\\)?(Y{2,4}|M{1,4}|D{1,2}|H{1,2}|m{1,2}|s{1,2})/g;
+  private static regex = /(\\)?(Y{2,4}|M{1,4}|D{1,2}|H{1,2}|h{1,2}|m{1,2}|s{1,2}|A|a)/g;
 
   private static readonly MONTH_JS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
@@ -143,12 +165,14 @@ export class DateTime extends Date {
           pattern: '(\\d{2})',
         };
 
+      case 'h':
       case 'H':
         return {
           group: 'hour',
           pattern: '(\\d{1,2})',
         };
 
+      case 'hh':
       case 'HH':
         return {
           group: 'hour',
@@ -177,6 +201,13 @@ export class DateTime extends Date {
         return {
           group: 'second',
           pattern: '(\\d{2})',
+        };
+
+      case 'a':
+      case 'A':
+        return {
+          group: 'ampm',
+          pattern: '(AM|PM|am|pm)',
         };
     }
   }
@@ -551,11 +582,20 @@ export class DateTime extends Date {
       case 'H': return String(this.getHours());
       case 'HH': return `0${this.getHours()}`.slice(-2);
 
+      case 'h': return String(this.getHours() % 12 || 12);
+      case 'hh':
+        // eslint-disable-next-line no-case-declarations
+        const h = this.getHours() % 12 || 12;
+        return `0${h}`.slice(-2);
+
       case 'm': return String(this.getMinutes());
       case 'mm': return `0${this.getMinutes()}`.slice(-2);
 
       case 's': return String(this.getSeconds());
       case 'ss': return `0${this.getSeconds()}`.slice(-2);
+
+      case 'a': return (this.getHours() < 12 || this.getHours() === 24) ? 'am' : 'pm';
+      case 'A': return (this.getHours() < 12 || this.getHours() === 24) ? 'AM' : 'PM';
 
       default: return '';
     }

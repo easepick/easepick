@@ -7,8 +7,6 @@ import './index.scss';
 export class TimePlugin extends BasePlugin implements IPlugin {
   public options: ITimeConfig = {
     native: false,
-    format: 'HH:mm',
-    append: 'start',
     seconds: false,
     stepHours: 1,
     stepMinutes: 5,
@@ -22,7 +20,13 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     input: null,
     start: null,
     end: null,
-  };
+  }
+
+  public timePrePicked = {
+    input: null,
+    start: null,
+    end: null,
+  }
 
   public binds = {
     getDate: this.getDate.bind(this),
@@ -31,7 +35,10 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     onView: this.onView.bind(this),
     onInput: this.onInput.bind(this),
     onChange: this.onChange.bind(this),
-    onSelect: this.onSelect.bind(this),
+    onClick: this.onClick.bind(this),
+    setTime: this.setTime.bind(this),
+    setStartTime: this.setStartTime.bind(this),
+    setEndTime: this.setEndTime.bind(this),
   };
 
 
@@ -56,28 +63,47 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     Object.defineProperties(this.picker, {
       getDate: {
         configurable: true,
-        value: this.binds.getDate
+        value: this.binds.getDate,
       },
       getStartDate: {
         configurable: true,
-        value: this.binds.getStartDate
+        value: this.binds.getStartDate,
       },
       getEndDate: {
         configurable: true,
-        value: this.binds.getEndDate
+        value: this.binds.getEndDate,
+      },
+      setTime: {
+        configurable: true,
+        value: this.binds.setTime,
+      },
+      setStartTime: {
+        configurable: true,
+        value: this.binds.setStartTime,
+      },
+      setEndTime: {
+        configurable: true,
+        value: this.binds.setEndTime,
       },
     });
+
+    this.rangePlugin = this.picker.PluginManager.getInstance('RangePlugin');
+    this.parseValues();
 
     this.picker.on('view', this.binds.onView);
     this.picker.on('input', this.binds.onInput);
     this.picker.on('change', this.binds.onChange);
-    this.picker.on('select', this.binds.onSelect);
+    this.picker.on('click', this.binds.onClick);
   }
 
   /**
    * - Called automatically via BasePlugin.detach() -
    */
   public onDetach(): void {
+    delete this.picker.setTime;
+    delete this.picker.setStartTime;
+    delete this.picker.setEndTime;
+
     Object.defineProperties(this.picker, {
       getDate: {
         configurable: true,
@@ -96,70 +122,7 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     this.picker.off('view', this.binds.onView);
     this.picker.off('input', this.binds.onInput);
     this.picker.off('change', this.binds.onChange);
-    this.picker.off('select', this.binds.onSelect);
-  }
-
-  /**
-   * Adds time to DateTime object
-   * Replaces the original `getDate` function 
-   * 
-   * @returns DateTime
-   */
-  private getDate(): DateTime {
-    if (this.picker.options.date instanceof Date) {
-      const date = new DateTime(this.picker.options.date);
-
-      if (this.timePicked.input) {
-        const t = this.timePicked.input;
-        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
-      }
-
-      return date;
-    }
-
-    return null;
-  }
-
-  /**
-   * Adds time to DateTime object
-   * Replaces the original `getStartDate` function 
-   * 
-   * @returns DateTime
-   */
-  private getStartDate(): DateTime {
-    if (this.rangePlugin.options.startDate instanceof Date) {
-      const date = new DateTime(this.rangePlugin.options.startDate);
-
-      if (this.timePicked.start) {
-        const t = this.timePicked.start;
-        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
-      }
-
-      return date;
-    }
-
-    return null;
-  }
-
-  /**
-   * Adds time to DateTime object
-   * Replaces the original `getEndDate` function 
-   * 
-   * @returns DateTime
-   */
-  private getEndDate(): DateTime {
-    if (this.rangePlugin.options.endDate instanceof Date) {
-      const date = new DateTime(this.rangePlugin.options.endDate);
-
-      if (this.timePicked.end) {
-        const t = this.timePicked.end;
-        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
-      }
-
-      return date;
-    }
-
-    return null;
+    this.picker.off('click', this.binds.onClick);
   }
 
   /**
@@ -210,7 +173,13 @@ export class TimePlugin extends BasePlugin implements IPlugin {
 
       const [hours, minutes] = target.value.split(':');
       date.setHours(Number(hours) || 0, Number(minutes) || 0, 0, 0);
-      this.timePicked[target.name] = date;
+
+      if (this.picker.options.autoApply) {
+        this.timePicked[target.name] = date;
+        this.picker.updateValues();
+      } else {
+        this.timePrePicked[target.name] = date;
+      }
     }
   }
 
@@ -226,8 +195,13 @@ export class TimePlugin extends BasePlugin implements IPlugin {
       const r = /(\w+)\[(\w+)\]/;
       const [, name, format] = target.name.match(r);
       const value = Number(target.value);
+      let date = new DateTime();
 
-      const date = this.timePicked[name] || new DateTime();
+      if (!this.picker.options.autoApply && this.timePrePicked[name] instanceof Date) {
+        date = this.timePrePicked[name].clone();
+      } else if (this.timePicked[name] instanceof Date) {
+        date = this.timePicked[name].clone();
+      }
 
       switch (format) {
         case 'HH':
@@ -263,73 +237,155 @@ export class TimePlugin extends BasePlugin implements IPlugin {
           break;
       }
 
-      this.timePicked[name] = date;
+      if (this.picker.options.autoApply) {
+        this.timePicked[name] = date;
+        this.picker.updateValues();
+      } else {
+        this.timePrePicked[name] = date;
+      }
     }
   }
 
-  /**
-   * Handle `select` event
-   * 
-   * @param event 
-   */
-  private onSelect(event) {
-    const { date, start, end } = event.detail;
-    const options = this.picker.options;
-    const el = options.element;
-    const rangePlugin = this.picker.PluginManager.getInstance('RangePlugin') as RangePlugin;
+  private onClick(event) {
+    const target = event.target;
+    if (target instanceof HTMLElement) {
+      const element = target.closest('.unit') as HTMLElement;
 
-    if (rangePlugin) {
-      const startString = this.formatDateTime(start);
-      const endString = this.formatDateTime(end);
+      if (!(element instanceof HTMLElement)) return;
 
-      if (rangePlugin.options.elementEnd) {
-        const elementEnd = options.RangePlugin.elementEnd as HTMLInputElement;
-        (el as HTMLInputElement).value = startString;
-        elementEnd.value = endString;
-      } else {
-        if (el instanceof HTMLInputElement) {
-          el.value = `${startString}${rangePlugin.options.delimiter}${endString}`
-        } else if (el instanceof HTMLElement) {
-          el.innerText = `${startString}${rangePlugin.options.delimiter}${endString}`
+      if (this.picker.isApplyButton(element)) {
+        this.timePicked = { ...this.timePrePicked };
+        this.picker.updateValues();
+
+        this.timePrePicked = {
+          input: null,
+          start: null,
+          end: null,
         }
       }
-    } else {
-      const dateString = this.formatDateTime(date);
-      if (el instanceof HTMLInputElement) {
-        el.value = dateString;
-      } else if (el instanceof HTMLElement) {
-        el.innerText = dateString;
+
+      if (this.picker.isCancelButton(element)) {
+        this.timePrePicked = {
+          input: null,
+          start: null,
+          end: null,
+        }
+
+        this.picker.renderAll();
       }
     }
   }
 
   /**
-   * Returns date and time as string
+   * Set time programmatically
    * 
-   * @param date 
-   * @returns String
+   * @param value 
+   * @param keyName 
    */
-  private formatDateTime(date: DateTime) {
-    if (!date) return '';
-    const strings = [];
-    const options = this.picker.options;
+  private setTime(value: string): void {
+    const d = this.handleTimeString(value);
+    this.timePicked.input = d.clone();
+    this.picker.renderAll();
+    this.picker.updateValues();
+  }
 
-    if (this.options.format12) {
-      strings.push(date.toJSDate().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
-      strings.push(date.format(options.format));
-    } else {
-      strings.push(date.format(this.options.format));
-      strings.push(date.format(options.format));
+  /**
+   * Set start time programmatically
+   * 
+   * @param value 
+   * @param keyName 
+   */
+  private setStartTime(value: string): void {
+    const d = this.handleTimeString(value);
+    this.timePicked.start = d.clone();
+    this.picker.renderAll();
+    this.picker.updateValues();
+  }
+
+  /**
+   * Set end time programmatically
+   * 
+   * @param value 
+   * @param keyName 
+   */
+  private setEndTime(value: string): void {
+    const d = this.handleTimeString(value);
+    this.timePicked.end = d.clone();
+    this.picker.renderAll();
+    this.picker.updateValues();
+  }
+
+  private handleTimeString(value: string): DateTime {
+    const d = new DateTime();
+    const [h, m, s] = value.split(':').map(x => Number(x));
+    const hours = h && !Number.isNaN(h) ? h : 0;
+    const minutes = m && !Number.isNaN(m) ? m : 0;
+    const seconds = s && !Number.isNaN(s) ? s : 0;
+    d.setHours(hours, minutes, seconds, 0);
+
+    return d;
+  }
+  /**
+   * Adds time to DateTime object
+   * Replaces the original `getDate` function 
+   * 
+   * @returns DateTime
+   */
+  private getDate(): DateTime {
+    if (this.picker.options.date instanceof Date) {
+      const date = new DateTime(this.picker.options.date, this.picker.options.format);
+
+      if (this.timePicked.input instanceof Date) {
+        const t = this.timePicked.input;
+        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
+      }
+
+      return date;
     }
 
-    switch (this.options.append) {
-      case 'end':
-        return strings.reverse().join(' ');
+    return null;
+  }
 
-      default:
-      case 'start':
-        return strings.join(' ');
+  /**
+   * Adds time to DateTime object
+   * Replaces the original `getStartDate` function 
+   * 
+   * @returns DateTime
+   */
+  private getStartDate(): DateTime {
+    if (this.rangePlugin.options.startDate instanceof Date) {
+      const date = new DateTime(this.rangePlugin.options.startDate, this.picker.options.format);
+
+      if (this.timePicked.start instanceof Date) {
+        const t = this.timePicked.start;
+        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
+      }
+
+      return date;
     }
+
+    return null;
+  }
+
+  /**
+   * Adds time to DateTime object
+   * Replaces the original `getEndDate` function 
+   * 
+   * @returns DateTime
+   */
+  private getEndDate(): DateTime {
+    if (this.rangePlugin.options.endDate instanceof Date) {
+      const date = new DateTime(this.rangePlugin.options.endDate, this.picker.options.format);
+
+      if (this.timePicked.end instanceof Date) {
+        const t = this.timePicked.end;
+        date.setHours(t.getHours(), t.getMinutes(), t.getSeconds(), 0);
+      }
+
+      return date;
+    }
+
+    return null;
   }
 
   /**
@@ -405,8 +461,13 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     hSelect.name = `${name}[HH]`;
     const hStart = this.options.format12 ? 1 : 0;
     const hLimit = this.options.format12 ? 13 : 24;
+    let date = null;
 
-    const date = this.timePicked[name];
+    if (!this.picker.options.autoApply && this.timePrePicked[name] instanceof Date) {
+      date = this.timePrePicked[name].clone();
+    } else if (this.timePicked[name] instanceof Date) {
+      date = this.timePicked[name].clone();
+    }
 
     for (let i = hStart; i < hLimit; i += this.options.stepHours) {
       const hOption = document.createElement('option');
@@ -518,5 +579,87 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     }
 
     return d;
+  }
+
+  private parseValues() {
+    if (this.rangePlugin) {
+      if (this.rangePlugin.options.strict) {
+        if (this.rangePlugin.options.startDate && this.rangePlugin.options.endDate) {
+          const d1 = new DateTime(this.rangePlugin.options.startDate, this.picker.options.format);
+          const d2 = new DateTime(this.rangePlugin.options.endDate, this.picker.options.format);
+
+          this.timePicked.start = d1.clone();
+          this.timePicked.end = d2.clone();
+        }
+      } else {
+        if (this.rangePlugin.options.startDate) {
+          const d = new DateTime(this.rangePlugin.options.startDate, this.picker.options.format);
+          this.timePicked.start = d.clone();
+        }
+
+        if (this.rangePlugin.options.endDate) {
+          const d = new DateTime(this.rangePlugin.options.endDate, this.picker.options.format);
+          this.timePicked.end = d.clone();
+        }
+      }
+
+      if (this.rangePlugin.options.elementEnd) {
+        if (this.rangePlugin.options.strict) {
+          if (this.picker.options.element instanceof HTMLInputElement
+            && this.picker.options.element.value.length
+            && this.rangePlugin.options.elementEnd instanceof HTMLInputElement
+            && this.rangePlugin.options.elementEnd.value.length) {
+            const d1 = new DateTime(this.picker.options.element.value, this.picker.options.format);
+            const d2 = new DateTime(this.rangePlugin.options.elementEnd.value, this.picker.options.format);
+
+            this.timePicked.start = d1.clone();
+            this.timePicked.end = d2.clone();
+          }
+        } else {
+          if (this.picker.options.element instanceof HTMLInputElement
+            && this.picker.options.element.value.length) {
+            const d = new DateTime(this.picker.options.element.value, this.picker.options.format);
+            this.timePicked.start = d.clone();
+          }
+
+          if (this.rangePlugin.options.elementEnd instanceof HTMLInputElement
+            && this.rangePlugin.options.elementEnd.value.length) {
+            const d = new DateTime(this.rangePlugin.options.elementEnd.value, this.picker.options.format);
+            this.timePicked.start = d.clone();
+          }
+        }
+      } else if (this.picker.options.element instanceof HTMLInputElement && this.picker.options.element.value.length) {
+        const [_start, _end] = this.picker.options.element.value.split(this.rangePlugin.options.delimiter);
+
+        if (this.rangePlugin.options.strict) {
+          if (_start && _end) {
+            const d1 = new DateTime(_start, this.picker.options.format);
+            const d2 = new DateTime(_end, this.picker.options.format);
+
+            this.timePicked.start = d1.clone();
+            this.timePicked.end = d2.clone();
+          }
+        } else {
+          if (_start) {
+            const d = new DateTime(_start, this.picker.options.format);
+            this.timePicked.start = d.clone();
+          }
+          if (_end) {
+            const d = new DateTime(_end, this.picker.options.format);
+            this.timePicked.start = d.clone();
+          }
+        }
+      }
+    } else {
+      if (this.picker.options.date) {
+        const d = new DateTime(this.picker.options.date, this.picker.options.format);
+        this.timePicked.input = d.clone();
+      }
+
+      if (this.picker.options.element instanceof HTMLInputElement && this.picker.options.element.value.length) {
+        const d = new DateTime(this.picker.options.element.value, this.picker.options.format);
+        this.timePicked.input = d.clone();
+      }
+    }
   }
 }
