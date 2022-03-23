@@ -254,7 +254,11 @@ export class TimePlugin extends BasePlugin implements IPlugin {
       if (!(element instanceof HTMLElement)) return;
 
       if (this.picker.isApplyButton(element)) {
-        this.timePicked = { ...this.timePrePicked };
+        Object.keys(this.timePicked).forEach(x => {
+          if (this.timePrePicked[x] instanceof Date) {
+            this.timePicked[x] = this.timePrePicked[x].clone();
+          }
+        });
         this.picker.updateValues();
 
         this.timePrePicked = {

@@ -140,6 +140,58 @@ export class Core {
     this.Calendar.render(date, view);
   }
 
+  public onClickHeaderButton(element: HTMLElement) {
+    if (this.isCalendarHeaderButton(element)) {
+      if (element.classList.contains('next-button')) {
+        this.calendars[0].add(1, 'month');
+      } else {
+        this.calendars[0].subtract(1, 'month');
+      }
+
+      this.renderAll(this.calendars[0]);
+    }
+  }
+
+  public onClickCalendarDay(element: HTMLElement) {
+    if (this.isCalendarDay(element)) {
+      const date = new DateTime(element.dataset.time);
+
+      if (this.options.autoApply) {
+        this.setDate(date);
+
+        this.trigger('select', { date: this.getDate() });
+
+        this.hide();
+      } else {
+        this.datePicked[0] = date;
+
+        this.trigger('preselect', { date: this.getDate() });
+
+        this.renderAll();
+      }
+    }
+  }
+
+  public onClickApplyButton(element: HTMLElement) {
+    if (this.isApplyButton(element)) {
+      if (this.datePicked[0] instanceof Date) {
+        const date = this.datePicked[0].clone();
+        this.setDate(date);
+      }
+
+      this.hide();
+
+      this.trigger('select', { date: this.getDate() });
+    }
+  }
+
+  public onClickCancelButton(element: HTMLElement) {
+    if (this.isCancelButton(element)) {
+      this.hide();
+      return;
+    }
+  }
+
   /**
    * Fired on click event
    * 
@@ -153,52 +205,10 @@ export class Core {
 
       if (!(element instanceof HTMLElement)) return;
 
-      if (this.isCalendarHeaderButton(element)) {
-        if (element.classList.contains('next-button')) {
-          this.calendars[0].add(1, 'month');
-        } else {
-          this.calendars[0].subtract(1, 'month');
-        }
-
-        this.renderAll(this.calendars[0]);
-        return;
-      }
-
-      if (this.isCalendarDay(element)) {
-        const date = new DateTime(element.dataset.time);
-
-        if (this.options.autoApply) {
-          this.setDate(date);
-
-          this.trigger('select', { date: this.getDate() });
-
-          this.hide();
-        } else {
-          this.datePicked[0] = date;
-
-          this.trigger('preselect', { date: this.getDate() });
-
-          this.renderAll();
-        }
-        return;
-      }
-
-      if (this.isApplyButton(element)) {
-        if (this.datePicked[0] instanceof Date) {
-          const date = this.datePicked[0].clone();
-          this.setDate(date);
-        }
-
-        this.hide();
-
-        this.trigger('select', { date: this.getDate() });
-        return;
-      }
-
-      if (this.isCancelButton(element)) {
-        this.hide();
-        return;
-      }
+      this.onClickHeaderButton(element);
+      this.onClickCalendarDay(element);
+      this.onClickApplyButton(element);
+      this.onClickCancelButton(element);
     }
   }
 

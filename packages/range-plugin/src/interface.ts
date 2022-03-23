@@ -31,6 +31,7 @@ declare module '@easepick/core' {
     getStartDate(): DateTime;
     getEndDate(): DateTime;
     parseValues(): void;
+    updateValues(): void;
   }
 }
 
