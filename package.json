@@ -1,6 +1,6 @@
 {
   "name": "easepick",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.4",
