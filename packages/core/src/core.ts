@@ -184,8 +184,10 @@ export class Core {
       }
 
       if (this.isApplyButton(element)) {
-        const date = this.datePicked[0].clone();
-        this.setDate(date);
+        if (this.datePicked[0] instanceof Date) {
+          const date = this.datePicked[0].clone();
+          this.setDate(date);
+        }
 
         this.hide();
 
