@@ -85,6 +85,8 @@ export class Core {
 
     this.PluginManager.initialize();
 
+    this.parseValues();
+
     if (typeof this.options.setup === 'function') {
       this.options.setup(this);
     }
@@ -138,6 +140,58 @@ export class Core {
     this.Calendar.render(date, view);
   }
 
+  public onClickHeaderButton(element: HTMLElement) {
+    if (this.isCalendarHeaderButton(element)) {
+      if (element.classList.contains('next-button')) {
+        this.calendars[0].add(1, 'month');
+      } else {
+        this.calendars[0].subtract(1, 'month');
+      }
+
+      this.renderAll(this.calendars[0]);
+    }
+  }
+
+  public onClickCalendarDay(element: HTMLElement) {
+    if (this.isCalendarDay(element)) {
+      const date = new DateTime(element.dataset.time);
+
+      if (this.options.autoApply) {
+        this.setDate(date);
+
+        this.trigger('select', { date: this.getDate() });
+
+        this.hide();
+      } else {
+        this.datePicked[0] = date;
+
+        this.trigger('preselect', { date: this.getDate() });
+
+        this.renderAll();
+      }
+    }
+  }
+
+  public onClickApplyButton(element: HTMLElement) {
+    if (this.isApplyButton(element)) {
+      if (this.datePicked[0] instanceof Date) {
+        const date = this.datePicked[0].clone();
+        this.setDate(date);
+      }
+
+      this.hide();
+
+      this.trigger('select', { date: this.getDate() });
+    }
+  }
+
+  public onClickCancelButton(element: HTMLElement) {
+    if (this.isCancelButton(element)) {
+      this.hide();
+      return;
+    }
+  }
+
   /**
    * Fired on click event
    * 
@@ -151,50 +205,10 @@ export class Core {
 
       if (!(element instanceof HTMLElement)) return;
 
-      if (this.isCalendarHeaderButton(element)) {
-        if (element.classList.contains('next-button')) {
-          this.calendars[0].add(1, 'month');
-        } else {
-          this.calendars[0].subtract(1, 'month');
-        }
-
-        this.renderAll(this.calendars[0]);
-        return;
-      }
-
-      if (this.isCalendarDay(element)) {
-        const date = new DateTime(element.dataset.time);
-
-        if (this.options.autoApply) {
-          this.setDate(date);
-
-          this.trigger('select', { date: this.getDate() });
-
-          this.hide();
-        } else {
-          this.datePicked[0] = date;
-
-          this.trigger('preselect', { date: this.getDate() });
-
-          this.renderAll();
-        }
-        return;
-      }
-
-      if (this.isApplyButton(element)) {
-        const date = this.datePicked[0].clone();
-        this.setDate(date);
-
-        this.hide();
-
-        this.trigger('select', { date });
-        return;
-      }
-
-      if (this.isCancelButton(element)) {
-        this.hide();
-        return;
-      }
+      this.onClickHeaderButton(element);
+      this.onClickCalendarDay(element);
+      this.onClickApplyButton(element);
+      this.onClickCancelButton(element);
     }
   }
 
@@ -247,14 +261,8 @@ export class Core {
   public setDate(date: Date | string | number): void {
     const d = new DateTime(date, this.options.format);
     this.options.date = d.clone();
-    const formatString = this.getDate().format(this.options.format, this.options.lang);
 
-    const el = this.options.element;
-    if (el instanceof HTMLInputElement) {
-      el.value = formatString;
-    } else if (el instanceof HTMLElement) {
-      el.innerText = formatString;
-    }
+    this.updateValues();
 
     if (this.calendars.length) {
       this.renderAll();
@@ -269,6 +277,35 @@ export class Core {
     return this.options.date instanceof DateTime
       ? this.options.date.clone()
       : null;
+  }
+
+  /**
+   * Parse `date` option or value of input element
+   */
+  public parseValues() {
+    if (this.options.date) {
+      this.setDate(this.options.date);
+    } else if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) {
+      this.setDate(this.options.element.value);
+    }
+
+    if (!(this.options.date instanceof Date)) {
+      this.options.date = null;
+    }
+  }
+
+  /**
+   * Update value of input element
+   */
+  public updateValues() {
+    const formatString = this.getDate().format(this.options.format, this.options.lang);
+
+    const el = this.options.element;
+    if (el instanceof HTMLInputElement) {
+      el.value = formatString;
+    } else if (el instanceof HTMLElement) {
+      el.innerText = formatString;
+    }
   }
 
   /**
@@ -348,10 +385,6 @@ export class Core {
   private handleOptions() {
     if (!(this.options.element instanceof HTMLElement)) {
       this.options.element = this.options.doc.querySelector(this.options.element) as HTMLElement;
-    }
-
-    if (this.options.date) {
-      this.setDate(this.options.date);
     }
 
     if (typeof this.options.documentClick === 'function') {

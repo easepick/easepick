@@ -126,9 +126,6 @@ export class PresetPlugin extends BasePlugin implements IPlugin {
       if (!(element instanceof HTMLElement)) return;
 
       if (this.isPresetButton(element)) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-
         const startDate = new DateTime(Number(element.dataset.start));
         const endDate = new DateTime(Number(element.dataset.end));
 
