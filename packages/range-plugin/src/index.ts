@@ -515,6 +515,19 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       const date = new DateTime(element.dataset.time);
       this.picker.datePicked[this.picker.datePicked.length] = date;
 
+      if (this.picker.datePicked.length === 2 && this.picker.datePicked[0].isAfter(this.picker.datePicked[1])) {
+        const tempDate = this.picker.datePicked[1].clone();
+        this.picker.datePicked[1] = this.picker.datePicked[0].clone();
+        this.picker.datePicked[0] = tempDate.clone();
+      }
+
+      if (this.picker.datePicked.length === 1 || !this.picker.options.autoApply) {
+        this.picker.trigger('preselect', {
+          start: this.picker.datePicked[0] instanceof Date ? this.picker.datePicked[0].clone() : null,
+          end: this.picker.datePicked[1] instanceof Date ? this.picker.datePicked[1].clone() : null,
+        });
+      }
+
       if (this.picker.datePicked.length === 1) {
         if (!this.options.strict && this.picker.options.autoApply) {
           if (this.picker.options.element === this.triggerElement) {
@@ -532,12 +545,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       }
 
       if (this.picker.datePicked.length === 2) {
-        if (this.picker.datePicked[0].isAfter(this.picker.datePicked[1])) {
-          const tempDate = this.picker.datePicked[1].clone();
-          this.picker.datePicked[1] = this.picker.datePicked[0].clone();
-          this.picker.datePicked[0] = tempDate.clone();
-        }
-
         if (this.picker.options.autoApply) {
           this.setDateRange(this.picker.datePicked[0], this.picker.datePicked[1]);
 
@@ -545,11 +552,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
           this.picker.hide();
         } else {
-          this.picker.trigger('preselect', {
-            start: this.picker.datePicked[0],
-            end: this.picker.datePicked[1],
-          });
-
           this.hideTooltip();
         }
       }
