@@ -20,6 +20,7 @@ permalink: /packages/kbd-plugin
 Adds keyboard navigation.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -99,5 +100,5 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'unitIndex' | anchor_tag: 'option' }} | number | 1 | `tabIndex` for elements except days elements.
-| {{ 'dayIndex' | anchor_tag: 'option' }} | number | 2 | `tabIndex` for days elements.
+| [unitIndex](#option-unitIndex) | number | 1 | `tabIndex` for elements except days elements.
+| [dayIndex](#option-dayIndex) | number | 2 | `tabIndex` for days elements.

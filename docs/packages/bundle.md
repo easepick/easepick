@@ -18,6 +18,7 @@ Bundle of easepick.
 Includes all packages.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>

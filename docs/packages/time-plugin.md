@@ -20,6 +20,7 @@ permalink: /packages/time-plugin
 Adds time picker.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -102,10 +103,16 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'format' | anchor_tag: 'option' }} | string | HH:mm | The default output format. <br/> See [tokens format](/packages/datetime#tokens-format).
-| {{ 'append' | anchor_tag: 'option' }} | string | 'start' | 
-| {{ 'seconds' | anchor_tag: 'option' }} | boolean | false | 
-| {{ 'stepHours' | anchor_tag: 'option' }} | number | 1 | 
-| {{ 'stepMinutes' | anchor_tag: 'option' }} | number | 5 | 
-| {{ 'stepSeconds' | anchor_tag: 'option' }} | number | 5 | 
-| {{ 'format12' | anchor_tag: 'option' }} | boolean | false | 
+| [seconds](#option-seconds) | boolean | false | Enable seconds picker.
+| [stepHours](#option-stepHours) | number | 1 | Step for hours.
+| [stepMinutes](#option-stepMinutes) | number | 5 | Step for minutes.
+| [stepSeconds](#option-stepSeconds) | number | 5 | Step for seconds.
+| [format12](#option-format12) | boolean | false | Display 12H time.
+
+## Methods
+
+| Name  | Description
+| --- | ---
+| [setTime](#method-setTime) | Set a time for single date picker.
+| [setStartTime](#method-setStartTime) | Set start time of date range.
+| [setEndTime](#method-setEndTime) | Set end time of date range.

@@ -20,6 +20,7 @@ permalink: /packages/lock-plugin
 Adds the ability to disable days for selection.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -102,12 +103,12 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'minDate' | anchor_tag: 'option' }} | Date <br/> string <br/> number | null | The minimum/earliest date that can be selected. <br/> Date Object or Unix Timestamp (with milliseconds) or ISO String.
-| {{ 'maxDate' | anchor_tag: 'option' }} | Date <br/> string <br/> number | null | The maximum/latest date that can be selected. <br/> Date Object or Unix Timestamp (with milliseconds) or ISO String.
-| {{ 'minDays' | anchor_tag: 'option' }} | number | null | The minimum days of the selected range.
-| {{ 'maxDays' | anchor_tag: 'option' }} | number | null | The maximum days of the selected range.
-| {{ 'selectForward' | anchor_tag: 'option' }} | boolean | false | Select second date after the first selected date.
-| {{ 'selectBackward' | anchor_tag: 'option' }} | boolean | false | Select second date before the first selected date.
-| {{ 'presets' | anchor_tag: 'option' }} | boolean | true | Disable unallowed presets (when PresetPlugin is included).
-| {{ 'inseparable' | anchor_tag: 'option' }} | boolean | false | Disable date range selection with locked days.
-| {{ 'filter' | anchor_tag: 'option' }} | function | null | Lock days by custom function.
+| [minDate](#option-minDate) | Date <br/> string <br/> number | null | The minimum/earliest date that can be selected. <br/> Date Object or Unix Timestamp (with milliseconds) or ISO String.
+| [maxDate](#option-maxDate) | Date <br/> string <br/> number | null | The maximum/latest date that can be selected. <br/> Date Object or Unix Timestamp (with milliseconds) or ISO String.
+| [minDays](#option-minDays) | number | null | The minimum days of the selected range.
+| [maxDays](#option-maxDays) | number | null | The maximum days of the selected range.
+| [selectForward](#option-selectForward) | boolean | false | Select second date after the first selected date.
+| [selectBackward](#option-selectBackward) | boolean | false | Select second date before the first selected date.
+| [presets](#option-presets) | boolean | true | Disable unallowed presets (when PresetPlugin is included).
+| [inseparable](#option-inseparable) | boolean | false | Disable date range selection with locked days.
+| [filter](#option-filter) | function | null | Lock days by custom function.

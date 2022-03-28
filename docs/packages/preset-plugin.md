@@ -23,6 +23,7 @@ Adds predefined ranges.
 * [@easepick/range-plugin](/packages/range-plugin)
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -111,6 +112,6 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'customPreset' | anchor_tag: 'option' }} | object | null | Define your own ranges.
-| {{ 'customLabels' | anchor_tag: 'option' }} | ['Today', 'Yesterday',<br/> 'Last 7 Days', 'Last 30 Days',<br/> 'This Month', 'Last Month'] | null | Define your own labels.
-| {{ 'position' | anchor_tag: 'option' }} | string | 'left' | Position of preset block.
+| [customPreset](#option-customPreset) | object | null | Define your own ranges.
+| [customLabels](#option-customLabels) | ['Today', 'Yesterday',<br/> 'Last 7 Days', 'Last 30 Days',<br/> 'This Month', 'Last Month'] | null | Define your own labels.
+| [position](#option-position) | string | 'left' | Position of preset block.

@@ -340,6 +340,27 @@ const utils = {
 
       new easepick.create(cfg);
     });
+
+
+    if (window.nav === 'Configurator') {
+      const script = document.createElement('script');
+      script.src = '/assets/configurator/index.js';
+      script.type = 'text/javascript';
+      script.async = true;
+      script.onload = function () {
+
+      };
+      document.head.appendChild(script);
+
+      const stylesheet = document.createElement('link');
+      stylesheet.rel = 'stylesheet';
+      stylesheet.onload = function() {
+        const app = document.getElementById('app');
+        app.classList.remove('spinner');
+      };
+      stylesheet.href = '/assets/configurator/index.css';
+      document.head.appendChild(stylesheet);
+    }
   },
   favicon() {
     const date = (new Date()).getDate();
@@ -362,7 +383,7 @@ const utils = {
     const tree = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     for (; tree.nextNode();) {
       const node = tree.currentNode;
-      
+
       const now = new Date();
       const mapObj = {
         '[version.number]': version,

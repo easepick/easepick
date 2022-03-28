@@ -20,6 +20,7 @@ permalink: /packages/range-plugin
 Adds the ability to select a range of dates.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -102,21 +103,22 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'elementEnd' | anchor_tag: 'option' }} | HTMLElement <br/> string | null | Bind the datepicker to a element for end date.
-| {{ 'startDate' | anchor_tag: 'option' }} | Date <br/> string <br/> number  | null | Preselect start date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
-| {{ 'endDate' | anchor_tag: 'option' }} | Date <br/> string <br/> number  | null | Preselect end date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
-| {{ 'repick' | anchor_tag: 'option' }} | boolean | false | If date range is already selected, then user can change only one of start date or end date (depends on clicked field) instead of new date range.
-| {{ 'strict' | anchor_tag: 'option' }} | boolean | true | Disabling the option allows you to select an incomplete range.
-| {{ 'delimiter' | anchor_tag: 'option' }} | string | ' - ' | Delimiter between dates.
-| {{ 'tooltip' | anchor_tag: 'option' }} | boolean | true | Showing tooltip with how much days will be selected.
-| {{ 'tooltipNumber' | anchor_tag: 'option' }} | function |  | Handling the tooltip number.
-| {{ 'locale' | anchor_tag: 'option' }} | object | { one: 'day', other: 'days' } | Text for the tooltip. <br/> Keys depends on option lang (see [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)).
+| [elementEnd](#option-elementEnd) | HTMLElement <br/> string | null | Bind the datepicker to a element for end date.
+| [startDate](#option-startDate) | Date <br/> string <br/> number  | null | Preselect start date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [endDate](#option-endDate) | Date <br/> string <br/> number  | null | Preselect end date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [repick](#option-repick) | boolean | false | If date range is already selected, then user can change only one of start date or end date (depends on clicked field) instead of new date range.
+| [strict](#option-strict) | boolean | true | Disabling the option allows you to select an incomplete range.
+| [delimiter](#option-delimiter) | string | ' - ' | Delimiter between dates.
+| [tooltip](#option-tooltip) | boolean | true | Showing tooltip with how much days will be selected.
+| [tooltipNumber](#option-tooltipNumber) | function |  | Handling the tooltip number.
+| [locale](#option-locale) | object | { one: 'day', other: 'days' } | Text for the tooltip. <br/> Keys depends on option lang (see [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules)).
 
 ## Methods
 
 | Name  | Description
 | --- | ---
-| {{ 'setStartDate' | anchor_tag: 'option' }} |  
-| {{ 'setEndDate' | anchor_tag: 'option' }} |  
-| {{ 'getStartDate' | anchor_tag: 'option' }} |  
-| {{ 'getEndDate' | anchor_tag: 'option' }} |  
+| [setDateRange](#method-setDateRange) | Set date range. Should be Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [setStartDate](#method-setStartDate) | Set start of date range. Should be Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [setEndDate](#method-setEndDate) |  Set end of date range. Should be Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [getStartDate](#method-getStartDate) | Return current start of date range as [DateTime](/packages/datetime) Object.
+| [getEndDate](#method-getEndDate) |  Return current end of date range as [DateTime](/packages/datetime) Object.

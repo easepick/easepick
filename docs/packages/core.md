@@ -20,6 +20,7 @@ permalink: /packages/core
 Main package of easepick.
 
 ## Quick example
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -81,38 +82,38 @@ const picker = new easepick.create({
 
 | Name | Type | Default | Description
 | --- | :---: | :---: | ---
-| {{ 'element' | anchor_tag: 'option' }} | HTMLElement <br/> string | null | Bind the datepicker to a element. Also is possible to bind to any element (not input) for example you need inline calendar.
-| {{ 'doc' | anchor_tag: 'option' }} | Document <br/> ShadowRoot | document | 
-| {{ 'css' | anchor_tag: 'option' }} | string <br/> array <br/> function | []
-| {{ 'firstDay' | anchor_tag: 'option' }} | number | 1 | Day of start week. (0 - Sunday, 1 - Monday, 2 - Tuesday, etc…)
-| {{ 'lang' | anchor_tag: 'option' }} | string | en-US | Language. <br/>This option affect to day names, month names via [Date.prototype.toLocaleString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) and also affect to plural rules via [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules).
-| {{ 'date' | anchor_tag: 'option' }} | Date <br/> string <br/> number | null | Preselect date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
-| {{ 'format' | anchor_tag: 'option' }} | string | YYYY-MM-DD | The default output format. <br/> See [tokens format](/packages/datetime#tokens-format).
-| {{ 'grid' | anchor_tag: 'option' }} | number | 1 | Number of calendar columns.
-| {{ 'calendars' | anchor_tag: 'option' }} | number | 1 | Number of visible months.
-| {{ 'readonly' | anchor_tag: 'option' }} | boolean | true | Add `readonly` attribute to `element`.
-| {{ 'autoApply' | anchor_tag: 'option' }} | boolean | true | Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.
-| {{ 'zIndex' | anchor_tag: 'option' }} | number | null | zIndex of picker.
-| {{ 'inline' | anchor_tag: 'option' }} | boolean | false | Show calendar inline.
-| {{ 'header' | anchor_tag: 'option' }} | boolean <br/> string <br/> HTMLElement | false | Add header to calendar.
-| {{ 'locale' | anchor_tag: 'option' }}| object | { <br/>nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>', <br/> previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>', <br/> cancel: 'Cancel', <br/>apply: 'Apply'<br/>} | Icon and text for buttons. 
-| {{ 'documentClick' | anchor_tag: 'option' }} | boolean <br/> function | function | Hide picker on click outside picker element.
-| {{ 'setup' | anchor_tag: 'option' }} | function | null | 
-| {{ 'plugins' | anchor_tag: 'option' }} | array | [] | List of plugins.
+| [element](#option-element) | HTMLElement <br/> string | null | Bind the datepicker to a element. Also is possible to bind to any element (not input) for example you need inline calendar.
+| [doc](#option-doc) | Document <br/> ShadowRoot | document | May be required if you need to pass ShadowRoot.
+| [css](#option-css) | string <br/> array <br/> function | [] | Pass a CSS file for picker. Don't mix types, if you are using css link then array should only contain links.
+| [firstDay](#option-firstDay) | number | 1 | Day of start week. (0 - Sunday, 1 - Monday, 2 - Tuesday, etc…)
+| [lang](#option-lang) | string | en-US | Language. <br/>This option affect to day names, month names via [Date.prototype.toLocaleString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleString) and also affect to plural rules via [Intl.PluralRules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/PluralRules).
+| [date](#option-date) | Date <br/> string <br/> number | null | Preselect date. <br/> Date Object or Unix Timestamp (with milliseconds) or String (must be equal to option format).
+| [format](#option-format) | string | YYYY-MM-DD | The default output format. <br/> See [tokens format](/packages/datetime#tokens-format).
+| [grid](#option-grid) | number | 1 | Number of calendar columns.
+| [calendars](#option-calendars) | number | 1 | Number of visible months.
+| [readonly](#option-readonly) | boolean | true | Add `readonly` attribute to `element`.
+| [autoApply](#option-autoApply) | boolean | true | Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates are clicked.
+| [zIndex](#option-zIndex) | number | null | zIndex of picker.
+| [inline](#option-inline) | boolean | false | Show calendar inline.
+| [header](#option-header) | boolean <br/> string <br/> HTMLElement | false | Add header to calendar.
+| [locale](#option-locale)| object | { <br/>nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>', <br/> previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>', <br/> cancel: 'Cancel', <br/>apply: 'Apply'<br/>} | Icon and text for buttons. 
+| [documentClick](#option-documentClick) | boolean <br/> function | function | Hide picker on click outside picker element.
+| [setup](#option-setup) | function | null | 
+| [plugins](#option-plugins) | array | [] | List of plugins.
 
 ## Methods
 
 | Name  | Description
 | --- | ---
-| {{ 'version' | anchor_tag: 'method' }} | return version of picker.
-| {{ 'isShown()' | anchor_tag: 'method' }} | Determine if the picker is visible or not.
-| {{ 'show()' | anchor_tag: 'method' }} | Show the picker.
-| {{ 'hide()' | anchor_tag: 'method' }} | Hide the picker.
-| {{ 'setDate(date)' | anchor_tag: 'method' }} | Set date programmatically.
-| {{ 'getDate()' | anchor_tag: 'method' }} | Get selected date.
-| {{ 'on(type, listener, options)' | anchor_tag: 'method' }} | Add listener to container element.
-| {{ 'off(type, listener, options)' | anchor_tag: 'method' }} | Remove listener from container element.
-| {{ 'trigger(type, detail)' | anchor_tag: 'method' }} | Dispatch an event.
+| [version](#method-version) | return version of picker.
+| [isShown()](#method-isShown()) | Determine if the picker is visible or not.
+| [show()](#method-show()) | Show the picker.
+| [hide()](#method-hide()) | Hide the picker.
+| [setDate(date)](#method-setDate(date)) | Set date programmatically.
+| [getDate()](#method-getDate()) | Get selected date.
+| [on(type, listener, options)](#method-on) | Add listener to container element.
+| [off(type, listener, options)](#method-off) | Remove listener from container element.
+| [trigger(type, detail)](#method-trigger) | Dispatch an event.
 
 
 #### Example
@@ -133,10 +134,10 @@ Events based on [CustomEvent()](https://developer.mozilla.org/en-US/docs/Web/API
 
 | Name  | Description
 | --- | ---
-| {{ 'render' | anchor_tag: 'event' }} | 
-| {{ 'view' | anchor_tag: 'event' }} | 
-| {{ 'preselect' | anchor_tag: 'event' }} | 
-| {{ 'select' | anchor_tag: 'event' }} | 
+| [render](#event-render) | 
+| [view](#event-view) | 
+| [preselect](#event-preselect) | Event is called on select days (before submit selection). When `autoApply` option is `false`.
+| [select](#event-select) | Event is called when selection is submitted.
 
 It is also allowed to use default events such as `click`, `keydown`, etc.
 

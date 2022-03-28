@@ -10,6 +10,3 @@ permalink: /examples
 
 # Examples
 {: .no_toc }
-
-@TODO
-{: .fs-6 .fw-300 }
