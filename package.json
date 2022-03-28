@@ -6,7 +6,7 @@
   "license": "MIT",
   "bugs": "https://github.com/pmarsceill/just-the-docs/issues",
   "devDependencies": {
-    "@easepick/bundle": "^1.0.1",
+    "@easepick/bundle": "^1.0.2",
     "@primer/css": "^15.2.0",
     "@rollup/plugin-typescript": "^8.3.1",
     "autoprefixer": "^10.4.4",

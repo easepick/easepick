@@ -2,7 +2,6 @@ import typescript from '@rollup/plugin-typescript';
 import postcss from 'rollup-plugin-postcss';
 import autoprefixer from 'autoprefixer';
 import { terser } from 'rollup-plugin-terser';
-const path = require('path');
 
 
 export default {
@@ -28,7 +27,7 @@ export default {
       plugins: [autoprefixer],
       minimize: true,
     }),
-    terser(),
+    //terser(),
   ],
   external(id) {
     return /^@easepick\//.test(id);
