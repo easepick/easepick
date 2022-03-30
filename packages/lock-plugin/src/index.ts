@@ -281,7 +281,7 @@ export class LockPlugin extends BasePlugin implements IPlugin {
     if (this.picker.datePicked.length === 1 && this.options.selectForward) {
       const start = this.picker.datePicked[0].clone();
 
-      return date.isAfter(start, 'day');
+      return date.isBefore(start, 'day');
     }
 
     return false;
@@ -297,7 +297,7 @@ export class LockPlugin extends BasePlugin implements IPlugin {
     if (this.picker.datePicked.length === 1 && this.options.selectBackward) {
       const start = this.picker.datePicked[0].clone();
 
-      return date.isBefore(start, 'day');
+      return date.isAfter(start, 'day');
     }
 
     return false;

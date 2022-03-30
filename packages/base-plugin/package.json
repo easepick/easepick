@@ -1,12 +1,12 @@
 {
   "name": "@easepick/base-plugin",
   "description": "Base plugin for easepick.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@easepick/core": "^1.0.0"
+    "@easepick/core": "^1.0.2"
   },
   "author": {
     "name": "Rinat G.",

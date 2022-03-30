@@ -1,7 +1,7 @@
 {
   "name": "@easepick/datetime",
   "description": "DateTime object for easepick.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",

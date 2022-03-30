@@ -14,6 +14,10 @@ export class Core {
   public calendars: DateTime[] = [];
   public datePicked: DateTime[] = [];
   public cssLoaded = 0;
+  public binds = {
+    hidePicker: this.hidePicker.bind(this),
+    show: this.show.bind(this),
+  }
 
   public options: IPickerConfig = {
     doc: document,
@@ -35,7 +39,7 @@ export class Core {
       cancel: 'Cancel',
       apply: 'Apply',
     },
-    documentClick: this.hidePicker.bind(this),
+    documentClick: this.binds.hidePicker,
     plugins: [],
   };
 
@@ -71,6 +75,7 @@ export class Core {
     }
 
     if (this.options.inline) {
+      this.ui.wrapper.style.position = 'relative';
       this.ui.container.classList.add('inline');
     }
 
@@ -79,7 +84,7 @@ export class Core {
 
     this.handleCSS();
 
-    (this.options.element as HTMLElement).addEventListener('click', this.show.bind(this));
+    (this.options.element as HTMLElement).addEventListener('click', this.binds.show);
 
     this.on('render', this.onRender.bind(this));
 
@@ -127,6 +132,23 @@ export class Core {
    */
   public trigger(type: string, detail: unknown = {}): boolean {
     return this.ui.container.dispatchEvent(new CustomEvent(type, { detail }));
+  }
+
+  /**
+   * Destroy picker
+   */
+  public destroy() {
+    (this.options.element as HTMLElement).removeEventListener('click', this.binds.show);
+    if (typeof this.options.documentClick === 'function') {
+      document.removeEventListener('click', this.options.documentClick, true);
+    }
+
+    // detach all plugins
+    Object.keys(this.PluginManager.instances).forEach(plugin => {
+      this.PluginManager.removeInstance(plugin);
+    });
+
+    this.ui.wrapper.remove();
   }
 
   /**
