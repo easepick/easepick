@@ -114,6 +114,7 @@ const picker = new easepick.create({
 | [on(type, listener, options)](#method-on) | Add listener to container element.
 | [off(type, listener, options)](#method-off) | Remove listener from container element.
 | [trigger(type, detail)](#method-trigger) | Dispatch an event.
+| [destroy()](#method-destroy()) | Destroy the picker.
 
 
 #### Example

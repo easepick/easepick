@@ -8,4 +8,5 @@
 _site
 Gemfile.lock
 /node_modules
+/rollup.config.js
 /configurator
