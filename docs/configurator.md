@@ -3,7 +3,7 @@ layout: default
 nav: Configurator
 title: "Configurator"
 description: ""
-nav_order: 1
+nav_order: 2
 permalink: /configurator
 ---
 
