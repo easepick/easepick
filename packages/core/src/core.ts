@@ -30,6 +30,7 @@ export class Core {
     date: null,
     format: 'YYYY-MM-DD',
     readonly: true,
+    updateElement: true,
     autoApply: true,
     header: false,
     inline: false,
@@ -284,7 +285,9 @@ export class Core {
     const d = new DateTime(date, this.options.format);
     this.options.date = d.clone();
 
-    this.updateValues();
+    if (this.options.updateElement) {
+      this.updateValues();
+    }
 
     if (this.calendars.length) {
       this.renderAll();

@@ -32,6 +32,7 @@ export interface IPickerConfig {
   grid?: number;
   calendars?: number;
   readonly?: boolean;
+  updateElement?: boolean;
   autoApply?: boolean;
   header?: boolean | string | HTMLElement;
   locale?: IPickerLocales;
