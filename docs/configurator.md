@@ -10,7 +10,7 @@ permalink: /configurator
 # Configurator <sup class="text-red">β</sup>
 {: .no_toc }
 
-<div id="app">
+<div id="app" class="spinner">
   <div class="app-picker-layout">
     <div> 
     <input id="app-picker"/>

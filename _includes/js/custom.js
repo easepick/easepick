@@ -344,7 +344,7 @@ const utils = {
 
     if (window.nav === 'Configurator') {
       const script = document.createElement('script');
-      script.src = '/assets/configurator/index.js';
+      script.src = `/assets/configurator/index.js?${version}`;
       script.type = 'text/javascript';
       script.async = true;
       script.onload = function () {
@@ -354,11 +354,11 @@ const utils = {
 
       const stylesheet = document.createElement('link');
       stylesheet.rel = 'stylesheet';
-      stylesheet.onload = function() {
+      stylesheet.onload = function () {
         const app = document.getElementById('app');
         app.classList.remove('spinner');
       };
-      stylesheet.href = '/assets/configurator/index.css';
+      stylesheet.href = `/assets/configurator/index.css?${version}`;
       document.head.appendChild(stylesheet);
     }
   },
@@ -423,4 +423,20 @@ jtd.onReady(() => {
   //utils.toggable_dark_mode();
   //utils.initialize();
   collapse.initialize();
+
+  if (window.location.hash) {
+    let e = document.querySelector(window.location.hash);
+    if (!e) {
+      e = document.querySelector(`a[href="${window.location.hash}"]`);
+
+      if (e) {
+        e.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+
+        const tr = e.closest('tr');
+        if (tr) {
+          tr.classList.add('highlight');
+        }
+      }
+    }
+  }
 });

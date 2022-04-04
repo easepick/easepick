@@ -91,6 +91,7 @@ Date picker - tiny size, no dependencies
 
 | Name | Version | Description
 | --- | :---: | ---
+| [@easepick/amp-plugin](/packages/amp-plugin){: .nowrap } | ![npm version](https://badge.fury.io/js/@easepick%2Famp-plugin.svg) | Amp plugin. <br/> Adds extra options.
 | [@easepick/kbd-plugin](/packages/kbd-plugin){: .nowrap } | ![npm version](https://badge.fury.io/js/@easepick%2Fkbd-plugin.svg) | Keyboard plugin. <br/> Adds keyboard navigation.
 | [@easepick/lock-plugin](/packages/lock-plugin){: .nowrap } | ![npm version](https://badge.fury.io/js/@easepick%2Flock-plugin.svg) | Lock plugin. <br/> Adds the ability to disable days for selection.
 | [@easepick/preset-plugin](/packages/preset-plugin){: .nowrap } | ![npm version](https://badge.fury.io/js/@easepick%2Fpreset-plugin.svg) | Preset plugin. <br/> Adds predefined ranges.

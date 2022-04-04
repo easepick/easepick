@@ -106,15 +106,17 @@ const picker = new easepick.create({
 | Name  | Description
 | --- | ---
 | [version](#method-version) | return version of picker.
-| [isShown()](#method-isShown()) | Determine if the picker is visible or not.
-| [show()](#method-show()) | Show the picker.
-| [hide()](#method-hide()) | Hide the picker.
-| [setDate(date)](#method-setDate(date)) | Set date programmatically.
-| [getDate()](#method-getDate()) | Get selected date.
+| [isShown()](#method-isShown) | Determine if the picker is visible or not.
+| [show()](#method-show) | Show the picker.
+| [hide()](#method-hide) | Hide the picker.
+| [clear()](#method-clear) | Clear the picker selection.
+| [gotoDate(date)](#method-gotoDate) | Change visible month.
+| [setDate(date)](#method-setDate) | Set date programmatically.
+| [getDate()](#method-getDate) | Get selected date.
 | [on(type, listener, options)](#method-on) | Add listener to container element.
 | [off(type, listener, options)](#method-off) | Remove listener from container element.
 | [trigger(type, detail)](#method-trigger) | Dispatch an event.
-| [destroy()](#method-destroy()) | Destroy the picker.
+| [destroy()](#method-destroy) | Destroy the picker.
 
 
 #### Example

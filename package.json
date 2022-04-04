@@ -6,16 +6,10 @@
   "license": "MIT",
   "bugs": "https://github.com/pmarsceill/just-the-docs/issues",
   "devDependencies": {
-    "@easepick/bundle": "^1.0.2",
     "@primer/css": "^15.2.0",
-    "@rollup/plugin-typescript": "^8.3.1",
     "autoprefixer": "^10.4.4",
     "node-sass": "^7.0.1",
     "prettier": "^2.1.2",
-    "rollup": "^2.70.1",
-    "rollup-obfuscator": "^2.1.0",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-terser": "^7.0.2",
     "stylelint": "^13.7.2",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-primer": "^9.2.1",
@@ -26,10 +20,6 @@
     "test": "stylelint '**/*.scss'",
     "format": "prettier --write '**/*.{scss,js,json}'",
     "stylelint-check": "stylelint-config-prettier-check",
-    "watch": "jekyll serve --watch",
-    "build": "rollup -c rollup.config.js"
-  },
-  "dependencies": {
-    "javascript-obfuscator": "^3.0.0"
+    "watch": "jekyll serve --watch"
   }
 }
