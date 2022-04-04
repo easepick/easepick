@@ -90,6 +90,7 @@ export default [
   getPackageConfig('preset-plugin'),
   getPackageConfig('time-plugin'),
   getPackageConfig('kbd-plugin'),
+  getPackageConfig('amp-plugin'),
 
   // @easepick/bundle
   {

@@ -51,6 +51,13 @@ export class LockPlugin extends BasePlugin implements IPlugin {
         this.picker.options.format,
         this.picker.options.lang,
       );
+
+      if (this.options.maxDate instanceof DateTime
+        && this.picker.options.calendars > 1
+        && this.picker.calendars[0].isSame(this.options.maxDate, 'month')) {
+        const d = this.picker.calendars[0].clone().subtract(1, 'month');
+        this.picker.gotoDate(d);
+      }
     }
 
     if (this.options.minDays

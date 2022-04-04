@@ -14,13 +14,6 @@ export interface IPickerElements {
   wrapper: HTMLElement;
 }
 
-export interface IPickerLocales {
-  previousMonth?: string;
-  nextMonth?: string;
-  cancel?: string;
-  apply?: string;
-}
-
 export interface IPickerConfig {
   element: HTMLElement | string;
   doc?: Document | ShadowRoot;
@@ -34,7 +27,12 @@ export interface IPickerConfig {
   readonly?: boolean;
   autoApply?: boolean;
   header?: boolean | string | HTMLElement;
-  locale?: IPickerLocales;
+  locale?: {
+    previousMonth?: string;
+    nextMonth?: string;
+    cancel?: string;
+    apply?: string;
+  }
   plugins?: any[];
   documentClick?: boolean | (() => void);
   zIndex?: number;

@@ -5,6 +5,7 @@ import { PresetPlugin } from '@easepick/preset-plugin';
 import { RangePlugin } from '@easepick/range-plugin';
 import { TimePlugin } from '@easepick/time-plugin';
 import { KbdPlugin } from '@easepick/kbd-plugin';
+import { AmpPlugin } from '@easepick/amp-plugin';
 import './index.scss';
 
 export {
@@ -16,4 +17,5 @@ export {
   RangePlugin,
   TimePlugin,
   KbdPlugin,
+  AmpPlugin,
 }

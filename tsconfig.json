@@ -43,5 +43,8 @@
     {
       "path": "packages/kbd-plugin"
     },
+    {
+      "path": "packages/amp-plugin"
+    },
   ]
 }

@@ -49,7 +49,7 @@ export class Core {
     wrapper: null,
   };
 
-  protected version = __VERSION__;
+  public version = __VERSION__;
 
   constructor(options: IPickerConfig) {
     const locales = { ...this.options.locale, ...options.locale };
@@ -320,7 +320,8 @@ export class Core {
    * Update value of input element
    */
   public updateValues() {
-    const formatString = this.getDate().format(this.options.format, this.options.lang);
+    const date = this.getDate();
+    const formatString = date instanceof Date ? date.format(this.options.format, this.options.lang) : '';
 
     const el = this.options.element;
     if (el instanceof HTMLInputElement) {
@@ -402,6 +403,28 @@ export class Core {
   }
 
   /**
+   * Change visible month
+   * 
+   * @param date 
+   */
+  public gotoDate(date: Date | string | number): void {
+    const toDate = new DateTime(date, this.options.format);
+    toDate.setDate(1);
+    this.calendars[0] = toDate.clone();
+    this.renderAll();
+  }
+
+  /**
+   * Clear date selection
+   */
+  public clear() {
+    this.options.date = null;
+    this.datePicked.length = 0;
+    this.updateValues();
+    this.renderAll();
+  }
+
+  /**
    * Handling parameters passed by the user
    */
   private handleOptions() {
@@ -417,7 +440,11 @@ export class Core {
       this.options.element.readOnly = this.options.readonly;
     }
 
-    this.calendars[0] = new DateTime(this.options.date);
+    if (this.options.date) {
+      this.calendars[0] = new DateTime(this.options.date, this.options.format);
+    } else {
+      this.calendars[0] = new DateTime();
+    }
   }
 
   /**

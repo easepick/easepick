@@ -14,10 +14,29 @@ export class BasePlugin {
    * @param picker 
    */
   public attach(picker: Core): void {
+    const pluginName = this['getName']();
+    const optionsOriginal = { ...this.options };
+
     this.options = {
       ...this.options,
-      ...(picker.options[this['getName']()] || {}),
-    };
+      ...(picker.options[pluginName] || {}),
+    }
+
+    // copy deep object options
+    for (const objName of Object.keys(optionsOriginal)) {
+      if (optionsOriginal[objName] !== null
+        && typeof optionsOriginal[objName] === 'object'
+        && Object.keys(optionsOriginal[objName]).length) {
+        const optionValue = { ...picker.options[pluginName][objName] };
+
+        if (optionValue !== null
+          && typeof optionValue === 'object'
+          && Object.keys(optionValue).length
+          && Object.keys(optionValue).every(opt => Object.keys(optionsOriginal[objName]).includes(opt))) {
+          this.options[objName] = { ...optionsOriginal[objName], ...optionValue }
+        }
+      }
+    }
 
     this.picker = picker;
 
@@ -73,7 +92,7 @@ export class BasePlugin {
    * @param str 
    * @returns String
    */
-  private camelCaseToKebab (str) {
+  private camelCaseToKebab(str) {
     return str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase()
   }
 }

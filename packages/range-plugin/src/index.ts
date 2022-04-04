@@ -21,6 +21,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     onClickApplyButton: this.onClickApplyButton.bind(this),
     parseValues: this.parseValues.bind(this),
     updateValues: this.updateValues.bind(this),
+    clear: this.clear.bind(this),
   };
 
   public options: IRangeConfig = {
@@ -62,6 +63,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.binds['_getEndDate'] = this.picker.getEndDate;
     this.binds['_parseValues'] = this.picker.parseValues;
     this.binds['_updateValues'] = this.picker.updateValues;
+    this.binds['_clear'] = this.picker.clear;
     this.binds['_onClickCalendarDay'] = this.picker.onClickCalendarDay;
     this.binds['_onClickApplyButton'] = this.picker.onClickApplyButton;
 
@@ -93,6 +95,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       updateValues: {
         configurable: true,
         value: this.binds.updateValues,
+      },
+      clear: {
+        configurable: true,
+        value: this.binds.clear,
       },
       onClickCalendarDay: {
         configurable: true,
@@ -171,6 +177,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       updateValues: {
         configurable: true,
         value: this.binds['_updateValues'],
+      },
+      clear: {
+        configurable: true,
+        value: this.binds['_clear'],
       },
       onClickCalendarDay: {
         configurable: true,
@@ -255,10 +265,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     const end = this.picker.getEndDate();
     const startString = start instanceof Date
       ? start.format(this.picker.options.format, this.picker.options.lang)
-      : '...';
+      : '';
     const endString = end instanceof Date
       ? end.format(this.picker.options.format, this.picker.options.lang)
-      : '...';
+      : '';
 
     if (elEnd) {
       if (el instanceof HTMLInputElement) {
@@ -273,7 +283,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         elEnd.innerText = endString;
       }
     } else {
-      const formatString = `${startString}${this.options.delimiter}${endString}`;
+      const delimiter = startString || endString ? this.options.delimiter : '';
+      const formatString = `${startString}${delimiter}${endString}`;
 
       if (el instanceof HTMLInputElement) {
         el.value = formatString;
@@ -281,6 +292,17 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         el.innerText = formatString;
       }
     }
+  }
+
+  /**
+   * Clear selection
+   */
+  private clear() {
+    this.options.startDate = null;
+    this.options.endDate = null;
+    this.picker.datePicked.length = 0;
+    this.updateValues();
+    this.picker.renderAll();
   }
 
   /**

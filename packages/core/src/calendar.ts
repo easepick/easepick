@@ -89,7 +89,8 @@ export default class Calendar {
       this.picker.trigger('view', {
         date: date.clone(),
         view: 'CalendarHeader',
-        index: i, target: calendarHeader,
+        index: i,
+        target: calendarHeader,
       });
 
       const dayNames = this.getCalendarDayNamesView();

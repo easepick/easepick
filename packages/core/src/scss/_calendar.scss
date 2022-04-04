@@ -53,6 +53,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+    column-gap: 5px;
 
     .month-name {
       flex: 1;
@@ -72,7 +73,6 @@
       background-color: transparent;
       padding: 4px 7px;
       border-radius: 2px;
-      margin-left: 5px;
       cursor: pointer;
 
       &:hover {

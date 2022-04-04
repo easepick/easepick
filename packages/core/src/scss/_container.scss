@@ -44,11 +44,11 @@
     .footer-buttons {
       display: flex;
       justify-content: flex-end;
+      column-gap: 5px;
 
       > button {
         border: 1px solid transparent;
         background-color: transparent;
-        margin-left: 5px;
         border-radius: var(--border-radius);
         padding: 5px 10px;
         cursor: pointer;

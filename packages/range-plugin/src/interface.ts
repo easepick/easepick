@@ -1,16 +1,7 @@
 import { DateTime } from '@easepick/datetime';
 import { IBaseConfig } from '@easepick/base-plugin';
 
-export interface IRangeLocales extends IBaseConfig {
-  zero?: string;
-  one?: string;
-  two?: string;
-  few?: string;
-  many?: string;
-  other?: string;
-}
-
-export interface IRangeConfig {
+export interface IRangeConfig extends IBaseConfig {
   elementEnd?: HTMLElement | string;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -19,7 +10,14 @@ export interface IRangeConfig {
   delimiter?: string;
   tooltip?: boolean;
   tooltipNumber?: (num: number) => number;
-  locale?: IRangeLocales;
+  locale?: {
+    zero?: string;
+    one?: string;
+    two?: string;
+    few?: string;
+    many?: string;
+    other?: string;
+  }
   documentClick?: boolean | (() => void);
 }
 
@@ -30,8 +28,6 @@ declare module '@easepick/core' {
     setDateRange(start: Date | string | number, end: Date | string | number): void;
     getStartDate(): DateTime;
     getEndDate(): DateTime;
-    parseValues(): void;
-    updateValues(): void;
   }
 }
 
