@@ -26,7 +26,9 @@ export class BasePlugin {
     for (const objName of Object.keys(optionsOriginal)) {
       if (optionsOriginal[objName] !== null
         && typeof optionsOriginal[objName] === 'object'
-        && Object.keys(optionsOriginal[objName]).length) {
+        && Object.keys(optionsOriginal[objName]).length
+        && pluginName in picker.options
+        && objName in picker.options[pluginName]) {
         const optionValue = { ...picker.options[pluginName][objName] };
 
         if (optionValue !== null
