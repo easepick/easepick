@@ -36,7 +36,11 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       return num;
     },
     locale: {
+      zero: '',
       one: 'day',
+      two: '',
+      few: '',
+      many: '',
       other: 'days',
     },
     documentClick: this.hidePicker.bind(this),
