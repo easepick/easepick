@@ -76,6 +76,9 @@ blockquote.inform {
 tr.highlight td {
   background-color: #fffde7;
 }
+.nav-list .nav-list-item {
+  background-color: #fff;
+}
 
 #app {
   &.spinner {
@@ -111,11 +114,144 @@ tr.highlight td {
   }
 }
 
+img.kofiimg {
+  display: initial !important;
+  vertical-align: middle;
+  height: 13px !important;
+  width: 20px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border: none;
+  margin-top: 0;
+  margin-left: 0 !important;
+  content: url('https://storage.ko-fi.com/cdn/cup-border.png')
+}
+
+.kofiimg:after {
+  vertical-align: middle;
+  height: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  border: none;
+  margin-top: 0;
+  margin-right: 6px;
+  margin-left: 0;
+  margin-bottom: 4px !important;
+  content: url('https://storage.ko-fi.com/cdn/whitelogo.svg')
+}
+
+.btn-container {
+  white-space: nowrap;
+}
+
+span.kofitext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
+  color: #fff !important;
+  text-wrap: none;
+  vertical-align: middle; 
+  padding: 4px 0;
+  text-align: center;
+  text-decoration: none !important;
+}
+
+.kofitext a {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+
+.kofitext a:hover {
+  color: #fff !important;
+  text-decoration: none
+}
+
+a.kofi-button {
+  min-width: 120px;
+  display: inline-block !important;
+  background-color: #29abe0;
+  padding: 2px 12px !important;
+  text-align: center !important;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  overflow-wrap: break-word;
+  vertical-align: middle;
+  border: 0 none #fff !important;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;
+  text-decoration: none;
+  text-shadow: none;
+  font-weight: 600 !important;
+  font-size: 12px !important
+}
+
+a.kofi-button:visited {
+  color: #fff !important;
+  text-decoration: none !important
+}
+
+a.kofi-button:hover {
+  opacity: .85;
+  color: #f5f5f5 !important;
+  text-decoration: none !important
+}
+
+a.kofi-button:active {
+  color: #f5f5f5 !important;
+  text-decoration: none !important
+}
+
+.kofitext img.kofiimg {
+  height: 15px !important;
+  width: 22px !important;
+  display: initial;
+  animation: kofi-wiggle 3s infinite;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(720deg);
+  }
+}
+
+@keyframes kofi-wiggle {
+  0% {
+    transform: rotate(0) scale(1)
+  }
+
+  60% {
+    transform: rotate(0) scale(1)
+  }
+
+  75% {
+    transform: rotate(0) scale(1.12)
+  }
+
+  80% {
+    transform: rotate(0) scale(1.1)
+  }
+
+  84% {
+    transform: rotate(-10deg) scale(1.1)
+  }
+
+  88% {
+    transform: rotate(10deg) scale(1.1)
+  }
+
+  92% {
+    transform: rotate(-10deg) scale(1.1)
+  }
+
+  96% {
+    transform: rotate(10deg) scale(1.1)
+  }
+
+  100% {
+    transform: rotate(0) scale(1)
   }
 }

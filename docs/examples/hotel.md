@@ -8,7 +8,7 @@ nav_order: 2
 permalink: /examples/basic-hotel-calendar
 ---
 
-# Basic example
+# Basic hotel calendar
 {: .no_toc }
 
 ### Demo

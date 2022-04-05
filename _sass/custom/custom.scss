@@ -87,8 +87,14 @@ div#index-demo-selection {
   .aux-nav-list {
     align-items: center;
     justify-content: flex-end;
+    column-gap: 10px;
+    padding-right: 15px;
 
-    .flex-nav-item {
+    .aux-nav-list-item.flex-nav-item > span {
+      display: flex;
+    }
+
+    /*.flex-nav-item {
       padding: 10px 0 10px 10px;
 
       &:first-child {
@@ -98,7 +104,7 @@ div#index-demo-selection {
       &:last-child {
         padding-right: 10px;
       }
-    }
+    }*/
   }
 }
 
