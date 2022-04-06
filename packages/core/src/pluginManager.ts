@@ -57,22 +57,28 @@ export default class PluginManager {
    * 
    * @param name 
    */
-  public addInstance(name: string): void {
+  public addInstance<T>(name: string): T {
     if (!Object.prototype.hasOwnProperty.call(this.instances, name)) {
       if (typeof easepick !== 'undefined' && Object.prototype.hasOwnProperty.call(easepick, name)) {
         const plugin = new easepick[name];
         plugin.attach(this.picker);
         this.instances[plugin.getName()] = plugin;
+
+        return plugin;
       } else if (this.getPluginFn(name) !== 'undefined') {
         const plugin = new (this.getPluginFn(name));
         plugin.attach(this.picker);
         this.instances[plugin.getName()] = plugin;
+
+        return plugin;
       } else {
         console.warn(`easepick: ${name} not found.`);
       }
     } else {
       console.warn(`easepick: ${name} already added.`);
     }
+
+    return null;
   }
 
   /**
@@ -80,12 +86,23 @@ export default class PluginManager {
    * 
    * @param name 
    */
-  public removeInstance(name: string): void {
+  public removeInstance(name: string): boolean {
     if (name in this.instances) {
       this.instances[name].detach();
     }
 
-    delete this.instances[name];
+    return (delete this.instances[name]);
+  }
+
+  /**
+   * Reload plugin
+   * 
+   * @param name 
+   */
+  public reloadInstance<T>(name: string): T {
+    this.removeInstance(name);
+
+    return this.addInstance(name);
   }
 
   /**
