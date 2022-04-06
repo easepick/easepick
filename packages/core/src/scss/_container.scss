@@ -14,6 +14,7 @@
   cursor: default;
   color: var(--color-fg-default);
   pointer-events: all;
+  position: absolute;
 
   &.show {
     transform: scale(1);

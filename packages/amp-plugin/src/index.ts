@@ -65,6 +65,8 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
       this.matchMedia.removeEventListener('change', this.binds.onColorScheme);
     }
 
+    this.picker.ui.container.removeAttribute('data-theme');
+
     this.picker.off('view', this.binds.onView);
   }
 

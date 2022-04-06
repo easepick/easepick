@@ -254,7 +254,7 @@ export class Core {
 
     const target = event && 'target' in event ? event.target : this.options.element;
     const { top, left } = this.adjustPosition(target);
-    this.ui.container.style.position = 'absolute';
+    //this.ui.container.style.position = 'absolute';
     this.ui.container.style.top = `${top}px`;
     this.ui.container.style.left = `${left}px`;
     this.ui.container.classList.add('show');
