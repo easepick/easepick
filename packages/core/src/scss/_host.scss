@@ -1,11 +1,26 @@
 :host {
-  --primary-color: #6b82ff;
-  --secondary-color: #748194;
-  --white-color: #fff;
-  --black-color: #333;
-  --lightgray-color: #f9f9f9;
-  --gray-color: #9e9e9e;
-  --red-color: #e63757;
+  --color-bg-default: #fff;
+  --color-bg-secondary: #f9f9f9;
+  --color-fg-default: #333;
+  --color-fg-primary: #6b82ff;
+  --color-fg-secondary: #748194;
+  --color-fg-muted: #9e9e9e;
+  --color-fg-accent: #e63757;
+  --color-btn-primary-bg: #fff;
+  --color-btn-primary-fg: #6b82ff;
+  --color-btn-primary-border: #6b82ff;
+  --color-btn-primary-hover-bg: #6b82ff;
+  --color-btn-primary-hover-fg: #fff;
+  --color-btn-primary-hover-border: #6b82ff;
+  --color-btn-secondary-bg: #fff;
+  --color-btn-secondary-fg: #748194;
+  --color-btn-secondary-border: #748194;
+  --color-btn-secondary-hover-bg: #748194;
+  --color-btn-secondary-hover-fg: #fff;
+  --color-btn-secondary-hover-border: #748194;
+  --color-border-default: #ddd;
+  --color-border-locked: #f9f9f9;
+
   --day-width: 42px;
   --day-height: 37px;
   --border-radius: 2px;

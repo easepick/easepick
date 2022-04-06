@@ -1,44 +1,48 @@
-.calendars {
-  .calendar {
-    > .header {
-      .month-name {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        column-gap: 5px;
-
-        select {
-          font-size: 14px;
-          padding: 3px;
-          border: none;
-
-          &.month-name--dropdown {
-            font-weight: bold;
-          }
-        }
-      }
-
-      .reset-button {
-        order: 4;
-      }
-    }
-  }
-
-  &.calendars:not(.grid-1) {
+.container.amp-plugin {
+  .calendars {
     .calendar {
       > .header {
+        .month-name {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          column-gap: 5px;
+
+          select {
+            font-size: 14px;
+            padding: 3px;
+            border: none;
+
+            &.month-name--dropdown {
+              font-weight: bold;
+            }
+          }
+        }
+
         .reset-button {
-          visibility: hidden;
+          order: 4;
         }
       }
+    }
 
-      &:last-child {
+    &.calendars:not(.grid-1) {
+      .calendar {
         > .header {
           .reset-button {
-            visibility: visible;
+            visibility: hidden;
+          }
+        }
+
+        &:last-child {
+          > .header {
+            .reset-button {
+              visibility: visible;
+            }
           }
         }
       }
     }
   }
 }
+
+@import "./dark-theme";
