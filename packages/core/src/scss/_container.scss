@@ -16,6 +16,13 @@
   pointer-events: all;
   position: absolute;
 
+  &.calc {
+    transition: none;
+    height: auto;
+    visibility: hidden;
+    transform: none;
+  }
+
   &.show {
     transform: scale(1);
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
