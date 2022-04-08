@@ -54,6 +54,10 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
       this.matchMedia.addEventListener('change', this.binds.onColorScheme);
     }
 
+    if (this.options.weekNumbers) {
+      this.picker.ui.container.classList.add('week-numbers');
+    }
+
     this.picker.on('view', this.binds.onView);
   }
 
@@ -66,6 +70,7 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
     }
 
     this.picker.ui.container.removeAttribute('data-theme');
+    this.picker.ui.container.classList.remove('week-numbers');
 
     this.picker.off('view', this.binds.onView);
   }
@@ -82,8 +87,13 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
 
     this.handleDropdown(event);
     this.handleResetButton(event);
+    this.handleWeekNumbers(event);
   }
 
+  /**
+   * 
+   * @param evt 
+   */
   private onColorScheme(evt) {
     const colorScheme = evt.matches ? 'dark' : 'light';
     this.picker.ui.container.dataset.theme = colorScheme;
@@ -232,6 +242,47 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
       });
 
       target.appendChild(button);
+    }
+  }
+
+  /**
+   * 
+   * @param event 
+   */
+  private handleWeekNumbers(event) {
+    if (this.options.weekNumbers) {
+      const { view, target }: IEventDetail = event.detail;
+
+      if (view === 'CalendarDayNames') {
+        const w = document.createElement('div');
+        w.className = 'wnum-header';
+        w.innerHTML = 'Wk';
+        target.prepend(w);
+      }
+
+      if (view === 'CalendarDays') {
+        [...target.children].forEach((element: HTMLElement, index: number) => {
+          if (index === 0 || index % 7 === 0) {
+            let date;
+            if (element.classList.contains('day')) {
+              date = new DateTime(element.dataset.time);
+            } else {
+              const elDate = target.querySelector('.day') as HTMLElement;
+              date = new DateTime(elDate.dataset.time);
+            }
+
+            let weekNum = date.getWeek(this.picker.options.firstDay);
+            if (weekNum === 53 && date.getMonth() === 0) {
+              weekNum = '53/1';
+            }
+
+            const w = document.createElement('div');
+            w.className = 'wnum-item';
+            w.innerHTML = String(weekNum);
+            target.insertBefore(w, element);
+          }
+        });
+      }
     }
   }
 }

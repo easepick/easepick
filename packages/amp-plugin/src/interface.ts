@@ -9,6 +9,7 @@ export interface IAmpPlugin extends IBaseConfig {
   }
   resetButton?: (() => boolean) | boolean;
   darkMode?: boolean;
+  weekNumbers?: boolean;
   locale?: {
     resetButton?: string;
   }

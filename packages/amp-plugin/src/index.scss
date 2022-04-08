@@ -43,6 +43,24 @@
       }
     }
   }
+
+  &.week-numbers {
+    .calendar {
+      > .daynames-row,
+      > .days-grid {
+        grid-template-columns: 30px repeat(7, 1fr);
+
+        .wnum-header,
+        .wnum-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--color-fg-muted);
+          font-size: 12px;
+        }
+      }
+    }
+  }
 }
 
 @import "./dark-theme";
