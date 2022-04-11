@@ -116,6 +116,7 @@ const picker = new easepick.create({
 | [on(type, listener, options)](#method-on) | Add listener to container element.
 | [off(type, listener, options)](#method-off) | Remove listener from container element.
 | [trigger(type, detail)](#method-trigger) | Dispatch an event.
+| [renderAll()](#method-renderAll) | Redraw the calendar layout.
 | [destroy()](#method-destroy) | Destroy the picker.
 
 
@@ -158,4 +159,35 @@ const picker = new easepick.create({
     });
   },
 });
+```
+
+## PluginManager
+
+`PluginManager` allows you to manage plugins of created picker.
+
+
+#### Methods
+
+| Name | Description
+| --- | ---
+| [getInstance(pluginName)](#pluginManager-getInstance) | Returns the plugin instance. `pluginName` is a string (eg.: `RangePlugin`).
+| [addInstance(pluginName)](#pluginManager-addInstance) | Adds a plugin to the picker. Returns an instance of the added plugin.
+| [removeInstance(pluginName)](#pluginManager-removeInstance) | Removes the plugin from the picker.Returns a boolean result.
+| [reloadInstance(pluginName)](#pluginManager-reloadInstance) | Removes the plugin from the picker and adds it again. Returns an instance of the added plugin.
+
+#### Example
+
+```js
+// example use bundle version
+const picker = new easepick.create({
+  element: document.getElementById('datepicker'),
+  css: [
+    'https://cdn.jsdelivr.net/npm/@easepick/core@[version.number]/dist/index.css',
+  ],
+});
+
+// add AmpPlugin to the picker
+const ampPlugin = picker.PluginManager.addInstance('AmpPlugin');
+// change plugin option
+ampPlugin.options.resetButton = true;
 ```

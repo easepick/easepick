@@ -1,8 +1,135 @@
----
----
-{% include css/just-the-docs.scss.liquid color_scheme="dark" %}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1c2127;
+  }
 
-#bg {
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .site-header a {
+    color: #adbac7;
+  }
+
+  hr {
+    background-color: #2d333b;
+    height: 2px;
+  }
+
+  a {
+    color: #539bf5;
+
+    &:not([class]) {
+      background-image: none;
+    }
+  }
+
+  blockquote.inform {
+    background-image: linear-gradient(rgba(174, 124, 20, 0.15), rgba(174, 124, 20, 0.15));
+    background-color: transparent;
+    border-color: #966600;
+  }
+
+  .main-content .anchor-heading svg,
+  .icon {
+    color: #539bf5;
+  }
+
+  .site-header {
+    background-color: #2d333b;
+    border-bottom-left-radius: 10px;
+
+    a:hover {
+      background-color: #22272d;
+      background-image: none;
+    }
+  }
+
+  #bg {
+    transform: scaleX(1);
+    background-blend-mode: exclusion;
+  }
+
+  .main-header {
+    background-color: #2d333b;
+  }
+
+  .main-content-wrap,
+  .nav-list .nav-list-item {
+    background-color: #1c2127;
+  }
+
+  .site-header,
+  .main-header {
+    border-bottom-color: #22272d;
+  }
+
+  .nav-list {
+    .nav-list-item {
+      &:first-child {
+        border-top-left-radius: 10px;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 10px;
+      }
+
+      > .nav-list .nav-list-item .nav-list-link {
+        color: #adbac7;
+      }
+
+      .nav-list-link {
+        &:hover,
+        &.active {
+          background-image: linear-gradient(-90deg, #2d333b 0%, rgb(45, 51, 59) 80%, rgba(235, 237, 245, 0) 100%);
+        }
+      }
+
+      .nav-list-expander {
+        color: #539bf5;
+
+        &:hover {
+          background-image: linear-gradient(-90deg, #2d333b 0%, rgb(45, 51, 59) 100%);
+        }
+      }
+    }
+  }
+
+  th,
+  td,
+  thead th {
+    background-color: #2d333b;
+    border-color: #1c2127;
+  }
+
+  div.highlighter-rouge {
+    background-color: #2d333b;
+  }
+
+  .highlight {
+    .nx,
+    .na {
+      color: #adbac7;
+    }
+  }
+
+  code {
+    background-color: #2d333b;
+
+    &.language-plaintext {
+      border-color: rgba(99, 110, 123, 0.4);
+      padding: 0.2em 0.4em;
+    }
+  }
+
+  a.kofi-button {
+    background-color: #347d39;
+  }
+}
+/*#bg {
   background-color: #27262b;
   background-image: url(../images/bg-dark.webp);
 }
@@ -20,4 +147,4 @@
 
 .site-footer {
   color: #fafafa;
-}
+}*/
