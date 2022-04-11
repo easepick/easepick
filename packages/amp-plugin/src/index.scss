@@ -1,44 +1,66 @@
-.calendars {
-  .calendar {
-    > .header {
-      .month-name {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        column-gap: 5px;
+.container.amp-plugin {
+  .calendars {
+    .calendar {
+      > .header {
+        .month-name {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          column-gap: 5px;
 
-        select {
-          font-size: 14px;
-          padding: 3px;
-          border: none;
+          select {
+            font-size: 14px;
+            padding: 3px;
+            border: none;
 
-          &.month-name--dropdown {
-            font-weight: bold;
+            &.month-name--dropdown {
+              font-weight: bold;
+            }
           }
         }
-      }
 
-      .reset-button {
-        order: 4;
+        .reset-button {
+          order: 4;
+        }
+      }
+    }
+
+    &.calendars:not(.grid-1) {
+      .calendar {
+        > .header {
+          .reset-button {
+            visibility: hidden;
+          }
+        }
+
+        &:last-child {
+          > .header {
+            .reset-button {
+              visibility: visible;
+            }
+          }
+        }
       }
     }
   }
 
-  &.calendars:not(.grid-1) {
+  &.week-numbers {
     .calendar {
-      > .header {
-        .reset-button {
-          visibility: hidden;
-        }
-      }
+      > .daynames-row,
+      > .days-grid {
+        grid-template-columns: 30px repeat(7, 1fr);
 
-      &:last-child {
-        > .header {
-          .reset-button {
-            visibility: visible;
-          }
+        .wnum-header,
+        .wnum-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--color-fg-muted);
+          font-size: 12px;
         }
       }
     }
   }
 }
+
+@import "./dark-theme";

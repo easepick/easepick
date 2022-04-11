@@ -12,16 +12,23 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
 
   public binds = {
     onView: this.onView.bind(this),
+    onColorScheme: this.onColorScheme.bind(this),
   }
 
   public options: IAmpPlugin = {
     dropdown: {
+      months: false,
+      years: false,
       minYear: 1950,
+      maxYear: null,
     },
+    darkMode: true,
     locale: {
       resetButton: `<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>`
     },
   };
+
+  protected matchMedia;
 
   /**
    * Returns plugin name
@@ -37,6 +44,20 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
    * The function execute on initialize the picker
    */
   public onAttach(): void {
+    if (this.options.darkMode && window && 'matchMedia' in window) {
+      this.matchMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+      if (this.matchMedia.matches) {
+        this.picker.ui.container.dataset.theme = 'dark';
+      }
+
+      this.matchMedia.addEventListener('change', this.binds.onColorScheme);
+    }
+
+    if (this.options.weekNumbers) {
+      this.picker.ui.container.classList.add('week-numbers');
+    }
+
     this.picker.on('view', this.binds.onView);
   }
 
@@ -44,6 +65,13 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
    * - Called automatically via BasePlugin.detach() -
    */
   public onDetach(): void {
+    if (this.options.darkMode && window && 'matchMedia' in window) {
+      this.matchMedia.removeEventListener('change', this.binds.onColorScheme);
+    }
+
+    this.picker.ui.container.removeAttribute('data-theme');
+    this.picker.ui.container.classList.remove('week-numbers');
+
     this.picker.off('view', this.binds.onView);
   }
 
@@ -59,6 +87,16 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
 
     this.handleDropdown(event);
     this.handleResetButton(event);
+    this.handleWeekNumbers(event);
+  }
+
+  /**
+   * 
+   * @param evt 
+   */
+  private onColorScheme(evt) {
+    const colorScheme = evt.matches ? 'dark' : 'light';
+    this.picker.ui.container.dataset.theme = colorScheme;
   }
 
   /**
@@ -204,6 +242,47 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
       });
 
       target.appendChild(button);
+    }
+  }
+
+  /**
+   * 
+   * @param event 
+   */
+  private handleWeekNumbers(event) {
+    if (this.options.weekNumbers) {
+      const { view, target }: IEventDetail = event.detail;
+
+      if (view === 'CalendarDayNames') {
+        const w = document.createElement('div');
+        w.className = 'wnum-header';
+        w.innerHTML = 'Wk';
+        target.prepend(w);
+      }
+
+      if (view === 'CalendarDays') {
+        [...target.children].forEach((element: HTMLElement, index: number) => {
+          if (index === 0 || index % 7 === 0) {
+            let date;
+            if (element.classList.contains('day')) {
+              date = new DateTime(element.dataset.time);
+            } else {
+              const elDate = target.querySelector('.day') as HTMLElement;
+              date = new DateTime(elDate.dataset.time);
+            }
+
+            let weekNum = date.getWeek(this.picker.options.firstDay);
+            if (weekNum === 53 && date.getMonth() === 0) {
+              weekNum = '53/1';
+            }
+
+            const w = document.createElement('div');
+            w.className = 'wnum-item';
+            w.innerHTML = String(weekNum);
+            target.insertBefore(w, element);
+          }
+        });
+      }
     }
   }
 }

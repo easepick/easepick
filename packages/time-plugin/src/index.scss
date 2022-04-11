@@ -42,25 +42,25 @@
 }
 
 .time-plugin-container {
-  background-color: var(--lightgray-color);
+  background-color: var(--color-bg-secondary);
   padding: 10px;
   display: flex;
   justify-content: space-around;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border-default);
 
   input[type="time"] {
     font-size: 18px;
     border-radius: 4px;
     border: 1px solid transparent;
-    color: var(--black-color);
-    background-color: var(--white-color);
+    color: var(--color-fg-default);
+    background-color: var(--color-bg-default);
   }
 
   select {
     border-radius: 4px;
     border: 1px solid transparent;
-    color: var(--black-color);
-    background-color: var(--white-color);
+    color: var(--color-fg-default);
+    background-color: var(--color-bg-default);
     margin: 0 3px;
   }
 }

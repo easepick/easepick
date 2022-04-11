@@ -71,25 +71,26 @@
       justify-content: center;
       border: 1px solid transparent;
       background-color: transparent;
+      color: var(--color-btn-secondary-fg);
       padding: 4px 7px;
       border-radius: 2px;
       cursor: pointer;
 
       &:hover {
-        background-color: var(--lightgray-color);
+        background-color: var(--color-bg-secondary);
 
         > svg,
         > img {
-          color: var(--primary-color);
-          fill: var(--primary-color);
+          color: var(--color-fg-primary);
+          fill: var(--color-fg-primary);
         }
       }
 
       > svg,
       > img {
         pointer-events: none;
-        color: var(--secondary-color);
-        fill: var(--secondary-color);
+        color: var(--color-btn-secondary-fg);
+        fill: var(--color-btn-secondary-fg);
         transform: scale(0.7);
       }
     }
@@ -114,7 +115,7 @@
 
   > .daynames-row > .dayname {
     padding: 5px 0;
-    color: var(--gray-color);
+    color: var(--color-fg-muted);
     font-size: 12px;
   }
 
@@ -130,17 +131,17 @@
     max-height: var(--day-height);
 
     &:hover {
-      border: 1px solid var(--primary-color);
-      color: var(--primary-color);
+      border: 1px solid var(--color-fg-primary);
+      color: var(--color-fg-primary);
     }
 
     &.today {
-      color: var(--red-color);
+      color: var(--color-fg-accent);
     }
 
     &.selected {
-      background-color: var(--primary-color);
-      color: var(--white-color);
+      background-color: var(--color-fg-primary);
+      color: var(--color-fg-selected);
     }
   }
 

@@ -254,7 +254,7 @@ export class Core {
 
     const target = event && 'target' in event ? event.target : this.options.element;
     const { top, left } = this.adjustPosition(target);
-    this.ui.container.style.position = 'absolute';
+    //this.ui.container.style.position = 'absolute';
     this.ui.container.style.top = `${top}px`;
     this.ui.container.style.left = `${left}px`;
     this.ui.container.classList.add('show');
@@ -491,8 +491,24 @@ export class Core {
     const rect = element.getBoundingClientRect();
     const wrapper = this.ui.wrapper.getBoundingClientRect();
 
-    const top = rect.bottom - wrapper.bottom;
-    const left = rect.left - wrapper.left;
+    this.ui.container.classList.add('calc');
+    const container = this.ui.container.getBoundingClientRect();
+    this.ui.container.classList.remove('calc');
+
+    let top = rect.bottom - wrapper.bottom;
+    let left = rect.left - wrapper.left;
+
+    if (typeof window !== 'undefined') {
+      if (window.innerHeight < top + container.height
+        && top - container.height >= 0) {
+        top = rect.top - wrapper.top - container.height;
+      }
+
+      if (window.innerWidth < left + container.width
+        && rect.right - container.width >= 0) {
+        left = rect.right - wrapper.right - container.width;
+      }
+    }
 
     return {
       left,

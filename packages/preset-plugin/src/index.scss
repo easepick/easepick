@@ -36,17 +36,19 @@
 .preset-plugin-container {
   display: flex;
   justify-content: space-between;
-  background-color: #f1f1f1;
+  background-color: var(--color-bg-secondary);
   padding: 10px;
 
   > button {
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 5px;
+    background-color: var(--color-bg-default);
+    color: var(--color-fg-default);
 
     &:hover {
-      color: var(--primary-color);
-      border: 1px solid var(--primary-color);
+      color: var(--color-fg-primary);
+      border: 1px solid var(--color-fg-primary);
       cursor: pointer;
     }
   }
