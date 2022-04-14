@@ -356,6 +356,13 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         }
       }
     }
+
+    if (view === 'Footer') {
+      const disabled = (this.picker.datePicked.length === 1 && !this.options.strict)
+        || (this.picker.datePicked.length === 2 && this.options.strict);
+      const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
+      applyButton.disabled = !disabled;
+    }
   }
 
   /**
@@ -579,6 +586,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
           this.picker.hide();
         } else {
           this.hideTooltip();
+
+          this.picker.renderAll();
         }
       }
     }
@@ -588,10 +597,12 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     if (this.picker.isApplyButton(element)) {
       if (this.picker.datePicked.length === 1 && !this.options.strict) {
         if (this.picker.options.element === this.triggerElement) {
+          this.options.endDate = null;
           this.setStartDate(this.picker.datePicked[0]);
         }
 
         if (this.options.elementEnd === this.triggerElement) {
+          this.options.startDate = null;
           this.setEndDate(this.picker.datePicked[0]);
         }
       }

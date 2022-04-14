@@ -71,6 +71,13 @@
             border-color: var(--color-btn-primary-hover-border);
             background-color: var(--color-btn-primary-hover-bg);
           }
+
+          &:disabled {
+            cursor: default;
+            background-color: var(--color-btn-primary-disabled-bg);
+            color: var(--color-btn-primary-disabled-fg);
+            border-color: var(--color-btn-primary-disabled-border);
+          }
         }
 
         &.cancel-button {
@@ -82,6 +89,13 @@
             color: var(--color-btn-secondary-hover-fg);
             border-color: var(--color-btn-secondary-hover-border);
             background-color: var(--color-btn-secondary-hover-bg);
+          }
+
+          &:disabled {
+            cursor: default;
+            background-color: var(--color-btn-secondary-disabled-bg);
+            color: var(--color-btn-secondary-disabled-fg);
+            border-color: var(--color-btn-secondary-disabled-border);
           }
         }
       }

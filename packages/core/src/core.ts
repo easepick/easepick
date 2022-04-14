@@ -86,6 +86,7 @@ export class Core {
 
     (this.options.element as HTMLElement).addEventListener('click', this.binds.show);
 
+    this.on('view', this.onView.bind(this));
     this.on('render', this.onRender.bind(this));
 
     this.PluginManager.initialize();
@@ -156,12 +157,25 @@ export class Core {
    * 
    * @param event 
    */
-  public onRender(event: CustomEvent): void {
+  public onRender(event: CustomEvent) {
     const { view, date }: IEventDetail = event.detail;
 
     this.Calendar.render(date, view);
   }
 
+  public onView(event: CustomEvent) {
+    const { view, target } = event.detail;
+
+    if (view === 'Footer' && this.datePicked.length) {
+      const applyButton = target.querySelector('.apply-button');
+      applyButton.disabled = false;
+    }
+  }
+
+  /**
+   * 
+   * @param element 
+   */
   public onClickHeaderButton(element: HTMLElement) {
     if (this.isCalendarHeaderButton(element)) {
       if (element.classList.contains('next-button')) {
@@ -174,6 +188,10 @@ export class Core {
     }
   }
 
+  /**
+   * 
+   * @param element 
+   */
   public onClickCalendarDay(element: HTMLElement) {
     if (this.isCalendarDay(element)) {
       const date = new DateTime(element.dataset.time);
@@ -194,6 +212,10 @@ export class Core {
     }
   }
 
+  /**
+   * 
+   * @param element 
+   */
   public onClickApplyButton(element: HTMLElement) {
     if (this.isApplyButton(element)) {
       if (this.datePicked[0] instanceof Date) {
@@ -207,6 +229,11 @@ export class Core {
     }
   }
 
+  /**
+   * 
+   * @param element 
+   * @returns 
+   */
   public onClickCancelButton(element: HTMLElement) {
     if (this.isCancelButton(element)) {
       this.hide();
