@@ -155,11 +155,12 @@ export default class Calendar {
     const applyButton = document.createElement('button');
     applyButton.className = 'apply-button unit';
     applyButton.innerHTML = this.picker.options.locale.apply;
+    applyButton.disabled = true;
     buttons.appendChild(applyButton);
     element.appendChild(buttons);
 
     this.picker.ui.container.appendChild(element);
-    this.picker.trigger('view', { date, element, view: 'Footer' });
+    this.picker.trigger('view', { date, target: element, view: 'Footer' });
   }
 
   /**
