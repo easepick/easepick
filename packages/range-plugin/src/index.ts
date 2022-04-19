@@ -358,10 +358,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     }
 
     if (view === 'Footer') {
-      const disabled = (this.picker.datePicked.length === 1 && !this.options.strict)
-        || (this.picker.datePicked.length === 2 && this.options.strict);
+      const allowApplyBtn = (this.picker.datePicked.length === 1 && !this.options.strict)
+        || this.picker.datePicked.length === 2;
       const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
-      applyButton.disabled = !disabled;
+      applyButton.disabled = !allowApplyBtn;
     }
   }
 
