@@ -87,6 +87,12 @@ confirm "Bump version number from $current_version to $new_version?"
 
 bump package.json "\"version\": \"$current_version\"" "\"version\": \"$new_version\""
 
+for FOLDER in packages/*; do
+  if [ -d "$FOLDER" ]; then
+		bump $FOLDER/package.json "\"version\": \"$current_version\"" "\"version\": \"$new_version\""
+  fi
+done
+
 npm run prod
 
 new_tag="$new_version"

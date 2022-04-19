@@ -12,11 +12,11 @@
     "eslint": "^8.3.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
-    "node-sass": "^7.0.1",
     "rollup": "^2.69.0",
     "rollup-plugin-define": "^1.0.1",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.50.1",
     "ts-jest": "^27.0.4",
     "ts-loader": "^9.2.3",
     "typescript": "^4.6.2"
