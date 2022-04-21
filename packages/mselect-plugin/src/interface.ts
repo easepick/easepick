@@ -5,12 +5,17 @@ export interface IMSelectConfig extends IBaseConfig {
   dates?: DateTime[];
   max?: number;
   delimiter?: string;
+  sort?: string;
+  inputFormat?: string;
 }
 
 declare module '@easepick/core' {
   interface Core {
-    setDates(array: Date[] | string[] | number[]): void;
-    getDates(): DateTime[];
+    addDates(array: Date[] | string[] | number[], format?: string): void;
+    setDates(array: Date[] | string[] | number[], format?: string): void;
+    getDates(format?: string): DateTime[];
+    addDate(date: Date | string | number, format?: string): void;
+    removeDate(date: Date | string | number, format?: string): void;
   }
 }
 declare module '@easepick/core/dist/types' {

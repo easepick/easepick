@@ -163,6 +163,11 @@ export class Core {
     this.Calendar.render(date, view);
   }
 
+  /**
+   * Handle `view` event
+   * 
+   * @param event 
+   */
   public onView(event: CustomEvent) {
     const { view, target } = event.detail;
 

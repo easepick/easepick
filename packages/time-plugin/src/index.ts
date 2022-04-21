@@ -246,6 +246,10 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     }
   }
 
+  /**
+   * 
+   * @param event 
+   */
   private onClick(event) {
     const target = event.target;
     if (target instanceof HTMLElement) {
@@ -319,6 +323,11 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     this.picker.updateValues();
   }
 
+  /**
+   * 
+   * @param value 
+   * @returns DateTime
+   */
   private handleTimeString(value: string): DateTime {
     const d = new DateTime();
     const [h, m, s] = value.split(':').map(x => Number(x));
@@ -585,6 +594,9 @@ export class TimePlugin extends BasePlugin implements IPlugin {
     return d;
   }
 
+  /**
+   * Parse value of input element
+   */
   private parseValues() {
     if (this.rangePlugin) {
       if (this.rangePlugin.options.strict) {

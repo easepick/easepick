@@ -1,3 +1,24 @@
-.container.mselect-plugin > main {
-  
+:host {
+  --color-fg-locked: #9e9e9e;
+  --color-bg-unavailable: #f9f9f9;
+}
+
+.container.m-select-plugin > main {
+  .calendar {
+    > .days-grid {
+      > .day {
+        &.not-available {
+          pointer-events: none;
+          background-color: var(--color-bg-unavailable);
+          color: var(--color-fg-locked);
+          font-style: italic;
+        }
+      }
+    }
+
+    > .days-grid,
+    > .daynames-row {
+      column-gap: 2px;
+    }
+  }
 }

@@ -538,6 +538,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     }
   }
 
+  /**
+   * 
+   * @param element 
+   */
   private onClickCalendarDay(element: HTMLElement) {
     if (this.picker.isCalendarDay(element)) {
 
@@ -593,6 +597,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     }
   }
 
+  /**
+   * 
+   * @param element 
+   */
   private onClickApplyButton(element: HTMLElement) {
     if (this.picker.isApplyButton(element)) {
       if (this.picker.datePicked.length === 1 && !this.options.strict) {
