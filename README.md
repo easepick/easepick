@@ -3,4 +3,31 @@ easepick
 
 [![npm version](https://badge.fury.io/js/@easepick%2Fbundle.svg)](https://www.npmjs.com/package/@easepick/bundle) ![workflow](https://github.com/easepick/easepick/actions/workflows/node.js.yml/badge.svg)
 
-## [Documentation](https://easepick.com/)
+![easepick screenshot](https://dev.jsx4.com/easepick/screenshot.png)
+
+## Features
+
+- No dependencies
+- Uses [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM)
+- Supports plugins
+
+
+## Documentation
+
+- [Overview](https://easepick.com/)
+- [Configurator](https://easepick.com/configurator)
+- [Packages](https://easepick.com/packages)
+- [Examples](https://easepick.com/examples)
+
+
+## License
+
+Licensed under the terms of [GNU General Public License Version 2 or later](http://www.gnu.org/licenses/gpl.html). For full details about the license, please check the `LICENSE.md` file or [https://ckeditor.com/legal/ckeditor-oss-license](https://ckeditor.com/legal/ckeditor-oss-license).
+
+
+## Tested on real browsers
+
+Tested on real browsers via BrowserStack.  
+Thanks to the BrowserStack for supporting the open-source projects.  
+
+[![](https://dev.jsx4.com/easepick/Browserstack-logo.png)](https://www.browserstack.com/)

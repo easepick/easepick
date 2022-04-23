@@ -116,8 +116,7 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
   }
 
   /**
-   * Function `view` event
-   * Adds HTML layout of current plugin to the picker layout
+   * Fired on `view` event
    * 
    * @param event 
    */
@@ -143,7 +142,7 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
   }
 
   /**
-   * Fired on `hide` picker
+   * Fired on `hide` event
    */
   private onHide() {
     this.unpicked.forEach(d => {
@@ -158,9 +157,14 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
 
   /**
    * 
-   * @returns DateTime[]
+   * @param format 
+   * @returns DateTime[] | String[]
    */
-  private getDates() {
+  private getDates(format?: string) {
+    if (format) {
+      return [...this.options.dates].map(d => d.format(format));
+    }
+
     return [...this.options.dates];
   }
 
@@ -358,7 +362,6 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
   private onClickApplyButton(element: HTMLElement) {
     if (this.picker.isApplyButton(element)) {
       this.rangePlugin = this.picker.PluginManager.getInstance('RangePlugin');
-      this.unpicked.length = 0;
 
       if (this.rangePlugin) {
         //
@@ -370,6 +373,8 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
         this.picker.trigger('select', { dates: [...this.options.dates] });
         this.picker.hide();
       }
+
+      this.unpicked.length = 0;
     }
   }
 
