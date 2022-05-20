@@ -61,7 +61,7 @@ export class PresetPlugin extends BasePlugin implements IPlugin {
         lastMonth(),
       ];
 
-      this.options.customLabels.forEach((label, key) => {
+      Object.values(this.options.customLabels).forEach((label, key) => {
         this.options.customPreset[label] = ranges[key];
       });
     }
