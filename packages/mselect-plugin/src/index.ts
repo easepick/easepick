@@ -18,15 +18,21 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
     parseValues: this.parseValues.bind(this),
     updateValues: this.updateValues.bind(this),
     clear: this.clear.bind(this),
+    itemTemplate: this.itemTemplate.bind(this),
   }
 
   public rangePlugin: RangePlugin;
   public unpicked: DateTime[] = [];
+  public wrapper: HTMLElement;
 
   public options: IMSelectConfig = {
     dates: [],
     delimiter: ';',
     inputFormat: 'YYYY-MM-DD',
+    locale: {
+      remove: '<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.46445 15.5354L15.5355 8.46436" stroke-width="1.5" stroke-linecap="round" /><path d="M8.46446 8.46458L15.5355 15.5356" stroke-width="1.5" stroke-linecap="round" /></svg>',
+    },
+    itemTemplate: this.binds.itemTemplate,
   }
 
   /**
@@ -80,6 +86,29 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
       },
     });
 
+    if (this.options.useWrapper) {
+      const element = this.picker.options.element as HTMLElement;
+      this.wrapper = document.createElement('div');
+      this.wrapper.id = 'mselect-wrapper';
+      this.wrapper.style.width = `${element.offsetWidth}px`;
+      this.wrapper.style.minHeight = `${element.offsetHeight}px`;
+      this.wrapper.addEventListener('click', (evt) => {
+        this.picker.show(evt);
+      });
+      this.picker.ui.shadowRoot.prepend(this.wrapper);
+
+      if (element.style.getPropertyValue('position')) {
+        element.dataset.easepickStorePosition = element.style.getPropertyValue('position');
+      }
+
+      if (element.style.getPropertyValue('visibility')) {
+        element.dataset.easepickStoreVisibility = element.style.getPropertyValue('visibility');
+      }
+
+      element.style.position = 'absolute';
+      element.style.visibility = 'hidden';
+    }
+
     this.picker.on('view', this.binds.onView);
     this.picker.on('hide', this.binds.onHide);
   }
@@ -110,6 +139,23 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
         value: this.binds['_onClickApplyButton'],
       },
     });
+
+    if (this.wrapper) {
+      const element = this.picker.options.element as HTMLElement;
+      if (element.dataset.easepickPropertyPosition) {
+        element.style.position = element.dataset.easepickPropertyPosition;
+      } else {
+        element.style.removeProperty('position');
+      }
+
+      if (element.dataset.easepickPropertyVisibility) {
+        element.style.visibility = element.dataset.easepickPropertyVisibility;
+      } else {
+        element.style.removeProperty('visibility');
+      }
+
+      this.wrapper.remove();
+    }
 
     this.picker.off('view', this.binds.onView);
     this.picker.off('hide', this.binds.onHide);
@@ -300,6 +346,15 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
       datesString = this.options.dates.map(d => d.format(this.picker.options.format)).join(this.options.delimiter);
     }
 
+    if (this.options.useWrapper) {
+      this.wrapper.innerHTML = '';
+      this.options.dates.forEach(d => {
+        const item = this.itemTemplate(d);
+        this.wrapper.appendChild(item);
+      });
+      return;
+    }
+
     if (el instanceof HTMLInputElement) {
       el.value = datesString;
     } else if (el instanceof HTMLElement) {
@@ -401,5 +456,28 @@ export class MSelectPlugin extends BasePlugin implements IPlugin {
     }
 
     return this.picker.datePicked.map(d => d.format('YYYY-MM-DD')).includes(date.format('YYYY-MM-DD'));
+  }
+
+  private itemTemplate(date: DateTime): HTMLElement {
+    const item = document.createElement('div');
+    item.className = 'mselect-item';
+
+    const text = document.createElement('div');
+    text.innerText = date.format(this.picker.options.format);
+    item.appendChild(text);
+
+    const btn = document.createElement('button');
+    btn.innerHTML = this.options.locale.remove;
+    btn.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+
+      this.options.dates = this.options.dates.filter(x => x.format('YYYY-MM-DD') !== date.format('YYYY-MM-DD'));
+      this.updateValues();
+      this.picker.renderAll();
+    });
+    item.appendChild(btn);
+
+    return item;
   }
 }

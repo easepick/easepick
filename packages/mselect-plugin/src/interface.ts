@@ -7,6 +7,11 @@ export interface IMSelectConfig extends IBaseConfig {
   delimiter?: string;
   sort?: string;
   inputFormat?: string;
+  useWrapper?: boolean;
+  locale?: {
+    remove?: string,
+  },
+  itemTemplate?: (date: DateTime) => HTMLElement;
 }
 
 declare module '@easepick/core' {

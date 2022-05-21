@@ -1,6 +1,7 @@
 :host {
   --color-fg-locked: #9e9e9e;
   --color-bg-unavailable: #f9f9f9;
+  --color-border-default: #ced4da;
 }
 
 .container.m-select-plugin > main {
@@ -19,6 +20,63 @@
     > .days-grid,
     > .daynames-row {
       column-gap: 2px;
+    }
+  }
+}
+
+#mselect-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 5px;
+  row-gap: 5px;
+  border: 1px solid var(--color-border-default);
+  border-radius: 3px;
+  padding: 5px;
+  pointer-events: all;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  .mselect-item {
+    display: flex;
+    border: 1px solid var(--color-border-default);
+    border-radius: 3px;
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      color: var(--color-fg-default);
+      font-size: 13px;
+      cursor: default;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    > button {
+      padding: 0;
+      border: 1px solid transparent;
+      background-color: transparent;
+      color: var(--color-btn-secondary-fg);
+
+      > svg,
+      > img {
+        pointer-events: none;
+        color: var(--color-btn-secondary-fg);
+        fill: var(--color-btn-secondary-fg);
+        stroke: var(--color-btn-secondary-fg);
+        transform: scale(0.7);
+      }
+
+      &:hover {
+        background-color: var(--color-bg-secondary);
+
+        > svg,
+        > img {
+          color: var(--color-fg-primary);
+          fill: var(--color-fg-primary);
+          stroke: var(--color-fg-primary);
+        }
+      }
     }
   }
 }
