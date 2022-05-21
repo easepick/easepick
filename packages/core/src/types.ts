@@ -37,5 +37,6 @@ export interface IPickerConfig {
   documentClick?: boolean | (() => void);
   zIndex?: number;
   inline?: boolean;
+  scrollToDate?: boolean;
   setup?(picker: Core): void;
 }

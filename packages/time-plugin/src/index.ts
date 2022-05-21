@@ -242,6 +242,21 @@ export class TimePlugin extends BasePlugin implements IPlugin {
         this.picker.updateValues();
       } else {
         this.timePrePicked[name] = date;
+
+        const applyButton = this.picker.ui.container.querySelector('.apply-button') as HTMLButtonElement;
+        if (this.rangePlugin) {
+          const options = this.rangePlugin.options;
+          const datePicked = this.picker.datePicked;
+          const bool = (options.strict && datePicked.length === 2)
+            || (!options.strict && datePicked.length > 0)
+            || (!datePicked.length && options.strict && options.startDate instanceof Date && options.endDate instanceof Date)
+            || (!datePicked.length && !options.strict && (options.startDate instanceof Date || options.endDate instanceof Date));
+          applyButton.disabled = !bool;
+        } else {
+          if (this.picker.datePicked.length) {
+            applyButton.disabled = false;
+          }
+        }
       }
     }
   }

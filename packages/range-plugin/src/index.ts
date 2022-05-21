@@ -319,6 +319,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     const { target }: IEventDetail = event.detail;
     this.triggerElement = target;
 
+    if (this.picker.options.scrollToDate && this.getStartDate() instanceof Date) {
+      this.picker.gotoDate(this.getStartDate());
+    }
+
     this.initializeRepick();
   }
 
