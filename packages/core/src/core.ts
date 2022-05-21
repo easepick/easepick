@@ -449,6 +449,7 @@ export class Core {
     this.datePicked.length = 0;
     this.updateValues();
     this.renderAll();
+    this.trigger('clear');
   }
 
   /**

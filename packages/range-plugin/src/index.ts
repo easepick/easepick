@@ -307,6 +307,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.picker.datePicked.length = 0;
     this.updateValues();
     this.picker.renderAll();
+    this.picker.trigger('clear');
   }
 
   /**
