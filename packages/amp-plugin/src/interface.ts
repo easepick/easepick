@@ -16,7 +16,7 @@ export interface IAmpPlugin extends IBaseConfig {
 }
 
 declare module '@easepick/core/dist/types' {
-  interface IAmpPlugin {
+  interface IPickerConfig {
     AmpPlugin?: IAmpPlugin;
   }
 }
