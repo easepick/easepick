@@ -334,7 +334,7 @@ export class Core {
    * Parse `date` option or value of input element
    */
   public parseValues() {
-    if (this.options.date) {
+    if (this.options.date != undefined) {
       this.setDate(this.options.date);
     } else if (this.options.element instanceof HTMLInputElement && this.options.element.value.length) {
       this.setDate(this.options.element.value);

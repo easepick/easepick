@@ -3,12 +3,13 @@ export class DateTime extends Date {
     date: unknown,
     format = 'YYYY-MM-DD',
     lang = 'en-US'): Date {
-    if (!date) return new Date(new Date().setHours(0, 0, 0, 0));
+
+    if (date == undefined) return new Date(new Date().setHours(0, 0, 0, 0));
 
     if (date instanceof DateTime) return date.toJSDate();
     if (date instanceof Date) return date;
 
-    if (/^-?\d{10,}$/.test(String(date))) {
+    if (/^-?\d+$/.test(String(date))) {
       return new Date(Number(date));
     }
 

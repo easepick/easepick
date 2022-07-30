@@ -30,6 +30,15 @@ test('date', () => {
   expect(picker.getDate() instanceof DateTime && picker.getDate().format('D MMM YYYY') === '23 Nov 2019').toBe(true);
 });
 
+test('dateZero', () => {
+  let picker = new easepick.create({
+    element: document.getElementById('datepicker'),
+    date: 0,
+  });
+
+  expect(picker.getDate() instanceof DateTime && picker.getDate().format('D MMM YYYY') === '1 Jan 1970').toBe(true);
+});
+
 test('firstDay', () => {
   let picker = new easepick.create({
     element: document.getElementById('datepicker'),
