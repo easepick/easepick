@@ -114,3 +114,9 @@ test('inArray', () => {
 
   expect(d.inArray(dateRange)).toBe(true);
 });
+
+test('createZero', () => {
+  const d = new DateTime(0);
+
+  expect(d.isSame(new DateTime('1970-01-01'))).toBe(true);
+});
