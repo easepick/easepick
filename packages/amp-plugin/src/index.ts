@@ -138,8 +138,10 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
         selectMonths.addEventListener('change', (e) => {
           const target = e.target as HTMLSelectElement;
 
+          this.picker.calendars[0].add(index, 'months');
           this.picker.calendars[0].setDate(1);
           this.picker.calendars[0].setMonth(Number(target.value));
+          this.picker.calendars[0].subtract(index, 'months');
           this.picker.renderAll();
         });
 
@@ -206,7 +208,9 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
         selectYears.addEventListener('change', (e) => {
           const target = e.target as HTMLSelectElement;
 
+          this.picker.calendars[0].add(index, 'months');
           this.picker.calendars[0].setFullYear(Number(target.value));
+          this.picker.calendars[0].subtract(index, 'months');
           this.picker.renderAll();
         });
 
