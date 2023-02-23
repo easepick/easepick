@@ -376,6 +376,7 @@ export class Core {
     }
 
     if (this.isShown()
+      && this.options.inline === false
       && host !== this.ui.wrapper
       && target !== this.options.element) {
       this.hide();
