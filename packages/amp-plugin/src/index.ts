@@ -113,7 +113,7 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
         monthNameWrapper.childNodes[0].remove();
 
         const selectMonths = document.createElement('select');
-        selectMonths.className = 'month-name--select month-name--dropdown';
+        selectMonths.className = 'month-name--select month-name--dropdown unit';
 
         for (let x = 0; x < 12; x += 1) {
           const option = document.createElement('option');
@@ -150,7 +150,7 @@ export class AmpPlugin extends BasePlugin implements IPlugin {
         monthNameWrapper.childNodes[1].remove();
 
         const selectYears = document.createElement('select');
-        selectYears.className = 'month-name--select';
+        selectYears.className = 'month-name--select unit';
 
         const minYear = this.options.dropdown.minYear;
         const maxYear = this.options.dropdown.maxYear ? this.options.dropdown.maxYear : (new Date()).getFullYear();
