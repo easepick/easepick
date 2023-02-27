@@ -399,7 +399,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @param date 
    */
   private setStartDate(date: Date | string | number) {
-    const d = new DateTime(date, this.picker.options.format);
+    const d = new DateTime(date, this.picker.options.format, this.picker.options.lang);
     this.options.startDate = d ? d.clone() : null;
 
     this.updateValues();
@@ -413,7 +413,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @param date 
    */
   private setEndDate(date: Date | string | number) {
-    const d = new DateTime(date, this.picker.options.format);
+    const d = new DateTime(date, this.picker.options.format, this.picker.options.lang);
     this.options.endDate = d ? d.clone() : null;
 
     this.updateValues();
@@ -428,8 +428,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @param end 
    */
   private setDateRange(start: Date | string | number, end: Date | string | number) {
-    const startDate = new DateTime(start, this.picker.options.format);
-    const endDate = new DateTime(end, this.picker.options.format);
+    const startDate = new DateTime(start, this.picker.options.format, this.picker.options.lang);
+    const endDate = new DateTime(end, this.picker.options.format, this.picker.options.lang);
 
     this.options.startDate = startDate ? startDate.clone() : null;
     this.options.endDate = endDate ? endDate.clone() : null;

@@ -310,7 +310,7 @@ export class Core {
    * @param date 
    */
   public setDate(date: Date | string | number): void {
-    const d = new DateTime(date, this.options.format);
+    const d = new DateTime(date, this.options.format, this.options.lang);
     this.options.date = d.clone();
 
     this.updateValues();
