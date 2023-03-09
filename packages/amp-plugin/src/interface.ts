@@ -12,6 +12,7 @@ export interface IAmpPlugin extends IBaseConfig {
   weekNumbers?: boolean;
   locale?: {
     resetButton?: string;
+    week?: string;
   }
 }
 
