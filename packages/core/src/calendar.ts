@@ -10,9 +10,9 @@ export default class Calendar {
 
   /**
    * Render transferred date and view
-   *
-   * @param date
-   * @param view
+   * 
+   * @param date 
+   * @param view 
    */
   public render(date: DateTime, view: string): void {
     if (!date) {
@@ -30,8 +30,8 @@ export default class Calendar {
 
   /**
    * Function for `Container` view
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public getContainerView(date: DateTime): void {
     this.picker.ui.container.innerHTML = '';
@@ -49,8 +49,8 @@ export default class Calendar {
 
   /**
    * Function for `Header` view
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public getHeaderView(date: DateTime): void {
     const element = document.createElement('header');
@@ -69,8 +69,8 @@ export default class Calendar {
 
   /**
    * Function for `Main` view
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public getMainView(date: DateTime): void {
     const main = document.createElement('main');
@@ -138,8 +138,8 @@ export default class Calendar {
 
   /**
    * Function for `Footer` view
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public getFooterView(date: DateTime): void {
     const element = document.createElement('footer');
@@ -165,8 +165,8 @@ export default class Calendar {
 
   /**
    * Function for `CalendarHeader` view
-   *
-   * @param date
+   * 
+   * @param date 
    * @returns HTMLElement
    */
   public getCalendarHeaderView(date: DateTime): HTMLElement {
@@ -193,8 +193,8 @@ export default class Calendar {
 
   /**
    * Function for `CalendarDayNames` view
-   *
-   * @param date
+   * 
+   * @param date 
    * @returns HTMLElement
    */
   public getCalendarDayNamesView(): HTMLElement {
@@ -223,8 +223,8 @@ export default class Calendar {
 
   /**
    * Function for `CalendarDays` view
-   *
-   * @param date
+   * 
+   * @param date 
    * @returns HTMLElement
    */
   public getCalendarDaysView(date: DateTime): HTMLElement {
@@ -232,8 +232,6 @@ export default class Calendar {
     element.className = 'days-grid';
     const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-    console.log(lastDayOfMonth);
-    console.log(firstDayOfMonth);
     const offsetDaysBefore = this.calcOffsetDays(date, this.picker.options.firstDay);
     const offsetDaysAfter = 6 - this.calcOffsetDays(new DateTime(lastDayOfMonth), this.picker.options.firstDay)
     const totalDays = 32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
@@ -273,8 +271,8 @@ export default class Calendar {
 
   /**
    * Function for `CalendarDay` view
-   *
-   * @param date
+   * 
+   * @param date 
    * @returns HTMLElement
    */
   public getCalendarDayView(date: DateTime): HTMLElement {
@@ -311,9 +309,9 @@ export default class Calendar {
 
   /**
    * Function for `CalendarFooter` view
-   *
-   * @param lang
-   * @param date
+   * 
+   * @param lang 
+   * @param date 
    * @returns HTMLElement
    */
   public getCalendarFooterView(lang: string, date: DateTime): HTMLElement {
@@ -325,9 +323,9 @@ export default class Calendar {
 
   /**
    * Count the number of days of indentation
-   *
-   * @param date
-   * @param firstDay
+   * 
+   * @param date 
+   * @param firstDay 
    * @returns Number
    */
   public calcOffsetDays(date: DateTime, firstDay: number): number {

@@ -107,10 +107,10 @@ export class Core {
 
   /**
    * Add listener to container element
-   *
-   * @param type
-   * @param listener
-   * @param options
+   * 
+   * @param type 
+   * @param listener 
+   * @param options 
    */
   public on(type: string, listener: (event) => void, options: unknown = {}): void {
     this.ui.container.addEventListener(type, listener, options);
@@ -118,10 +118,10 @@ export class Core {
 
   /**
    * Remove listener from container element
-   *
-   * @param type
-   * @param listener
-   * @param options
+   * 
+   * @param type 
+   * @param listener 
+   * @param options 
    */
   public off(type: string, listener: (event) => void, options: unknown = {}): void {
     this.ui.container.removeEventListener(type, listener, options);
@@ -129,10 +129,10 @@ export class Core {
 
   /**
    * Dispatch an event
-   *
-   * @param type
-   * @param detail
-   * @returns
+   * 
+   * @param type 
+   * @param detail 
+   * @returns 
    */
   public trigger(type: string, detail: unknown = {}): boolean {
     return this.ui.container.dispatchEvent(new CustomEvent(type, { detail }));
@@ -157,8 +157,8 @@ export class Core {
 
   /**
    * Fired on render event
-   *
-   * @param event
+   * 
+   * @param event 
    */
   public onRender(event: CustomEvent) {
     const { view, date }: IEventDetail = event.detail;
@@ -176,8 +176,8 @@ export class Core {
   }
 
   /**
-   *
-   * @param element
+   * 
+   * @param element 
    */
   public onClickHeaderButton(element: HTMLElement) {
     if (this.isCalendarHeaderButton(element)) {
@@ -192,8 +192,8 @@ export class Core {
   }
 
   /**
-   *
-   * @param element
+   * 
+   * @param element 
    */
   public onClickCalendarDay(element: HTMLElement) {
     if (this.isCalendarDay(element)) {
@@ -216,8 +216,8 @@ export class Core {
   }
 
   /**
-   *
-   * @param element
+   * 
+   * @param element 
    */
   public onClickApplyButton(element: HTMLElement) {
     if (this.isApplyButton(element)) {
@@ -233,9 +233,9 @@ export class Core {
   }
 
   /**
-   *
-   * @param element
-   * @returns
+   * 
+   * @param element 
+   * @returns 
    */
   public onClickCancelButton(element: HTMLElement) {
     if (this.isCancelButton(element)) {
@@ -246,7 +246,7 @@ export class Core {
 
   /**
    * Fired on click event
-   *
+   * 
    * @param event
    */
   public onClick(event): void {
@@ -266,7 +266,7 @@ export class Core {
 
   /**
    * Determine if the picker is visible or not
-   *
+   * 
    * @returns Boolean
    */
   public isShown(): boolean {
@@ -276,8 +276,8 @@ export class Core {
 
   /**
    * Show the picker
-   *
-   * @param event
+   * 
+   * @param event 
    */
   public show(event?): void {
     if (this.isShown()) return;
@@ -307,8 +307,8 @@ export class Core {
 
   /**
    * Set date programmatically
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public setDate(date: Date | string | number): void {
     const d = new DateTime(date, this.options.format);
@@ -322,7 +322,7 @@ export class Core {
   }
 
   /**
-   *
+   * 
    * @returns DateTime
    */
   public getDate(): DateTime {
@@ -364,8 +364,8 @@ export class Core {
   /**
    * Function for documentClick option
    * Allows the picker to close when the user clicks outside
-   *
-   * @param e
+   * 
+   * @param e 
    */
   public hidePicker(e): void {
     let target = e.target;
@@ -386,8 +386,8 @@ export class Core {
 
   /**
    * Render entire picker layout
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public renderAll(date?: DateTime): void {
     this.trigger('render', { view: 'Container', date: (date || this.calendars[0]).clone() });
@@ -395,8 +395,8 @@ export class Core {
 
   /**
    * Determines if the element is buttons of header (previous month, next month)
-   *
-   * @param element
+   * 
+   * @param element 
    * @returns Boolean
    */
   public isCalendarHeaderButton(element: HTMLElement): boolean {
@@ -405,8 +405,8 @@ export class Core {
 
   /**
    * Determines if the element is day element
-   *
-   * @param element
+   * 
+   * @param element 
    * @returns Boolean
    */
   public isCalendarDay(element: HTMLElement): boolean {
@@ -415,8 +415,8 @@ export class Core {
 
   /**
    * Determines if the element is the apply button
-   *
-   * @param element
+   * 
+   * @param element 
    * @returns Boolean
    */
   public isApplyButton(element: HTMLElement): boolean {
@@ -425,8 +425,8 @@ export class Core {
 
   /**
    * Determines if the element is the cancel button
-   *
-   * @param element
+   * 
+   * @param element 
    * @returns Boolean
    */
   public isCancelButton(element: HTMLElement): boolean {
@@ -435,8 +435,8 @@ export class Core {
 
   /**
    * Change visible month
-   *
-   * @param date
+   * 
+   * @param date 
    */
   public gotoDate(date: Date | string | number): void {
     const toDate = new DateTime(date, this.options.format);
@@ -515,8 +515,8 @@ export class Core {
 
   /**
    * Calculate the position of the picker
-   *
-   * @param element
+   * 
+   * @param element 
    * @returns { top, left }
    */
   private adjustPosition(element: HTMLElement) {
