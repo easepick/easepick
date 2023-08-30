@@ -530,12 +530,12 @@ export class Core {
     let left = rect.left - wrapper.left;
 
     if (typeof window !== 'undefined') {
-      if (window.innerHeight < top + container.height
+      if (window.innerHeight < rect.top + container.height
         && top - container.height >= 0) {
         top = rect.top - wrapper.top - container.height;
       }
 
-      if (window.innerWidth < left + container.width
+      if (window.innerWidth < rect.left + container.width
         && rect.right - container.width >= 0) {
         left = rect.right - wrapper.right - container.width;
       }
