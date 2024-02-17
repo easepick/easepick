@@ -38,7 +38,7 @@ export class Core {
       nextMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M2.748 16L0 13.333 5.333 8 0 2.667 2.748 0l7.919 8z" fill-rule="nonzero"/></svg>',
       previousMonth: '<svg width="11" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M7.919 0l2.748 2.667L5.333 8l5.334 5.333L7.919 16 0 8z" fill-rule="nonzero"/></svg>',
       cancel: 'Cancel',
-      apply: 'Apply',
+      apply: 'Apply'
     },
     documentClick: this.binds.hidePicker,
     plugins: [],
@@ -260,6 +260,8 @@ export class Core {
       this.onClickCalendarDay(element);
       this.onClickApplyButton(element);
       this.onClickCancelButton(element);
+      this.onClickExactDatesButton(element);
+      this.onClickClearButton(element);
     }
   }
 
@@ -432,6 +434,26 @@ export class Core {
     return element.classList.contains('cancel-button');
   }
 
+   /**
+   * Determines if the element is the cancel button
+   * 
+   * @param element 
+   * @returns Boolean
+   */
+   public isClearButton(element: HTMLElement): boolean {
+    return element.classList.contains('clear-button');
+  }
+
+   /**
+   * Determines if the element is the cancel button
+   * 
+   * @param element 
+   * @returns Boolean
+   */
+   public isExactDatesButton(element: HTMLElement): boolean {
+    return element.id == ('exact-dates');
+  }
+
   /**
    * Change visible month
    * 
@@ -455,6 +477,31 @@ export class Core {
     this.trigger('clear');
   }
 
+  public onClickExactDatesButton(element: HTMLElement) {
+    if (this.isExactDatesButton(element)) {
+      var isChecked = element.getAttribute('checked');
+      var exactOff = this.ui.shadowRoot.getElementById('exact-off');
+      var exactOn = this.ui.shadowRoot.getElementById('exact-on');
+      var lengthOfStay = this.ui.shadowRoot.getElementById('length-of-stay');
+      if (isChecked) {
+        exactOn.style.display = "block";
+        exactOff.style.display = "none";
+        lengthOfStay.style.display = "none";
+      } else {
+        exactOff.style.display = "block";
+        exactOn.style.display = "none";
+        lengthOfStay.style.display = "block";
+      }
+      
+      this.renderAll();
+    }
+  }
+
+  public onClickClearButton(element: HTMLElement) {
+    if (this.isClearButton(element)) {
+      this.clear();
+    }
+  }
   /**
    * Handling parameters passed by the user
    */

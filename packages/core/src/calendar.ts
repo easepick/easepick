@@ -132,6 +132,15 @@ export default class Calendar {
 
     main.appendChild(calendars);
 
+    const lengthOfStayFooter = this.getLengthOfStayView();
+    this.picker.trigger('view', {
+      date: date.clone(),
+      view: 'LengthOfStayFooter',
+      target: lengthOfStayFooter
+    });
+
+    main.appendChild(lengthOfStayFooter);
+
     this.picker.trigger('view', { date: date.clone(), view: 'Calendars', target: calendars });
     this.picker.trigger('view', { date: date.clone(), view: 'Main', target: main });
   }
@@ -316,5 +325,51 @@ export default class Calendar {
     if (total < 0) total += 7;
 
     return total;
+  }
+
+  public getLengthOfStayView(): HTMLElement {
+    const element = document.createElement('div');
+    element.id = 'search-type-section';
+    element.className = 'row';
+    var optionsHtml = '';
+
+    for (var i = 1; i <= 30; i++) {
+      optionsHtml += '<option value="' + `${i}` + '">' + `${i}` + '</option>\n';
+    }
+
+    const htmlString = `
+    <div class="row">
+        <div class="col-12">
+            <span class="exact-dates-text">Exact Dates</span>
+
+            <label class="switch">
+                <input type="checkbox" id="exact-dates" checked>
+                <span class="slider round"></span>
+            </label>
+
+            <span class="exact-dates-label" id="exact-off">Off</span>
+            <span class="exact-dates-label" id="exact-on">On</span>
+
+            <button class="pull-right sh-link clear-button">Clear</button>
+        </div>
+    </div>
+    <div class="row" id="length-of-stay">
+      <div class="col-12">
+        <span class="exact-dates-text">Length of Stay</span>
+        <select class="form-control" id="expected-stay" name="ExpectedStay" onchange="">
+            <option selected="selected" value="">Any</option>
+            ${optionsHtml}
+        </select>
+        <select class="form-control" id="expected-stay-unit" name="ExpectedStayUnit" onchange="">
+            <option selected="selected" value="">Day/Week/Month</option>            
+            <option value="1">Day(s)</option>
+            <option value="2">Week(s)</option>
+            <option value="3">Month(s)</option>
+        </select>
+      </div>
+    </div>    
+    `
+    element.insertAdjacentHTML('beforeend', htmlString);
+    return element;
   }
 }
