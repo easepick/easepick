@@ -18,6 +18,9 @@ export class Core {
     hidePicker: this.hidePicker.bind(this),
     show: this.show.bind(this),
   }
+  public exactDates: boolean = true;
+  public expectedStay: number | null = null;
+  public expectedStayUnit: number | null = null;
 
   public options: IPickerConfig = {
     doc: document,
@@ -171,6 +174,27 @@ export class Core {
     if (view === 'Footer' && this.datePicked.length) {
       const applyButton = target.querySelector('.apply-button');
       applyButton.disabled = false;
+    }
+
+    if (view === 'LengthOfStayFooter') {
+      const exactDatesOff = target.querySelector('#exact-off');
+      const lengthOfStaySection = target.querySelector('#length-of-stay');
+      const exactDatesOn = target.querySelector('#exact-on');
+      const exactDatesButton = target.querySelector('#exact-dates');
+      const topClear = target.querySelector('.top-button');
+      if (this.exactDates) {
+        exactDatesButton.checked = true;
+        exactDatesOff.hidden = true;
+        lengthOfStaySection.hidden = true;
+        exactDatesOn.hidden = false;
+        topClear.hidden = false;
+      } else {        
+        exactDatesButton.checked = false;
+        exactDatesOff.hidden = false;
+        lengthOfStaySection.hidden = false;
+        exactDatesOn.hidden = true;
+        topClear.hidden = true;
+      }      
     }
   }
 
@@ -333,6 +357,26 @@ export class Core {
   }
 
   /**
+   * 
+   * @returns DateTime
+   */
+  // public getExpectedStay(): number {
+  //   return this.options.expectedStay instanceof DateTime
+  //     ? this.options.date.clone()
+  //     : null;
+  // }
+
+  /**
+   * 
+   * @returns DateTime
+   */
+  // public getExpectedStayUnit(): DateTime {
+  //   return this.options.date instanceof DateTime
+  //     ? this.options.date.clone()
+  //     : null;
+  // }
+
+  /**
    * Parse `date` option or value of input element
    */
   public parseValues() {
@@ -441,6 +485,7 @@ export class Core {
    * @returns Boolean
    */
    public isClearButton(element: HTMLElement): boolean {
+    console.log(element.classList);
     return element.classList.contains('clear-button');
   }
 
@@ -451,7 +496,7 @@ export class Core {
    * @returns Boolean
    */
    public isExactDatesButton(element: HTMLElement): boolean {
-    return element.id == ('exact-dates');
+    return element.id == 'exact-dates';
   }
 
   /**
@@ -479,20 +524,29 @@ export class Core {
 
   public onClickExactDatesButton(element: HTMLElement) {
     if (this.isExactDatesButton(element)) {
-      var isChecked = element.getAttribute('checked');
+      var isChecked = element.checked;
       var exactOff = this.ui.shadowRoot.getElementById('exact-off');
       var exactOn = this.ui.shadowRoot.getElementById('exact-on');
       var lengthOfStay = this.ui.shadowRoot.getElementById('length-of-stay');
-      if (isChecked) {
-        exactOn.style.display = "block";
-        exactOff.style.display = "none";
-        lengthOfStay.style.display = "none";
+      if (isChecked == true) {
+        this.exactDates = true;
+        // exactOn.hidden = false;
+        // exactOff.hidden = true;
+        // lengthOfStay.hidden = true;
+        // console.log('2' + lengthOfStay.hidden);
+        var event = new Event('change', { 'bubbles': true});
+        element.dispatchEvent(event);
       } else {
-        exactOff.style.display = "block";
-        exactOn.style.display = "none";
-        lengthOfStay.style.display = "block";
+        this.exactDates = false;
+        // exactOff.hidden = false;
+        // console.log('3' + exactOff.hidden);
+        // exactOn.hidden = true;
+        // console.log('5' + exactOn.hidden);
+        // lengthOfStay.hidden = false;
+        // console.log('4' + lengthOfStay.hidden);
+        var event = new Event('change', { 'bubbles': true});
+        element.dispatchEvent(event);
       }
-      
       this.renderAll();
     }
   }

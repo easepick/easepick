@@ -343,14 +343,14 @@ export default class Calendar {
             <span class="exact-dates-text">Exact Dates</span>
 
             <label class="switch">
-                <input type="checkbox" id="exact-dates" checked>
+                <input type="checkbox" id="exact-dates" class="unit" checked>
                 <span class="slider round"></span>
             </label>
 
             <span class="exact-dates-label" id="exact-off">Off</span>
             <span class="exact-dates-label" id="exact-on">On</span>
 
-            <button class="pull-right sh-link clear-button">Clear</button>
+            <button class="pull-right sh-link clear-button unit top-button">Clear</button>
         </div>
     </div>
     <div class="row" id="length-of-stay">
@@ -366,10 +366,14 @@ export default class Calendar {
             <option value="2">Week(s)</option>
             <option value="3">Month(s)</option>
         </select>
+        <div style="position: relative;">
+          <button class="pull-right sh-link clear-button unit bottom-button" style="position:absolute; bottom:0; right:0;">Clear</button>
+        </div>
       </div>
     </div>    
     `
     element.insertAdjacentHTML('beforeend', htmlString);
+    //this.picker.trigger('view', { date, target: element, view: 'Footer' });
     return element;
   }
 }
