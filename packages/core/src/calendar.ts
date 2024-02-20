@@ -356,18 +356,18 @@ export default class Calendar {
     <div class="row" id="length-of-stay">
       <div class="col-12">
         <span class="exact-dates-text">Length of Stay</span>
-        <select class="form-control" id="expected-stay" name="ExpectedStay" onchange="">
+        <select class="form-control" id="expected-stay" name="ExpectedStay">
             <option selected="selected" value="">Any</option>
             ${optionsHtml}
         </select>
-        <select class="form-control" id="expected-stay-unit" name="ExpectedStayUnit" onchange="">
+        <select class="form-control" id="expected-stay-unit" name="ExpectedStayUnit">
             <option selected="selected" value="">Day/Week/Month</option>            
             <option value="1">Day(s)</option>
             <option value="2">Week(s)</option>
             <option value="3">Month(s)</option>
         </select>
-        <div style="position: relative;">
-          <button class="pull-right sh-link clear-button unit bottom-button" style="position:absolute; bottom:0; right:0;">Clear</button>
+        <div class="bottom-button">
+          <button class="pull-right sh-link clear-button unit">Clear</button>
         </div>
       </div>
     </div>    
