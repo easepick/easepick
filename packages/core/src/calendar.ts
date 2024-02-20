@@ -370,7 +370,13 @@ export default class Calendar {
           <button class="pull-right sh-link clear-button unit">Clear</button>
         </div>
       </div>
-    </div>    
+      <div class="col-12 error" id="error-block-range" name="ExpectedStayRangeError" hidden>
+        <p>Please choose a length of stay that is shorter than your selected date range</p>
+      </div>
+      <div class="col-12 error" id="error-block-unit" name="ExpectedStayUnitError" hidden>
+        <p>Please choose either Day, Week, or Month for your length of stay</p>
+      </div>
+    </div>
     `
     element.insertAdjacentHTML('beforeend', htmlString);
     //this.picker.trigger('view', { date, target: element, view: 'Footer' });

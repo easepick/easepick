@@ -211,7 +211,7 @@ export class Core {
 
         this.trigger('select', { date: this.getDate() });
 
-        this.hide();
+        //this.hide();
       } else {
         this.datePicked[0] = date;
 
@@ -537,15 +537,32 @@ export class Core {
     const { view, target }: IEventDetail = evt.detail;
     if (view === 'LengthOfStayFooter') {
       const expectedStayDropdown = target.querySelector('#expected-stay');
+
       expectedStayDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
         this.expectedStay = Number(target.value);
+        
+        var grandparentLevelDiv = target.parentElement.parentElement;
+        var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
+        if (!this.expectedStayUnit) {
+          noUnitSelectedError.hidden = false;
+        } else {
+          noUnitSelectedError.hidden = true;
+        }
       });
 
       const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
       expectedStayUnitDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
         this.expectedStayUnit = Number(target.value);
+
+        var grandparentLevelDiv = target.parentElement.parentElement;
+        var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
+        if (!this.expectedStayUnit) {
+          noUnitSelectedError.hidden = false;
+        } else {
+          noUnitSelectedError.hidden = true;
+        }
       });
     }
 
