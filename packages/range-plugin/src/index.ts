@@ -7,6 +7,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
   public tooltipElement: HTMLElement;
   public triggerElement: HTMLElement;
 
+  public isRangeError: boolean = false;
+  public isUnitError: boolean = false;
+
   public binds = {
     setStartDate: this.setStartDate.bind(this),
     setEndDate: this.setEndDate.bind(this),
@@ -22,6 +25,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     parseValues: this.parseValues.bind(this),
     updateValues: this.updateValues.bind(this),
     clear: this.clear.bind(this),
+    onClickClearButton: this.onClickClearButton.bind(this)
   };
 
   public options: IRangeConfig = {
@@ -70,6 +74,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.binds['_clear'] = this.picker.clear;
     this.binds['_onClickCalendarDay'] = this.picker.onClickCalendarDay;
     this.binds['_onClickApplyButton'] = this.picker.onClickApplyButton;
+    this.binds['_onClickClearButton'] = this.picker.onClickClearButton;;
 
     Object.defineProperties(this.picker, {
       setStartDate: {
@@ -111,6 +116,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       onClickApplyButton: {
         configurable: true,
         value: this.binds.onClickApplyButton,
+      },
+      onClickClearButton: {
+        configurable: true,
+        value: this.binds.onClickClearButton
       }
     });
 
@@ -147,7 +156,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
     this.checkIntlPluralLocales();
   }
-
 
   /**
    * - Called automatically via BasePlugin.detach() -
@@ -193,6 +201,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       onClickApplyButton: {
         configurable: true,
         value: this.binds['_onClickApplyButton'],
+      },
+      onClickClearButton: {
+        configurable: true,
+        value: this.binds['_onClickClearButton']
       }
     });
 
@@ -200,6 +212,12 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.picker.off('show', this.binds.onShow);
     this.picker.off('mouseenter', this.binds.onMouseEnter, true);
     this.picker.off('mouseleave', this.binds.onMouseLeave, true);
+  }
+
+  public onClickClearButton(element: HTMLElement) {
+    if (this.picker.isClearButton(element)) {
+      this.clear();
+    }
   }
 
   /**
@@ -306,6 +324,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.options.endDate = null;
     this.picker.datePicked.length = 0;
     this.updateValues();
+    this.picker.exactDates = true;
     this.picker.renderAll();
     this.picker.trigger('clear');
   }
@@ -367,6 +386,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         || this.picker.datePicked.length === 2;
       const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
       applyButton.disabled = !allowApplyBtn;
+    }
+
+    if (view === 'LengthOfStayFooter') {
+      var errorRange = target.querySelector('#error-block-range') as HTMLElement;
+      errorRange.hidden = !this.isRangeError;
+      var errorUnit = target.querySelector('#error-block-unit') as HTMLElement;
+      errorUnit.hidden = !this.isUnitError;
+      this.handleDropdown(event);
     }
   }
 
@@ -588,13 +615,19 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
           this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
 
-          this.picker.hide();
+          // Stopping auto-close to allow length of stay selection
+          //this.picker.hide();
         } else {
           this.hideTooltip();
 
           this.picker.renderAll();
         }
       }
+
+      var parent = element.parentElement.parentElement.parentElement.parentElement;
+      var target = parent.querySelector('#length-of-stay');
+      this.checkLengthOfStayErrors(target);
+      this.picker.renderAll();
     }
   }
 
@@ -703,5 +736,80 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    */
   private isContainer(element: HTMLElement): boolean {
     return element === this.picker.ui.container;
+  }
+
+  public handleDropdown(evt) {
+    const { view, target }: IEventDetail = evt.detail;
+    if (view === 'LengthOfStayFooter') {
+      const expectedStayDropdown = target.querySelector('#expected-stay');
+
+      expectedStayDropdown.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement;
+
+        const parent = target.parentElement.parentElement;
+        this.checkLengthOfStayErrors(parent);
+      });
+
+      const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
+      expectedStayUnitDropdown.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement;
+
+        const parent = target.parentElement.parentElement;
+        this.checkLengthOfStayErrors(parent);
+      });
+
+    }
+  }
+
+  private checkLengthOfStayErrors(target) {
+    var noUnitSelectedErrorBlock = target.querySelector('#error-block-unit') as HTMLElement;
+    if (!!this.picker.getExpectedStay() && !!!this.picker.getExpectedStayUnit()) {
+      this.isUnitError = true;
+      noUnitSelectedErrorBlock.hidden = false;
+    };
+    // Clear unit error
+    if (!!this.picker.getExpectedStay() && !!this.picker.getExpectedStayUnit()) {
+      this.isUnitError = false;
+      noUnitSelectedErrorBlock.hidden = true;
+    };
+
+    if (!!this.getStartDate() && !!this.getEndDate() && !!this.picker.getExpectedStay() && !!this.picker.getExpectedStayUnit()) {
+      var rangeErrorBlock = target.querySelector('#error-block-range') as HTMLElement;
+
+      var start = this.getStartDate().getTime();
+      var end = this.getEndDate().getTime();
+      var totalTime = end - start;
+      var totalDays = totalTime / (1000 * 60 * 60 * 24);
+      totalDays += 1;
+      console.log(totalDays);
+
+      var expectedStay = this.picker.getExpectedStay();
+      var unit = this.picker.getExpectedStayUnit();
+
+      switch (unit) {
+        case null:
+          this.picker.show();
+          this.isUnitError = true;
+          noUnitSelectedErrorBlock.hidden = false;
+          return;
+        case 1:
+          break;
+        case 2:
+          expectedStay = expectedStay * 7;
+          break;
+        case 3:
+          expectedStay = expectedStay * 28;
+          break;
+      }
+
+      if (totalDays < expectedStay) {
+        this.isRangeError = true;
+        this.picker.show();
+        rangeErrorBlock.hidden = false;
+      } else {
+        this.isRangeError = false;
+        rangeErrorBlock.hidden = true;
+      }
+    }
   }
 }

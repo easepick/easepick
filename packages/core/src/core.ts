@@ -211,7 +211,7 @@ export class Core {
 
         this.trigger('select', { date: this.getDate() });
 
-        //this.hide();
+        this.hide();
       } else {
         this.datePicked[0] = date;
 
@@ -480,7 +480,6 @@ export class Core {
   public clear() {
     this.options.date = null;
     this.datePicked.length = 0;
-    this.exactDates = true;
     this.updateValues();
     this.renderAll();
     this.trigger('clear');
@@ -500,7 +499,6 @@ export class Core {
 
   public onClickClearButton(element: HTMLElement) {
     if (this.isClearButton(element)) {
-      // For some reason won't hit this.clear() ??? Weird
       this.options.date = null;
       this.datePicked.length = 0;
       this.exactDates = true;
@@ -541,14 +539,8 @@ export class Core {
       expectedStayDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
         this.expectedStay = Number(target.value);
-        
-        var grandparentLevelDiv = target.parentElement.parentElement;
-        var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
-        if (!this.expectedStayUnit) {
-          noUnitSelectedError.hidden = false;
-        } else {
-          noUnitSelectedError.hidden = true;
-        }
+
+        //this.validateUnitSelected(target);
       });
 
       const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
@@ -556,17 +548,16 @@ export class Core {
         const target = e.target as HTMLSelectElement;
         this.expectedStayUnit = Number(target.value);
 
-        var grandparentLevelDiv = target.parentElement.parentElement;
-        var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
-        if (!this.expectedStayUnit) {
-          noUnitSelectedError.hidden = false;
-        } else {
-          noUnitSelectedError.hidden = true;
-        }
+        //this.validateUnitSelected(target);
       });
     }
-
   }
+
+  // private validateUnitSelected(target: HTMLElement) {
+  //   var grandparentLevelDiv = target.parentElement.parentElement;
+  //   var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
+  //   noUnitSelectedError.hidden = !!this.expectedStayUnit;
+  // }
 
   /**
    * Apply CSS passed by the user

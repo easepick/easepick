@@ -379,7 +379,6 @@ export default class Calendar {
     </div>
     `
     element.insertAdjacentHTML('beforeend', htmlString);
-    //this.picker.trigger('view', { date, target: element, view: 'Footer' });
     return element;
   }
 }
