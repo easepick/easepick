@@ -25,7 +25,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     parseValues: this.parseValues.bind(this),
     updateValues: this.updateValues.bind(this),
     clear: this.clear.bind(this),
-    onClickClearButton: this.onClickClearButton.bind(this)
+    onClickClearButton: this.onClickClearButton.bind(this),
+    getRangeError: this.getRangeError.bind(this),
+    getUnitError: this.getUnitError.bind(this)
   };
 
   public options: IRangeConfig = {
@@ -74,7 +76,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.binds['_clear'] = this.picker.clear;
     this.binds['_onClickCalendarDay'] = this.picker.onClickCalendarDay;
     this.binds['_onClickApplyButton'] = this.picker.onClickApplyButton;
-    this.binds['_onClickClearButton'] = this.picker.onClickClearButton;;
+    this.binds['_onClickClearButton'] = this.picker.onClickClearButton;
+    this.binds['_getRangeError'] = this.picker.getRangeError;
+    this.binds['_getUnitError'] = this.picker.getUnitError;
 
     Object.defineProperties(this.picker, {
       setStartDate: {
@@ -120,6 +124,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       onClickClearButton: {
         configurable: true,
         value: this.binds.onClickClearButton
+      },
+      getRangeError: {
+        configurable: false,
+        value: this.binds.getRangeError
+      },
+      getUnitError: {
+        configurable: false,
+        value: this.binds.getUnitError
       }
     });
 
@@ -205,6 +217,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       onClickClearButton: {
         configurable: true,
         value: this.binds['_onClickClearButton']
+      },
+      getRangeError: {
+        configurable: false,
+        value: this.binds['_getRangeError']
+      },
+      getUnitError: {
+        configurable: false,
+        value: this.binds['_getUnitError']
       }
     });
 
@@ -811,5 +831,13 @@ export class RangePlugin extends BasePlugin implements IPlugin {
         rangeErrorBlock.hidden = true;
       }
     }
+  }
+
+  public getRangeError(): boolean {
+    return this.isRangeError;
+  }
+
+  public getUnitError(): boolean {
+    return this.isUnitError;
   }
 }

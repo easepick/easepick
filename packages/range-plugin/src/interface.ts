@@ -28,6 +28,8 @@ declare module '@easepick/core' {
     setDateRange(start: Date | string | number, end: Date | string | number): void;
     getStartDate(): DateTime;
     getEndDate(): DateTime;
+    getRangeError(): boolean;
+    getUnitError(): boolean;
   }
 }
 
