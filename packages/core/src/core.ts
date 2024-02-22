@@ -539,25 +539,15 @@ export class Core {
       expectedStayDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
         this.expectedStay = Number(target.value);
-
-        //this.validateUnitSelected(target);
       });
 
       const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
       expectedStayUnitDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
         this.expectedStayUnit = Number(target.value);
-
-        //this.validateUnitSelected(target);
       });
     }
   }
-
-  // private validateUnitSelected(target: HTMLElement) {
-  //   var grandparentLevelDiv = target.parentElement.parentElement;
-  //   var noUnitSelectedError = grandparentLevelDiv.querySelector('#error-block-unit') as HTMLElement;
-  //   noUnitSelectedError.hidden = !!this.expectedStayUnit;
-  // }
 
   /**
    * Apply CSS passed by the user
@@ -647,6 +637,8 @@ export class Core {
     this.expectedStay = null;
     expectedStayUnit.value = '';
     this.expectedStayUnit = null;
+
+    (this.options.element as HTMLInputElement).placeholder = "When is your stay?";
   }
 
   private setupExactDatesOff(target) {
@@ -665,6 +657,8 @@ export class Core {
     topClear.hidden = true;
     expectedStay.value = this.expectedStay ? this.expectedStay : '';
     expectedStayUnit.value = this.expectedStayUnit ? this.expectedStayUnit : '';
+
+    (this.options.element as HTMLInputElement).placeholder = "How long is your stay?";
   }
 }
 

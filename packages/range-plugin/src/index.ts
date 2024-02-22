@@ -2,6 +2,7 @@ import { DateTime } from '@easepick/datetime';
 import { BasePlugin, IEventDetail, IPlugin } from '@easepick/base-plugin';
 import { IRangeConfig } from './interface';
 import './index.scss';
+import { ExpectedStayUnit } from './constants';
 
 export class RangePlugin extends BasePlugin implements IPlugin {
   public tooltipElement: HTMLElement;
@@ -305,6 +306,10 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     const elEnd = this.options.elementEnd;
     const start = this.picker.getStartDate();
     const end = this.picker.getEndDate();
+    const exactDates = this.picker.getExactDateIndicator();
+    const expectedStay = this.picker.getExpectedStay();
+    const expectedStayUnit = this.picker.getExpectedStayUnit();
+
     const startString = start instanceof Date
       ? start.format(this.picker.options.format, this.picker.options.lang)
       : '';
@@ -326,7 +331,14 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       }
     } else {
       const delimiter = startString || endString ? this.options.delimiter : '';
-      const formatString = `${startString}${delimiter}${endString}`;
+      let formatString = ''
+
+      if (!exactDates && !!expectedStay && !!expectedStayUnit) {
+        var expectedStayUnitValue = ExpectedStayUnit[expectedStayUnit].toLocaleLowerCase();
+        formatString = `${expectedStay}-${expectedStayUnitValue} stay | ${startString}${delimiter}${endString}`;
+      } else {
+        formatString = `${startString}${delimiter}${endString}`;        
+      }
 
       if (el instanceof HTMLInputElement) {
         el.value = formatString;
@@ -343,8 +355,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     this.options.startDate = null;
     this.options.endDate = null;
     this.picker.datePicked.length = 0;
-    this.updateValues();
     this.picker.exactDates = true;
+    this.updateValues();
     this.picker.renderAll();
     this.picker.trigger('clear');
   }
@@ -768,6 +780,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
         const parent = target.parentElement.parentElement;
         this.checkLengthOfStayErrors(parent);
+        this.updateValues();
       });
 
       const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
@@ -776,8 +789,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
         const parent = target.parentElement.parentElement;
         this.checkLengthOfStayErrors(parent);
+        this.updateValues();
       });
-
     }
   }
 
@@ -801,7 +814,6 @@ export class RangePlugin extends BasePlugin implements IPlugin {
       var totalTime = end - start;
       var totalDays = totalTime / (1000 * 60 * 60 * 24);
       totalDays += 1;
-      console.log(totalDays);
 
       var expectedStay = this.picker.getExpectedStay();
       var unit = this.picker.getExpectedStayUnit();
