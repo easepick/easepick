@@ -91,6 +91,7 @@ export default [
   getPackageConfig('time-plugin'),
   getPackageConfig('kbd-plugin'),
   getPackageConfig('amp-plugin'),
+  getPackageConfig('length-of-stay-plugin')
 
   // @easepick/bundle
   {
