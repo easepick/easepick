@@ -1,7 +1,7 @@
 import { DateTime } from '@easepick/datetime';
 import { IBaseConfig } from '@easepick/base-plugin';
 
-export interface IRangeConfig extends IBaseConfig {
+export interface ILengthOfStayPluginConfig extends IBaseConfig {
   elementEnd?: HTMLElement | string;
   startDate?: DateTime;
   endDate?: DateTime;
@@ -35,6 +35,6 @@ declare module '@easepick/core' {
 
 declare module '@easepick/core/dist/types' {
   interface IPickerConfig {
-    RangePlugin?: IRangeConfig;
+    LengthOfStayPlugin?: ILengthOfStayPluginConfig;
   }
 }

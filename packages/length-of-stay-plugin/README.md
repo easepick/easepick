@@ -1,6 +1,5 @@
-# @easepick/range-plugin
+# @easepick/length-of-stay-plugin
 
-[![npm version](https://badge.fury.io/js/@easepick%2Frange-plugin.svg)](https://www.npmjs.com/package/@easepick/range-plugin)
 
 > This package does not need to be installed if you are using [@easepick/bundle](https://easepick.com/packages/bundle).
 
@@ -9,7 +8,7 @@ Adds the ability to select a range of dates.
 
 ## Documentation
 
-[https://easepick.com/packages/range-plugin](https://easepick.com/packages/range-plugin)
+
 
 
 ## Options

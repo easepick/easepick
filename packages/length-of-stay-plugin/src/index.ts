@@ -1,10 +1,10 @@
 import { DateTime } from '@easepick/datetime';
 import { BasePlugin, IEventDetail, IPlugin } from '@easepick/base-plugin';
-import { IRangeConfig } from './interface';
+import { ILengthOfStayPluginConfig } from './interface';
 import './index.scss';
 import { ExpectedStayUnit } from './constants';
 
-export class RangePlugin extends BasePlugin implements IPlugin {
+export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
   public tooltipElement: HTMLElement;
   public triggerElement: HTMLElement;
 
@@ -31,7 +31,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
     getUnitError: this.getUnitError.bind(this)
   };
 
-  public options: IRangeConfig = {
+  public options: ILengthOfStayPluginConfig = {
     elementEnd: null,
     startDate: null,
     endDate: null,
@@ -59,7 +59,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
    * @returns String
    */
   public getName(): string {
-    return 'RangePlugin';
+    return 'LengthOfStayPlugin';
   }
 
   /**
