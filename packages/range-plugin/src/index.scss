@@ -1,0 +1,158 @@
+:host {
+  --color-bg-inrange: #d5dbff;
+  --color-bg-tooltip: #fff;
+  --color-fg-tooltip: #333;
+}
+
+.range-plugin-tooltip {
+  position: absolute;
+  margin-top: -4px;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+  background-color: var(--color-bg-tooltip);
+  color: var(--color-fg-tooltip);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+  font-size: 12px;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 1;
+
+  &:before {
+    position: absolute;
+    bottom: -5px;
+    left: calc(50% - 5px);
+    border-top: 5px solid rgba(0, 0, 0, 0.12);
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: "";
+  }
+
+  &:after {
+    position: absolute;
+    bottom: -4px;
+    left: calc(50% - 4px);
+    border-top: 4px solid var(--color-bg-tooltip);
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+    content: "";
+  }
+}
+
+.container.range-plugin {
+  .calendar {
+    > .days-grid {
+      > .day {
+        position: relative;
+
+        &.in-range {
+          &:last-of-type {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+          }
+        }
+
+        &.in-range {
+          border-radius: 0;
+          background-color: var(--color-bg-inrange);
+        }
+
+        &.start,
+        &.end {
+          background-color: var(--color-fg-primary);
+          color: var(--color-fg-selected);
+        }
+
+        &.start {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+
+          &:after {
+            content: "";
+            position: absolute;
+            border: 8px solid var(--color-fg-primary);
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+            right: -14px;
+            /*top: 11px;*/
+            z-index: 1;
+            pointer-events: none;
+          }
+
+          &.flipped {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+
+            &:after {
+              right: auto;
+              left: -14px;
+              border-right-color: var(--color-fg-primary);
+              border-left-color: transparent;
+            }
+          }
+        }
+
+        &.end {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+
+          &:after {
+            content: "";
+            position: absolute;
+            border: 8px solid var(--color-fg-primary);
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            left: -14px;
+            /*top: 11px;*/
+            z-index: 1;
+            pointer-events: none;
+          }
+
+          &.flipped {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+
+            &:after {
+              left: auto;
+              right: -14px;
+              border-left-color: var(--color-fg-primary);
+              border-right-color: transparent;
+            }
+          }
+        }
+
+        &.start.end {
+          border-radius: var(--border-radius);
+
+          &:after {
+            content: none;
+          }
+        }
+      }
+      > div {
+        &:not(.day) + .day.in-range {
+          border-top-left-radius: var(--border-radius);
+          border-bottom-left-radius: var(--border-radius);
+        }
+        &:nth-child(7n) {
+          &.in-range {
+            border-top-right-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+          }
+        }
+        &:nth-child(7n + 1) {
+          &.in-range {
+            border-top-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius);
+          }
+        }
+      }
+    }
+  }
+}

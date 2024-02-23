@@ -1,0 +1,28 @@
+{
+  "name": "@easepick/range-plugin",
+  "description": "Plugin for easepick.",
+  "version": "1.2.1",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@easepick/base-plugin": "^1.1.0"
+  },
+  "author": {
+    "name": "Rinat G.",
+    "email": "easepick@jsx4.com"
+  },
+  "license": "GPL-2.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/easepick/easepick.git",
+    "directory": "packages/range-plugin"
+  },
+  "homepage": "https://easepick.com",
+  "bugs": {
+    "url": "https://github.com/easepick/easepick/issues"
+  },
+  "files": [
+    "dist"
+  ]
+}
