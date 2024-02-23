@@ -1,56 +1,28 @@
-import { DateTime } from '@easepick/datetime';
 import { BasePlugin, IEventDetail, IPlugin } from '@easepick/base-plugin';
-import { ILengthOfStayPluginConfig } from './interface';
 import './index.scss';
 import { ExpectedStayUnit } from './constants';
+import { RangePlugin } from '@easepick/range-plugin';
+import { DateTime } from '@easepick/datetime';
 
 export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
-  public tooltipElement: HTMLElement;
-  public triggerElement: HTMLElement;
+  public dependencies = ['RangePlugin'];
+  public rangePlugin: RangePlugin;
 
   public isRangeError: boolean = false;
   public isUnitError: boolean = false;
+  
+  public exactDates: boolean = true;
+  public expectedStay: number | null = null;
+  public expectedStayUnit: number | null = null;
 
   public binds = {
-    setStartDate: this.setStartDate.bind(this),
-    setEndDate: this.setEndDate.bind(this),
-    setDateRange: this.setDateRange.bind(this),
-    getStartDate: this.getStartDate.bind(this),
-    getEndDate: this.getEndDate.bind(this),
     onView: this.onView.bind(this),
-    onShow: this.onShow.bind(this),
-    onMouseEnter: this.onMouseEnter.bind(this),
-    onMouseLeave: this.onMouseLeave.bind(this),
-    onClickCalendarDay: this.onClickCalendarDay.bind(this),
-    onClickApplyButton: this.onClickApplyButton.bind(this),
-    parseValues: this.parseValues.bind(this),
+    onClick: this.onClick.bind(this),
     updateValues: this.updateValues.bind(this),
     clear: this.clear.bind(this),
-    onClickClearButton: this.onClickClearButton.bind(this),
     getRangeError: this.getRangeError.bind(this),
-    getUnitError: this.getUnitError.bind(this)
-  };
-
-  public options: ILengthOfStayPluginConfig = {
-    elementEnd: null,
-    startDate: null,
-    endDate: null,
-    repick: false,
-    strict: true,
-    delimiter: ' - ',
-    tooltip: true,
-    tooltipNumber: (num: number) => {
-      return num;
-    },
-    locale: {
-      zero: '',
-      one: 'day',
-      two: '',
-      few: '',
-      many: '',
-      other: 'days',
-    },
-    documentClick: this.hidePicker.bind(this),
+    getUnitError: this.getUnitError.bind(this),    
+    onClickCalendarDay: this.onClickCalendarDay.bind(this),
   };
 
   /**
@@ -67,45 +39,13 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
    * The function execute on initialize the picker
    */
   public onAttach(): void {
-    this.binds['_setStartDate'] = this.picker.setStartDate;
-    this.binds['_setEndDate'] = this.picker.setEndDate;
-    this.binds['_setDateRange'] = this.picker.setDateRange;
-    this.binds['_getStartDate'] = this.picker.getStartDate;
-    this.binds['_getEndDate'] = this.picker.getEndDate;
-    this.binds['_parseValues'] = this.picker.parseValues;
     this.binds['_updateValues'] = this.picker.updateValues;
-    this.binds['_clear'] = this.picker.clear;
-    this.binds['_onClickCalendarDay'] = this.picker.onClickCalendarDay;
-    this.binds['_onClickApplyButton'] = this.picker.onClickApplyButton;
-    this.binds['_onClickClearButton'] = this.picker.onClickClearButton;
     this.binds['_getRangeError'] = this.picker.getRangeError;
     this.binds['_getUnitError'] = this.picker.getUnitError;
+    this.binds['_clear'] = this.picker.clear;    
+    this.binds['_onClickCalendarDay'] = this.picker.onClickCalendarDay;
 
     Object.defineProperties(this.picker, {
-      setStartDate: {
-        configurable: true,
-        value: this.binds.setStartDate,
-      },
-      setEndDate: {
-        configurable: true,
-        value: this.binds.setEndDate,
-      },
-      setDateRange: {
-        configurable: true,
-        value: this.binds.setDateRange,
-      },
-      getStartDate: {
-        configurable: true,
-        value: this.binds.getStartDate,
-      },
-      getEndDate: {
-        configurable: true,
-        value: this.binds.getEndDate,
-      },
-      parseValues: {
-        configurable: true,
-        value: this.binds.parseValues,
-      },
       updateValues: {
         configurable: true,
         value: this.binds.updateValues,
@@ -114,18 +54,6 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
         configurable: true,
         value: this.binds.clear,
       },
-      onClickCalendarDay: {
-        configurable: true,
-        value: this.binds.onClickCalendarDay,
-      },
-      onClickApplyButton: {
-        configurable: true,
-        value: this.binds.onClickApplyButton,
-      },
-      onClickClearButton: {
-        configurable: true,
-        value: this.binds.onClickClearButton
-      },
       getRangeError: {
         configurable: false,
         value: this.binds.getRangeError
@@ -133,41 +61,14 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
       getUnitError: {
         configurable: false,
         value: this.binds.getUnitError
+      },      
+      onClickCalendarDay: {
+        configurable: true,
+        value: this.binds.onClickCalendarDay,
       }
-    });
-
-    if (this.options.elementEnd) {
-      if (!(this.options.elementEnd instanceof HTMLElement)) {
-        this.options.elementEnd = this.picker
-          .options
-          .doc.querySelector(this.options.elementEnd) as HTMLElement;
-      }
-
-      if (this.options.elementEnd instanceof HTMLInputElement) {
-        this.options.elementEnd.readOnly = this.picker.options.readonly;
-      }
-
-      if (typeof this.picker.options.documentClick === 'function') {
-        document.removeEventListener('click', this.picker.options.documentClick, true);
-
-        if (typeof this.options.documentClick === 'function') {
-          document.addEventListener('click', this.options.documentClick, true);
-        }
-      }
-
-      (this.options.elementEnd as HTMLElement).addEventListener('click', this.picker.show.bind(this.picker));
-    }
-
-    this.options.repick = this.options.repick && this.options.elementEnd instanceof HTMLElement;
-
-    this.picker.options.date = null;
-
+    });    
     this.picker.on('view', this.binds.onView);
-    this.picker.on('show', this.binds.onShow);
-    this.picker.on('mouseenter', this.binds.onMouseEnter, true);
-    this.picker.on('mouseleave', this.binds.onMouseLeave, true);
-
-    this.checkIntlPluralLocales();
+    this.picker.on('click', this.binds.onClick);
   }
 
   /**
@@ -175,30 +76,6 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
    */
   public onDetach(): void {
     Object.defineProperties(this.picker, {
-      setStartDate: {
-        configurable: true,
-        value: this.binds['_setStartDate'],
-      },
-      setEndDate: {
-        configurable: true,
-        value: this.binds['_setEndDate'],
-      },
-      setDateRange: {
-        configurable: true,
-        value: this.binds['_setDateRange'],
-      },
-      getStartDate: {
-        configurable: true,
-        value: this.binds['_getStartDate'],
-      },
-      getEndDate: {
-        configurable: true,
-        value: this.binds['_getEndDate'],
-      },
-      parseValues: {
-        configurable: true,
-        value: this.binds['_parseValues'],
-      },
       updateValues: {
         configurable: true,
         value: this.binds['_updateValues'],
@@ -206,18 +83,6 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
       clear: {
         configurable: true,
         value: this.binds['_clear'],
-      },
-      onClickCalendarDay: {
-        configurable: true,
-        value: this.binds['_onClickCalendarDay'],
-      },
-      onClickApplyButton: {
-        configurable: true,
-        value: this.binds['_onClickApplyButton'],
-      },
-      onClickClearButton: {
-        configurable: true,
-        value: this.binds['_onClickClearButton']
       },
       getRangeError: {
         configurable: false,
@@ -229,72 +94,35 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
       }
     });
 
-    this.picker.off('view', this.binds.onView);
-    this.picker.off('show', this.binds.onShow);
-    this.picker.off('mouseenter', this.binds.onMouseEnter, true);
-    this.picker.off('mouseleave', this.binds.onMouseLeave, true);
+    this.picker.off('view', this.binds.onView);    
+    this.picker.off('click', this.binds.onClick);
   }
 
-  public onClickClearButton(element: HTMLElement) {
-    if (this.picker.isClearButton(element)) {
-      this.clear();
-    }
+  public getExactDateIndicator(): boolean {
+    return this.exactDates;
   }
 
-  /**
-   * Parse `startDate`, `endDate` options or value of input elements
-   */
-  private parseValues() {
-    if (this.options.startDate || this.options.endDate) {
-      if (this.options.strict) {
-        if (this.options.startDate && this.options.endDate) {
-          this.setDateRange(this.options.startDate, this.options.endDate);
-        } else {
-          this.options.startDate = null;
-          this.options.endDate = null;
-        }
+  public getExpectedStay(): number | null {
+    return this.expectedStay;
+  }
+
+  public getExpectedStayUnit(): number | null {
+    return this.expectedStayUnit;
+  }
+
+  public isExactDatesButton(element: HTMLElement): boolean {
+    return element.id == 'exact-dates';
+  }
+
+  public onClickExactDatesButton(element: HTMLElement) {
+    if (this.isExactDatesButton(element)) {
+      var isChecked = element.checked;
+      if (isChecked == true) {
+        this.exactDates = true;
       } else {
-        if (this.options.startDate) {
-          this.setStartDate(this.options.startDate)
-        }
-
-        if (this.options.endDate) {
-          this.setEndDate(this.options.endDate);
-        }
+        this.exactDates = false;
       }
-      return;
-    }
-
-    if (this.options.elementEnd) {
-      if (this.options.strict) {
-        if (this.picker.options.element instanceof HTMLInputElement
-          && this.picker.options.element.value.length
-          && this.options.elementEnd instanceof HTMLInputElement
-          && this.options.elementEnd.value.length) {
-          this.setDateRange(this.picker.options.element.value, this.options.elementEnd.value);
-        }
-      } else {
-        if (this.picker.options.element instanceof HTMLInputElement
-          && this.picker.options.element.value.length) {
-          this.setStartDate(this.picker.options.element.value);
-        }
-
-        if (this.options.elementEnd instanceof HTMLInputElement
-          && this.options.elementEnd.value.length) {
-          this.setEndDate(this.options.elementEnd.value);
-        }
-      }
-    } else if (this.picker.options.element instanceof HTMLInputElement && this.picker.options.element.value.length) {
-      const [_start, _end] = this.picker.options.element.value.split(this.options.delimiter);
-
-      if (this.options.strict) {
-        if (_start && _end) {
-          this.setDateRange(_start, _end);
-        }
-      } else {
-        if (_start) this.setStartDate(_start);
-        if (_end) this.setEndDate(_end);
-      }
+      this.picker.renderAll();
     }
   }
 
@@ -303,12 +131,12 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
    */
   private updateValues() {
     const el = this.picker.options.element;
-    const elEnd = this.options.elementEnd;
+    const elEnd = this.rangePlugin.options.elementEnd;
     const start = this.picker.getStartDate();
     const end = this.picker.getEndDate();
-    const exactDates = this.picker.getExactDateIndicator();
-    const expectedStay = this.picker.getExpectedStay();
-    const expectedStayUnit = this.picker.getExpectedStayUnit();
+    const exactDates = this.getExactDateIndicator();
+    const expectedStay = this.getExpectedStay();
+    const expectedStayUnit = this.getExpectedStayUnit();
 
     const startString = start instanceof Date
       ? start.format(this.picker.options.format, this.picker.options.lang)
@@ -330,7 +158,7 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
         elEnd.innerText = endString;
       }
     } else {
-      const delimiter = startString || endString ? this.options.delimiter : '';
+      const delimiter = startString || endString ? this.rangePlugin.options.delimiter : '';
       let formatString = ''
 
       if (!exactDates && !!expectedStay && !!expectedStayUnit) {
@@ -352,29 +180,23 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
    * Clear selection
    */
   private clear() {
-    this.options.startDate = null;
-    this.options.endDate = null;
+    this.rangePlugin.options.startDate = null;
+    this.rangePlugin.options.endDate = null;
     this.picker.datePicked.length = 0;
-    this.picker.exactDates = true;
+    this.exactDates = true;
     this.updateValues();
     this.picker.renderAll();
     this.picker.trigger('clear');
   }
 
-  /**
-   * Function `show` event
-   * 
-   * @param event 
-   */
-  private onShow(event) {
-    const { target }: IEventDetail = event.detail;
-    this.triggerElement = target;
+  public isClearButton(element: HTMLElement): boolean {
+    return element.classList.contains('clear-button');
+  }
 
-    if (this.picker.options.scrollToDate && this.getStartDate() instanceof Date) {
-      this.picker.gotoDate(this.getStartDate());
+  public onClickClearButton(element: HTMLElement) {
+    if (this.isClearButton(element)) {
+      this.clear();
     }
-
-    this.initializeRepick();
   }
 
   /**
@@ -385,398 +207,89 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
    */
   private onView(event: CustomEvent) {
     const { view, target }: IEventDetail = event.detail;
+    this.rangePlugin = this.picker.PluginManager.getInstance('RangePlugin');
 
     if (view === 'Main') {
-      this.tooltipElement = document.createElement('span');
-      this.tooltipElement.className = 'range-plugin-tooltip';
-      target.appendChild(this.tooltipElement);
+      var container = this.getLengthOfStaySection();
+      target.appendChild(container);
+
+      this.picker.trigger('view', { view: 'LengthOfStay', target: container });
     }
 
-    if (view === 'CalendarDay') {
-      const date = new DateTime(target.dataset.time);
-      const datePicked = this.picker.datePicked;
-      const start = datePicked.length ? this.picker.datePicked[0] : this.getStartDate();
-      const end = datePicked.length ? this.picker.datePicked[1] : this.getEndDate();
-
-      if (start && start.isSame(date, 'day')) {
-        target.classList.add('start');
-      }
-
-      if (start && end) {
-        if (end.isSame(date, 'day')) {
-          target.classList.add('end');
-        }
-
-        if (date.isBetween(start, end)) {
-          target.classList.add('in-range');
-        }
-      }
-    }
-
-    if (view === 'Footer') {
-      const allowApplyBtn = (this.picker.datePicked.length === 1 && !this.options.strict)
-        || this.picker.datePicked.length === 2;
-      const applyButton = target.querySelector('.apply-button') as HTMLButtonElement;
-      applyButton.disabled = !allowApplyBtn;
-    }
-
-    if (view === 'LengthOfStayFooter') {
+    if (view === 'LengthOfStay') {
       var errorRange = target.querySelector('#error-block-range') as HTMLElement;
       errorRange.hidden = !this.isRangeError;
       var errorUnit = target.querySelector('#error-block-unit') as HTMLElement;
       errorUnit.hidden = !this.isUnitError;
+
+      this.exactDates ? this.setupExactDatesOn(target) : this.setupExactDatesOff(target);
       this.handleDropdown(event);
     }
   }
 
-  /**
-   * Function for documentClick option
-   * Allows the picker to close when the user clicks outside
-   * 
-   * @param e 
-   */
-  private hidePicker(e) {
-    let target = e.target;
-    let host = null;
+  private getLengthOfStaySection(): HTMLElement {
+    const element = document.createElement('div');
+    element.id = 'search-type-section';
+    element.className = 'row';
+    var optionsHtml = '';
 
-    if (target.shadowRoot) {
-      target = e.composedPath()[0];
-      host = target.getRootNode().host;
+    for (var i = 1; i <= 30; i++) {
+      optionsHtml += '<option value="' + `${i}` + '">' + `${i}` + '</option>\n';
     }
 
-    if (this.picker.isShown()
-      && host !== this.picker.ui.wrapper
-      && target !== this.picker.options.element
-      && target !== this.options.elementEnd) {
-      this.picker.hide();
-    }
-  }
-
-  /**
-   * Set startDate programmatically
-   * 
-   * @param date 
-   */
-  private setStartDate(date: Date | string | number) {
-    const d = new DateTime(date, this.picker.options.format);
-    this.options.startDate = d ? d.clone() : null;
-
-    this.updateValues();
-
-    this.picker.renderAll();
-  }
-
-  /**
-   * Set endDate programmatically
-   * 
-   * @param date 
-   */
-  private setEndDate(date: Date | string | number) {
-    const d = new DateTime(date, this.picker.options.format);
-    this.options.endDate = d ? d.clone() : null;
-
-    this.updateValues();
-
-    this.picker.renderAll();
-  }
-
-  /**
-   * Set date range programmatically
-   * 
-   * @param start 
-   * @param end 
-   */
-  private setDateRange(start: Date | string | number, end: Date | string | number) {
-    const startDate = new DateTime(start, this.picker.options.format);
-    const endDate = new DateTime(end, this.picker.options.format);
-
-    this.options.startDate = startDate ? startDate.clone() : null;
-    this.options.endDate = endDate ? endDate.clone() : null;
-
-    this.updateValues();
-
-    this.picker.renderAll();
-  }
-
-  /**
-   * 
-   * @returns DateTime
-   */
-  private getStartDate(): DateTime {
-    return this.options.startDate instanceof Date ? this.options.startDate.clone() : null;
-  }
-
-  /**
-   * 
-   * @returns 
-   */
-  private getEndDate(): DateTime {
-    return this.options.endDate instanceof Date ? this.options.endDate.clone() : null;
-  }
-
-  /**
-   * Handle `mouseenter` event
-   * 
-   * @param event 
-   */
-  private onMouseEnter(event) {
-    const target = event.target;
-
-    if (target instanceof HTMLElement) {
-      if (this.isContainer(target)) {
-        this.initializeRepick();
-      }
-
-      const element = target.closest('.unit');
-
-      if (!(element instanceof HTMLElement)) return;
-
-      if (this.picker.isCalendarDay(element)) {
-        if (this.picker.datePicked.length !== 1) return;
-
-        let date1 = this.picker.datePicked[0].clone();
-        let date2 = new DateTime(element.dataset.time);
-        let isFlipped = false;
-
-        if (date1.isAfter(date2, 'day')) {
-          const tempDate = date1.clone();
-          date1 = date2.clone();
-          date2 = tempDate.clone();
-          isFlipped = true;
-        }
-
-        const days = [...this.picker.ui.container.querySelectorAll('.day')];
-
-        days.forEach((d: HTMLElement) => {
-          const date = new DateTime(d.dataset.time);
-          const dayView = this.picker.Calendar.getCalendarDayView(date);
-
-          if (date.isBetween(date1, date2)) {
-            dayView.classList.add('in-range');
-          }
-
-          if (date.isSame(this.picker.datePicked[0], 'day')) {
-            dayView.classList.add('start');
-            dayView.classList.toggle('flipped', isFlipped);
-          }
-
-          if (d === element) {
-            dayView.classList.add('end');
-            dayView.classList.toggle('flipped', isFlipped);
-          }
-
-          d.className = dayView.className;
-        });
-
-        if (this.options.tooltip) {
-          const diff = this.options.tooltipNumber(date2.diff(date1, 'day') + 1);
-
-          if (diff > 0) {
-            const pluralKey = new Intl.PluralRules(this.picker.options.lang).select(diff);
-            const text = `${diff} ${this.options.locale[pluralKey]}`;
-
-            this.showTooltip(element, text);
-          } else {
-            this.hideTooltip();
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Handle `mouseleave` event
-   * 
-   * @param event 
-   */
-  private onMouseLeave(event) {
-    if (this.isContainer(event.target) && this.options.repick) {
-      const start = this.getStartDate();
-      const end = this.getEndDate();
-
-      if (start && end) {
-        this.picker.datePicked.length = 0;
-
-        this.picker.renderAll();
-      }
-    }
-  }
-
-  private onClickCalendarDay(element: HTMLElement) {
-    if (this.picker.isCalendarDay(element)) {
-
-      if (this.picker.datePicked.length === 2) {
-        this.picker.datePicked.length = 0;
-      }
-
-      const date = new DateTime(element.dataset.time);
-      this.picker.datePicked[this.picker.datePicked.length] = date;
-
-      if (this.picker.datePicked.length === 2 && this.picker.datePicked[0].isAfter(this.picker.datePicked[1])) {
-        const tempDate = this.picker.datePicked[1].clone();
-        this.picker.datePicked[1] = this.picker.datePicked[0].clone();
-        this.picker.datePicked[0] = tempDate.clone();
-      }
-
-      if (this.picker.datePicked.length === 1 || !this.picker.options.autoApply) {
-        this.picker.trigger('preselect', {
-          start: this.picker.datePicked[0] instanceof Date ? this.picker.datePicked[0].clone() : null,
-          end: this.picker.datePicked[1] instanceof Date ? this.picker.datePicked[1].clone() : null,
-        });
-      }
-
-      if (this.picker.datePicked.length === 1) {
-        if (!this.options.strict && this.picker.options.autoApply) {
-          if (this.picker.options.element === this.triggerElement) {
-            this.setStartDate(this.picker.datePicked[0]);
-          }
-
-          if (this.options.elementEnd === this.triggerElement) {
-            this.setEndDate(this.picker.datePicked[0]);
-          }
-
-          this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
-        }
-
-        this.picker.renderAll();
-      }
-
-      if (this.picker.datePicked.length === 2) {
-        if (this.picker.options.autoApply) {
-          this.setDateRange(this.picker.datePicked[0], this.picker.datePicked[1]);
-
-          this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
-
-          // Stopping auto-close to allow length of stay selection
-          //this.picker.hide();
-        } else {
-          this.hideTooltip();
-
-          this.picker.renderAll();
-        }
-      }
-
-      var parent = element.parentElement.parentElement.parentElement.parentElement;
-      var target = parent.querySelector('#length-of-stay');
-      this.checkLengthOfStayErrors(target);
-      this.picker.renderAll();
-    }
-  }
-
-  private onClickApplyButton(element: HTMLElement) {
-    if (this.picker.isApplyButton(element)) {
-      if (this.picker.datePicked.length === 1 && !this.options.strict) {
-        if (this.picker.options.element === this.triggerElement) {
-          this.options.endDate = null;
-          this.setStartDate(this.picker.datePicked[0]);
-        }
-
-        if (this.options.elementEnd === this.triggerElement) {
-          this.options.startDate = null;
-          this.setEndDate(this.picker.datePicked[0]);
-        }
-      }
-
-      if (this.picker.datePicked.length === 2) {
-        this.setDateRange(this.picker.datePicked[0], this.picker.datePicked[1]);
-      }
-
-      this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
-
-      this.picker.hide();
-    }
-  }
-
-  /**
-   * Displays tooltip of selected days
-   * 
-   * @param element 
-   * @param text 
-   */
-  private showTooltip(element: HTMLElement, text: string) {
-    this.tooltipElement.style.visibility = 'visible';
-    this.tooltipElement.innerHTML = text;
-
-    const container = this.picker.ui.container.getBoundingClientRect();
-    const tooltip = this.tooltipElement.getBoundingClientRect();
-    const day = element.getBoundingClientRect();
-    let top = day.top;
-    let left = day.left;
-
-    top -= container.top;
-    left -= container.left;
-
-    top -= tooltip.height;
-    left -= tooltip.width / 2;
-    left += day.width / 2;
-
-    this.tooltipElement.style.top = `${top}px`;
-    this.tooltipElement.style.left = `${left}px`;
-  }
-
-  /**
-   * Hide tooltip
-   */
-  private hideTooltip() {
-    this.tooltipElement.style.visibility = 'hidden';
-  }
-
-  /**
-   * Determines if the locale option contains all required plurals
-   */
-  private checkIntlPluralLocales() {
-    if (!this.options.tooltip) return;
-
-    const rules = [...new Set([
-      new Intl.PluralRules(this.picker.options.lang).select(0),
-      new Intl.PluralRules(this.picker.options.lang).select(1),
-      new Intl.PluralRules(this.picker.options.lang).select(2),
-      new Intl.PluralRules(this.picker.options.lang).select(6),
-      new Intl.PluralRules(this.picker.options.lang).select(18),
-    ])];
-
-    const locales = Object.keys(this.options.locale);
-
-    if (!rules.every(x => locales.includes(x))) {
-      console.warn(`${this.getName()}: provide locales (${rules.join(', ')}) for correct tooltip text.`);
-    }
-  }
-
-  /**
-   * Handle `repick` option
-   */
-  private initializeRepick() {
-    if (!this.options.repick) return;
-
-    const start = this.getStartDate();
-    const end = this.getEndDate();
-
-    if (end && this.triggerElement === this.picker.options.element) {
-      this.picker.datePicked[0] = end;
-    }
-
-    if (start && this.triggerElement === this.options.elementEnd) {
-      this.picker.datePicked[0] = start;
-    }
-  }
-
-  /**
-   * Determines if the element is the picker container
-   *  
-   * @param element 
-   * @returns Boolean
-   */
-  private isContainer(element: HTMLElement): boolean {
-    return element === this.picker.ui.container;
+    const htmlString = `
+    <div class="row">
+        <div class="col-12">
+            <span class="exact-dates-text">Exact Dates</span>
+
+            <label class="switch">
+                <input type="checkbox" id="exact-dates" class="unit" checked>
+                <span class="slider round"></span>
+            </label>
+
+            <span class="exact-dates-label" id="exact-off">Off</span>
+            <span class="exact-dates-label" id="exact-on">On</span>
+
+            <button class="pull-right sh-link clear-button unit top-button">Clear</button>
+        </div>
+    </div>
+    <div class="row" id="length-of-stay">
+      <div class="col-12">
+        <span class="exact-dates-text">Length of Stay</span>
+        <select class="form-control" id="expected-stay" name="ExpectedStay">
+            <option selected="selected" value="">Any</option>
+            ${optionsHtml}
+        </select>
+        <select class="form-control" id="expected-stay-unit" name="ExpectedStayUnit">
+            <option selected="selected" value="">Day/Week/Month</option>            
+            <option value="1">Day(s)</option>
+            <option value="2">Week(s)</option>
+            <option value="3">Month(s)</option>
+        </select>
+        <div class="bottom-button">
+          <button class="pull-right sh-link clear-button unit">Clear</button>
+        </div>
+      </div>
+      <div class="col-12 error" id="error-block-range" name="ExpectedStayRangeError" hidden>
+        <p>Please choose a length of stay that is shorter than your selected date range</p>
+      </div>
+      <div class="col-12 error" id="error-block-unit" name="ExpectedStayUnitError" hidden>
+        <p>Please choose either Day, Week, or Month for your length of stay</p>
+      </div>
+    </div>
+    `
+    element.insertAdjacentHTML('beforeend', htmlString);
+    return element;
   }
 
   public handleDropdown(evt) {
     const { view, target }: IEventDetail = evt.detail;
-    if (view === 'LengthOfStayFooter') {
+    if (view === 'LengthOfStay') {
       const expectedStayDropdown = target.querySelector('#expected-stay');
 
       expectedStayDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
+        this.expectedStay = Number(target.value);
 
         const parent = target.parentElement.parentElement;
         this.checkLengthOfStayErrors(parent);
@@ -786,6 +299,7 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
       const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
       expectedStayUnitDropdown.addEventListener('change', (e) => {
         const target = e.target as HTMLSelectElement;
+        this.expectedStayUnit = Number(target.value);
 
         const parent = target.parentElement.parentElement;
         this.checkLengthOfStayErrors(parent);
@@ -796,27 +310,27 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
 
   private checkLengthOfStayErrors(target) {
     var noUnitSelectedErrorBlock = target.querySelector('#error-block-unit') as HTMLElement;
-    if (!!this.picker.getExpectedStay() && !!!this.picker.getExpectedStayUnit()) {
+    if (!!this.getExpectedStay() && !!!this.getExpectedStayUnit()) {
       this.isUnitError = true;
       noUnitSelectedErrorBlock.hidden = false;
     };
     // Clear unit error
-    if (!!this.picker.getExpectedStay() && !!this.picker.getExpectedStayUnit()) {
+    if (!!this.getExpectedStay() && !!this.getExpectedStayUnit()) {
       this.isUnitError = false;
       noUnitSelectedErrorBlock.hidden = true;
     };
 
-    if (!!this.getStartDate() && !!this.getEndDate() && !!this.picker.getExpectedStay() && !!this.picker.getExpectedStayUnit()) {
+    if (!!this.picker.getStartDate() && !!this.picker.getEndDate() && !!this.getExpectedStay() && !!this.getExpectedStayUnit()) {
       var rangeErrorBlock = target.querySelector('#error-block-range') as HTMLElement;
 
-      var start = this.getStartDate().getTime();
-      var end = this.getEndDate().getTime();
+      var start = this.picker.getStartDate().getTime();
+      var end = this.picker.getEndDate().getTime();
       var totalTime = end - start;
       var totalDays = totalTime / (1000 * 60 * 60 * 24);
       totalDays += 1;
 
-      var expectedStay = this.picker.getExpectedStay();
-      var unit = this.picker.getExpectedStayUnit();
+      var expectedStay = this.getExpectedStay();
+      var unit = this.getExpectedStayUnit();
 
       switch (unit) {
         case null:
@@ -845,11 +359,174 @@ export class LengthOfStayPlugin extends BasePlugin implements IPlugin {
     }
   }
 
+  private setupExactDatesOn(target) {
+    const exactDatesOff = target.querySelector('#exact-off');
+    const lengthOfStaySection = target.querySelector('#length-of-stay');
+    const exactDatesOn = target.querySelector('#exact-on');
+    const exactDatesButton = target.querySelector('#exact-dates');
+    const topClear = target.querySelector('.top-button');
+    const expectedStay = target.querySelector('#expected-stay');
+    const expectedStayUnit = target.querySelector('#expected-stay-unit');
+
+    exactDatesButton.checked = true;
+    exactDatesOff.hidden = true;
+    lengthOfStaySection.hidden = true;
+    exactDatesOn.hidden = false;
+    topClear.hidden = false;
+
+    expectedStay.value = '';
+    this.expectedStay = null;
+    expectedStayUnit.value = '';
+    this.expectedStayUnit = null;
+
+    (this.picker.options.element as HTMLInputElement).placeholder = "When is your stay?";
+  }
+
+  private setupExactDatesOff(target) {
+    const exactDatesOff = target.querySelector('#exact-off');
+    const lengthOfStaySection = target.querySelector('#length-of-stay');
+    const exactDatesOn = target.querySelector('#exact-on');
+    const exactDatesButton = target.querySelector('#exact-dates');
+    const topClear = target.querySelector('.top-button');
+    const expectedStay = target.querySelector('#expected-stay');
+    const expectedStayUnit = target.querySelector('#expected-stay-unit');
+
+    exactDatesButton.checked = false;
+    exactDatesOff.hidden = false;
+    lengthOfStaySection.hidden = false;
+    exactDatesOn.hidden = true;
+    topClear.hidden = true;
+    expectedStay.value = this.expectedStay ? this.expectedStay : '';
+    expectedStayUnit.value = this.expectedStayUnit ? this.expectedStayUnit : '';
+
+    (this.picker.options.element as HTMLInputElement).placeholder = "How long is your stay?";
+  }
+
   public getRangeError(): boolean {
     return this.isRangeError;
   }
 
   public getUnitError(): boolean {
     return this.isUnitError;
+  }
+
+  /**
+   * Handle click event
+   * 
+   * @param event 
+   */
+  private onClick(event) {
+    const target = event.target;
+    if (target instanceof HTMLElement) {
+      const element = target.closest('.unit') as HTMLElement;
+
+      if (!(element instanceof HTMLElement)) return;
+
+      this.onClickExactDatesButton(element);
+      this.onClickClearButton(element);
+    }
+  }
+
+  /** This section basically recreates Range functionality but with small tweaks.
+   * Sets values for Range options.
+   */
+  private onClickCalendarDay(element: HTMLElement) {
+    if (this.picker.isCalendarDay(element)) {
+
+      if (this.picker.datePicked.length === 2) {
+        this.picker.datePicked.length = 0;
+      }
+
+      const date = new DateTime(element.dataset.time);
+      this.picker.datePicked[this.picker.datePicked.length] = date;
+
+      if (this.picker.datePicked.length === 2 && this.picker.datePicked[0].isAfter(this.picker.datePicked[1])) {
+        const tempDate = this.picker.datePicked[1].clone();
+        this.picker.datePicked[1] = this.picker.datePicked[0].clone();
+        this.picker.datePicked[0] = tempDate.clone();
+      }
+
+      if (this.picker.datePicked.length === 1 || !this.picker.options.autoApply) {
+        this.picker.trigger('preselect', {
+          start: this.picker.datePicked[0] instanceof Date ? this.picker.datePicked[0].clone() : null,
+          end: this.picker.datePicked[1] instanceof Date ? this.picker.datePicked[1].clone() : null,
+        });
+      }
+
+      if (this.picker.datePicked.length === 1) {
+        if (!this.rangePlugin.options.strict && this.picker.options.autoApply) {
+          if (this.picker.options.element === this.rangePlugin.triggerElement) {
+            this.setStartDate(this.picker.datePicked[0]);
+          }
+
+          if (this.rangePlugin.options.elementEnd === this.rangePlugin.triggerElement) {
+            this.setEndDate(this.picker.datePicked[0]);
+          }
+
+          this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
+        }
+
+        this.picker.renderAll();
+      }
+
+      if (this.picker.datePicked.length === 2) {
+        if (this.picker.options.autoApply) {
+          this.setDateRange(this.picker.datePicked[0], this.picker.datePicked[1]);
+
+          this.picker.trigger('select', { start: this.picker.getStartDate(), end: this.picker.getEndDate() });
+
+          // Stopping auto-close to allow length of stay selection
+          // this.picker.hide();
+        } else {
+          this.hideTooltip();
+
+          this.picker.renderAll();
+        }
+      }
+
+      var parent = element.parentElement.parentElement.parentElement.parentElement;
+      var target = parent.querySelector('#length-of-stay');
+      this.checkLengthOfStayErrors(target);
+      this.picker.renderAll();
+    }
+  }
+
+  private hideTooltip() {
+    this.rangePlugin.tooltipElement.style.visibility = 'hidden';
+  }
+
+  private setDateRange(start: Date | string | number, end: Date | string | number) {
+    const startDate = new DateTime(start, this.picker.options.format);
+    const endDate = new DateTime(end, this.picker.options.format);
+
+    this.rangePlugin.options.startDate = startDate ? startDate.clone() : null;
+    this.rangePlugin.options.endDate = endDate ? endDate.clone() : null;
+
+    this.updateValues();
+
+    this.picker.renderAll();
+  }
+
+  private setStartDate(date: Date | string | number) {
+    const d = new DateTime(date, this.picker.options.format);
+    this.rangePlugin.options.startDate = d ? d.clone() : null;
+
+    this.updateValues();
+
+    this.picker.renderAll();
+  }
+
+  /**
+   * Set endDate programmatically
+   * 
+   * @param date 
+   */
+  private setEndDate(date: Date | string | number) {
+    const d = new DateTime(date, this.picker.options.format);
+    this.rangePlugin.options.endDate = d ? d.clone() : null;
+
+    this.updateValues();
+
+    this.picker.renderAll();
   }
 }

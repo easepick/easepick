@@ -1,15 +1,16 @@
 {
   "name": "@easepick/length-of-stay-plugin",
   "description": "Plugin for easepick.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@easepick/base-plugin": "^1.1.0"
+    "@easepick/base-plugin": "^1.1.0",
+    "@easepick/range-plugin": "^1.1.0"
   },
   "author": {
-    "name": "Rinat G.",
+    "name": "RQ",
     "email": "easepick@jsx4.com"
   },
   "license": "GPL-2.0-or-later",

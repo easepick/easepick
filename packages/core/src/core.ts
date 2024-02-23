@@ -18,9 +18,6 @@ export class Core {
     hidePicker: this.hidePicker.bind(this),
     show: this.show.bind(this),
   }
-  public exactDates: boolean = true;
-  public expectedStay: number | null = null;
-  public expectedStayUnit: number | null = null;
 
   public options: IPickerConfig = {
     doc: document,
@@ -175,11 +172,6 @@ export class Core {
       const applyButton = target.querySelector('.apply-button');
       applyButton.disabled = false;
     }
-
-    if (view === 'LengthOfStayFooter') {
-      this.exactDates ? this.setupExactDatesOn(target) : this.setupExactDatesOff(target);
-      this.handleDropdown(event);
-    }
   }
 
   /**
@@ -268,8 +260,6 @@ export class Core {
       this.onClickCalendarDay(element);
       this.onClickApplyButton(element);
       this.onClickCancelButton(element);
-      this.onClickExactDatesButton(element);
-      this.onClickClearButton(element);
     }
   }
 
@@ -338,18 +328,6 @@ export class Core {
     return this.options.date instanceof DateTime
       ? this.options.date.clone()
       : null;
-  }
-
-  public getExactDateIndicator(): boolean {
-    return this.exactDates;
-  }
-
-  public getExpectedStay(): number | null {
-    return this.expectedStay;
-  }
-
-  public getExpectedStayUnit(): number | null {
-    return this.expectedStayUnit;
   }
 
   /**
@@ -454,14 +432,6 @@ export class Core {
     return element.classList.contains('cancel-button');
   }
 
-  public isClearButton(element: HTMLElement): boolean {
-    return element.classList.contains('clear-button');
-  }
-
-  public isExactDatesButton(element: HTMLElement): boolean {
-    return element.id == 'exact-dates';
-  }
-
   /**
    * Change visible month
    * 
@@ -485,29 +455,6 @@ export class Core {
     this.trigger('clear');
   }
 
-  public onClickExactDatesButton(element: HTMLElement) {
-    if (this.isExactDatesButton(element)) {
-      var isChecked = element.checked;
-      if (isChecked == true) {
-        this.exactDates = true;
-      } else {
-        this.exactDates = false;
-      }
-      this.renderAll();
-    }
-  }
-
-  public onClickClearButton(element: HTMLElement) {
-    if (this.isClearButton(element)) {
-      this.options.date = null;
-      this.datePicked.length = 0;
-      this.exactDates = true;
-      this.updateValues();
-      this.renderAll();
-      this.trigger('clear');
-    }
-  }
-
   /**
    * Handling parameters passed by the user
    */
@@ -528,24 +475,6 @@ export class Core {
       this.calendars[0] = new DateTime(this.options.date, this.options.format);
     } else {
       this.calendars[0] = new DateTime();
-    }
-  }
-
-  public handleDropdown(evt) {
-    const { view, target }: IEventDetail = evt.detail;
-    if (view === 'LengthOfStayFooter') {
-      const expectedStayDropdown = target.querySelector('#expected-stay');
-
-      expectedStayDropdown.addEventListener('change', (e) => {
-        const target = e.target as HTMLSelectElement;
-        this.expectedStay = Number(target.value);
-      });
-
-      const expectedStayUnitDropdown = target.querySelector('#expected-stay-unit');
-      expectedStayUnitDropdown.addEventListener('change', (e) => {
-        const target = e.target as HTMLSelectElement;
-        this.expectedStayUnit = Number(target.value);
-      });
     }
   }
 
@@ -616,49 +545,6 @@ export class Core {
       left,
       top,
     };
-  }
-
-  private setupExactDatesOn(target) {
-    const exactDatesOff = target.querySelector('#exact-off');
-    const lengthOfStaySection = target.querySelector('#length-of-stay');
-    const exactDatesOn = target.querySelector('#exact-on');
-    const exactDatesButton = target.querySelector('#exact-dates');
-    const topClear = target.querySelector('.top-button');
-    const expectedStay = target.querySelector('#expected-stay');
-    const expectedStayUnit = target.querySelector('#expected-stay-unit');
-
-    exactDatesButton.checked = true;
-    exactDatesOff.hidden = true;
-    lengthOfStaySection.hidden = true;
-    exactDatesOn.hidden = false;
-    topClear.hidden = false;
-
-    expectedStay.value = '';
-    this.expectedStay = null;
-    expectedStayUnit.value = '';
-    this.expectedStayUnit = null;
-
-    (this.options.element as HTMLInputElement).placeholder = "When is your stay?";
-  }
-
-  private setupExactDatesOff(target) {
-    const exactDatesOff = target.querySelector('#exact-off');
-    const lengthOfStaySection = target.querySelector('#length-of-stay');
-    const exactDatesOn = target.querySelector('#exact-on');
-    const exactDatesButton = target.querySelector('#exact-dates');
-    const topClear = target.querySelector('.top-button');
-    const expectedStay = target.querySelector('#expected-stay');
-    const expectedStayUnit = target.querySelector('#expected-stay-unit');
-
-    exactDatesButton.checked = false;
-    exactDatesOff.hidden = false;
-    lengthOfStaySection.hidden = false;
-    exactDatesOn.hidden = true;
-    topClear.hidden = true;
-    expectedStay.value = this.expectedStay ? this.expectedStay : '';
-    expectedStayUnit.value = this.expectedStayUnit ? this.expectedStayUnit : '';
-
-    (this.options.element as HTMLInputElement).placeholder = "How long is your stay?";
   }
 }
 
