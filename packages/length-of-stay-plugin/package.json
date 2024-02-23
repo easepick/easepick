@@ -1,5 +1,5 @@
 {
-  "name": "@easepick/range-plugin",
+  "name": "@easepick/length-of-stay-plugin",
   "description": "Plugin for easepick.",
   "version": "1.2.1",
   "main": "dist/index.umd.js",
@@ -16,7 +16,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/easepick/easepick.git",
-    "directory": "packages/range-plugin"
+    "directory": "packages/length-of-stay-plugin"
   },
   "homepage": "https://easepick.com",
   "bugs": {

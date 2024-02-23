@@ -14,7 +14,8 @@
     "@easepick/preset-plugin": "^1.1.0",
     "@easepick/range-plugin": "^1.1.0",
     "@easepick/time-plugin": "^1.1.0",
-    "@easepick/amp-plugin": "^1.1.0"
+    "@easepick/amp-plugin": "^1.1.0",
+    "@easepick/length-of-stay-plugin": "file: ../length-of-stay-plugin"
   },
   "author": {
     "name": "Rinat G.",

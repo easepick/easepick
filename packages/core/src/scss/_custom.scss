@@ -1,0 +1,141 @@
+@import "./variables";
+
+.calendars .calendar > .header .month-name > span {
+    font-weight: 900;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.start,
+.container.range-plugin .calendar > .days-grid > .day.end {
+    background-color: $sh-primary;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.in-range {
+    background-color: $sh-blue-gray;
+}
+
+.calendar > .days-grid > .day:hover {
+    border: 1px solid $sh-primary;
+    color: $sh-primary;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.start:after {
+    border-left: 8px solid $sh-primary;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.start.flipped:after {
+    border-right-color: $sh-primary;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.end:after {
+    border-right: 8px solid $sh-primary;
+}
+
+.container.range-plugin .calendar > .days-grid > .day.end.flipped:after {
+    border-left-color: $sh-primary;
+}
+
+.container.range-plugin.show {
+    background-color: white;
+}
+
+.sh-link {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.exact-dates-text {
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 1rem;
+}
+
+.exact-dates-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+#search-type-section {
+    margin: 1rem;
+}
+
+#search-type-section select {
+    font-weight: 400;
+    height: 2.85rem;
+    border: 1px solid $sh-gray;
+    opacity: 1;
+    padding-left: 0.5rem;
+    margin-right: 1rem;
+}
+
+#expected-stay {
+    width: 5.35rem;
+}
+
+#expected-stay-unit {
+    width: 13.65rem;
+}
+
+// Toggle
+// OG
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 1.76rem;
+    height: 1rem;
+}
+
+ /*Hide default HTML checkbox*/ 
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+ /*The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 0.76rem;
+    width: 0.76rem;
+    left: 0.11rem;
+    bottom: 0.11rem;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: $sh-primary;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px $sh-primary;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(0.76rem);
+    -ms-transform: translateX(0.76rem);
+    transform: translateX(0.76rem);
+}
+
+ /*Rounded sliders */
+.slider.round {
+    border-radius: 1rem;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
