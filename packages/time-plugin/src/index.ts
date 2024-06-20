@@ -253,7 +253,7 @@ export class TimePlugin extends BasePlugin implements IPlugin {
             || (!datePicked.length && !options.strict && (options.startDate instanceof Date || options.endDate instanceof Date));
           applyButton.disabled = !bool;
         } else {
-          if (this.picker.datePicked.length) {
+          if (this.picker.datePicked.length || this.timePicked[name]) {
             applyButton.disabled = false;
           }
         }
