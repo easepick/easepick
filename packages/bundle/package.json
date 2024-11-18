@@ -1,20 +1,20 @@
 {
-  "name": "@easepick/bundle",
+  "name": "@forus-coop/bundle",
   "description": "easepick bundle.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "dist/index.umd.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@easepick/core": "^1.1.0",
-    "@easepick/datetime": "^1.1.0",
-    "@easepick/base-plugin": "^1.1.0",
-    "@easepick/kbd-plugin": "^1.1.0",
-    "@easepick/lock-plugin": "^1.1.0",
-    "@easepick/preset-plugin": "^1.1.0",
-    "@easepick/range-plugin": "^1.1.0",
-    "@easepick/time-plugin": "^1.1.0",
-    "@easepick/amp-plugin": "^1.1.0"
+    "@forus-coop/easepick/core": "^1.1.0",
+    "@forus-coop/easepick/datetime": "^1.1.0",
+    "@forus-coop/easepick/base-plugin": "^1.1.0",
+    "@forus-coop/easepick/kbd-plugin": "^1.1.0",
+    "@forus-coop/easepick/lock-plugin": "^1.1.0",
+    "@forus-coop/easepick/preset-plugin": "^1.1.0",
+    "@forus-coop/easepick/range-plugin": "^1.1.0",
+    "@forus-coop/easepick/time-plugin": "^1.1.0",
+    "@forus-coop/easepick/amp-plugin": "^1.1.0"
   },
   "author": {
     "name": "Rinat G.",
@@ -23,7 +23,7 @@
   "license": "GPL-2.0-or-later",
   "repository": {
     "type": "git",
-    "url": "https://github.com/easepick/easepick.git",
+    "url": "https://github.com/forus-coop/easepick.git",
     "directory": "packages/bundle"
   },
   "homepage": "https://easepick.com",
