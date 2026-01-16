@@ -19,7 +19,3 @@ easepick
 - [Packages](https://easepick.com/packages)
 - [Examples](https://easepick.com/examples)
 
-
-## License
-
-Licensed under the terms of [GNU General Public License Version 2 or later](http://www.gnu.org/licenses/gpl.html).
