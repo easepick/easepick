@@ -521,26 +521,29 @@ export class Core {
   private adjustPosition(element: HTMLElement) {
     const rect = element.getBoundingClientRect();
     const wrapper = this.ui.wrapper.getBoundingClientRect();
-
+  
     this.ui.container.classList.add('calc');
     const container = this.ui.container.getBoundingClientRect();
     this.ui.container.classList.remove('calc');
-
+  
     let top = rect.bottom - wrapper.bottom;
     let left = rect.left - wrapper.left;
-
+  
     if (typeof window !== 'undefined') {
-      if (window.innerHeight < top + container.height
-        && top - container.height >= 0) {
+      if (window.innerHeight < top + container.height && top - container.height >= 0) {
         top = rect.top - wrapper.top - container.height;
       }
-
-      if (window.innerWidth < left + container.width
-        && rect.right - container.width >= 0) {
+  
+      if (window.innerWidth < left + container.width && rect.right - container.width >= 0) {
         left = rect.right - wrapper.right - container.width;
       }
+  
+      // Fix: Clamp the left position to stay within the viewport's width
+      if (left + (container.width + rect.left) > window.innerWidth) {
+        left = window.innerWidth - (container.width + rect.left);
+      }
     }
-
+  
     return {
       left,
       top,
