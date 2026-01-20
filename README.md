@@ -17,5 +17,5 @@ easepick
 - [Overview](https://easepick.com/)
 - [Configurator](https://easepick.com/configurator)
 - [Packages](https://easepick.com/packages)
-- [Examples](https://easepick.com/examples)
+- [Examples](https://easepick.com/examples/basic.html)
 
