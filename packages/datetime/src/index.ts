@@ -446,6 +446,7 @@ export class DateTime extends Date {
 
       case 'month':
       case 'months':
+        this.setDate(1);
         this.setMonth(this.getMonth() + duration);
         break;
     }
@@ -468,6 +469,7 @@ export class DateTime extends Date {
 
       case 'month':
       case 'months':
+        this.setDate(1);
         this.setMonth(this.getMonth() - duration);
         break;
     }
