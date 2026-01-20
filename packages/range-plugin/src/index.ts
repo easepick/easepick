@@ -48,7 +48,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Returns plugin name
-   * 
+   *
    * @returns String
    */
   public getName(): string {
@@ -312,8 +312,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Function `show` event
-   * 
-   * @param event 
+   *
+   * @param event
    */
   private onShow(event) {
     const { target }: IEventDetail = event.detail;
@@ -329,8 +329,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
   /**
    * Function `view` event
    * Adds HTML layout of current plugin to the picker layout
-   * 
-   * @param event 
+   *
+   * @param event
    */
   private onView(event: CustomEvent) {
     const { view, target }: IEventDetail = event.detail;
@@ -373,8 +373,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
   /**
    * Function for documentClick option
    * Allows the picker to close when the user clicks outside
-   * 
-   * @param e 
+   *
+   * @param e
    */
   private hidePicker(e) {
     let target = e.target;
@@ -395,8 +395,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Set startDate programmatically
-   * 
-   * @param date 
+   *
+   * @param date
    */
   private setStartDate(date: Date | string | number) {
     const d = new DateTime(date, this.picker.options.format);
@@ -409,8 +409,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Set endDate programmatically
-   * 
-   * @param date 
+   *
+   * @param date
    */
   private setEndDate(date: Date | string | number) {
     const d = new DateTime(date, this.picker.options.format);
@@ -423,9 +423,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Set date range programmatically
-   * 
-   * @param start 
-   * @param end 
+   *
+   * @param start
+   * @param end
    */
   private setDateRange(start: Date | string | number, end: Date | string | number) {
     const startDate = new DateTime(start, this.picker.options.format);
@@ -440,7 +440,7 @@ export class RangePlugin extends BasePlugin implements IPlugin {
   }
 
   /**
-   * 
+   *
    * @returns DateTime
    */
   private getStartDate(): DateTime {
@@ -448,8 +448,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
   }
 
   /**
-   * 
-   * @returns 
+   *
+   * @returns
    */
   private getEndDate(): DateTime {
     return this.options.endDate instanceof Date ? this.options.endDate.clone() : null;
@@ -457,8 +457,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Handle `mouseenter` event
-   * 
-   * @param event 
+   *
+   * @param event
    */
   private onMouseEnter(event) {
     const target = event.target;
@@ -527,11 +527,11 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Handle `mouseleave` event
-   * 
-   * @param event 
+   *
+   * @param event
    */
   private onMouseLeave(event) {
-    if (this.isContainer(event.target) && this.options.repick) {
+    if (this.isContainer(event.target) && this.options.repick && this.picker.options.autoApply) {
       const start = this.getStartDate();
       const end = this.getEndDate();
 
@@ -624,9 +624,9 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Displays tooltip of selected days
-   * 
-   * @param element 
-   * @param text 
+   *
+   * @param element
+   * @param text
    */
   private showTooltip(element: HTMLElement, text: string) {
     this.tooltipElement.style.visibility = 'visible';
@@ -697,8 +697,8 @@ export class RangePlugin extends BasePlugin implements IPlugin {
 
   /**
    * Determines if the element is the picker container
-   *  
-   * @param element 
+   *
+   * @param element
    * @returns Boolean
    */
   private isContainer(element: HTMLElement): boolean {
