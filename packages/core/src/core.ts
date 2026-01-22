@@ -42,6 +42,7 @@ export class Core {
     },
     documentClick: this.binds.hidePicker,
     plugins: [],
+    showOffsetDays: false,
   };
 
   public ui: IPickerElements = {

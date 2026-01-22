@@ -230,12 +230,18 @@ export default class Calendar {
   public getCalendarDaysView(date: DateTime): HTMLElement {
     const element = document.createElement('div');
     element.className = 'days-grid';
-    const offsetDays = this.calcOffsetDays(date, this.picker.options.firstDay);
+    const lastDayOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    const offsetDaysBefore = this.calcOffsetDays(date, this.picker.options.firstDay);
+    const offsetDaysAfter = 6 - this.calcOffsetDays(new DateTime(lastDayOfMonth), this.picker.options.firstDay)
     const totalDays = 32 - new Date(date.getFullYear(), date.getMonth(), 32).getDate();
 
-    for (let idx = 0; idx < offsetDays; idx++) {
+    for (let idx = offsetDaysBefore; idx > 0; idx--) {
       const offsetDay = document.createElement('div');
-      offsetDay.className = 'offset';
+      offsetDay.className = 'day offset';
+      if (this.picker.options.showOffsetDays) {
+        offsetDay.innerText = new DateTime(firstDayOfMonth).subtract(idx, "day").getDate().toString();
+      }
       element.appendChild(offsetDay);
     }
 
@@ -247,6 +253,17 @@ export default class Calendar {
       element.appendChild(calendarDay);
 
       this.picker.trigger('view', { date, view: 'CalendarDay', target: calendarDay });
+    }
+
+    if(this.picker.options.showOffsetDays) {
+      for (let idx = 0; idx < offsetDaysAfter; idx++) {
+        const offsetDay = document.createElement('div');
+        offsetDay.className = 'day offset';
+        if (this.picker.options.showOffsetDays) {
+          offsetDay.innerText = new DateTime(lastDayOfMonth).add(idx + 1, "day").getDate().toString();
+        }
+        element.appendChild(offsetDay);
+      }
     }
 
     return element;
